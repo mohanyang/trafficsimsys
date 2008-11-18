@@ -1,35 +1,47 @@
 package traffic.map.entity;
 
+import java.util.Iterator;
 import java.util.LinkedList;
 
+import traffic.basic.Lib;
+
+/**
+ * @author Isaac
+ * 
+ */
 public class Point {
-	private double xAxis = 0;
-	private double yAxis = 0;
-	private int degree = 0;
+	protected double xAxis = 0;
+	protected double yAxis = 0;
+	protected int degree = 0;
 	private LinkedList<Road> roadList = new LinkedList<Road>();
 
-	protected Point(int x, int y) {
+	protected Point(double x, double y) {
 		xAxis = x;
 		yAxis = y;
+		degree = 0;
 	}
 
-	public int hashCode() {
-		return xAxis << 16 | yAxis;
-	}
-
+	@Override
 	public boolean equals(Object obj) {
 		if (!(obj instanceof Point))
 			return false;
-		return xAxis == ((Point) obj).xAxis && yAxis == ((Point) obj).yAxis;
+		return isEqual(((Point) obj).xAxis, ((Point) obj).yAxis);
 	}
 
-	public int getDegree() {
-		return degree;
+	@Override
+	public String toString() {
+		return "[point (" + xAxis + ", " + yAxis + ")" + ":" + degree + "]";
+	}
+
+	public boolean isEqual(double x, double y) {
+		return Lib.isEqual(x, xAxis) && Lib.isEqual(y, yAxis);
 	}
 
 	public void addRoad(Road road) {
-		roadList.add(road);
-		++degree;
+		if (road.startPoint.equals(this) || road.endPoint.equals(this)) {
+			roadList.add(road);
+			++degree;
+		}
 	}
 
 	public int removeRoad(Road road) {
@@ -40,23 +52,19 @@ public class Point {
 		return degree;
 	}
 
-	public int getXAxis() {
+	public double getXAxis() {
 		return xAxis;
 	}
 
-	public void setXAxis(int axis) {
-		xAxis = axis;
-	}
-
-	public int getYAxis() {
+	public double getYAxis() {
 		return yAxis;
 	}
 
-	public void setYAxis(int axis) {
-		yAxis = axis;
+	public int getDegree() {
+		return degree;
 	}
 
-	public String toString() {
-		return "[point (" + xAxis + ", " + yAxis + ")" + ":" + degree + "]";
+	public Iterator<Road> getRoadList() {
+		return roadList.iterator();
 	}
 }

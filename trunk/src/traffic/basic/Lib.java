@@ -29,6 +29,7 @@ public class Lib {
 	}
 
 	private static final double epsilon = 1e-2;
+	private static final double amplitude = 1 / epsilon;
 
 	/**
 	 * Test if two double are equal
@@ -38,6 +39,10 @@ public class Lib {
 	 */
 	public static boolean isEqual(double a, double b) {
 		return Math.abs(a - b) <= epsilon;
+	}
+
+	public static int doubleToInt(double a) {
+		return (int) (a * amplitude);
 	}
 
 	private static Random random = null;

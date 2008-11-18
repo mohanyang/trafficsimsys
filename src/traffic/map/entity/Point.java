@@ -13,12 +13,18 @@ public class Point {
 	protected double xAxis = 0;
 	protected double yAxis = 0;
 	protected int degree = 0;
+	private long hashCode = 0;
 	private LinkedList<Road> roadList = new LinkedList<Road>();
 
 	protected Point(double x, double y) {
 		xAxis = x;
 		yAxis = y;
 		degree = 0;
+		hashCode = Long.rotateLeft(Lib.doubleToInt(x), 32) | Lib.doubleToInt(y);
+	}
+
+	public long hash() {
+		return hashCode;
 	}
 
 	@Override

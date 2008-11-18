@@ -1,28 +1,28 @@
 package traffic.map.entity;
 
+import java.util.HashMap;
 import java.util.Iterator;
-import java.util.LinkedList;
 
 /**
  * @author Isaac
  * 
  */
 public class Map {
-	private LinkedList<Point> pointList = null;
+	private HashMap<Long, Point> pointMap = null;
 
 	public Map() {
-		pointList = new LinkedList<Point>();
+		pointMap = new HashMap<Long, Point>();
 	}
 
 	public Point newPoint(double x, double y) {
-		for (Iterator<Point> itr = pointList.iterator(); itr.hasNext();) {
-			Point next = itr.next();
-			if (next.isEqual(x, y))
-				return next;
-		}
 		Point p = new Point(x, y);
-		pointList.add(p);
-		return p;
+		Point o = pointMap.get(p.hash());
+		if (o == null) {
+			pointMap.put(p.hash(), p);
+			return p;
+		} else {
+			return o;
+		}
 	}
 
 	public Road newRoad(double x1, double y1, double x2, double y2, int l) {
@@ -45,7 +45,7 @@ public class Map {
 	}
 
 	public Iterator<Point> getPointList() {
-		return pointList.iterator();
+		return pointMap.values().iterator();
 	}
 
 	public Iterator<Vehicle> getVehicleOnRoad(Road r) {

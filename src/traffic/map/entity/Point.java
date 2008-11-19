@@ -12,14 +12,12 @@ import traffic.basic.Lib;
 public class Point {
 	protected double xAxis = 0;
 	protected double yAxis = 0;
-	protected int degree = 0;
 	private long hashCode = 0;
 	private LinkedList<Road> roadList = new LinkedList<Road>();
 
 	protected Point(double x, double y) {
 		xAxis = x;
 		yAxis = y;
-		degree = 0;
 		hashCode = Long.rotateLeft(Lib.doubleToInt(x), 32) | Lib.doubleToInt(y);
 	}
 
@@ -36,7 +34,8 @@ public class Point {
 
 	@Override
 	public String toString() {
-		return "[point (" + xAxis + ", " + yAxis + ")" + ":" + degree + "]";
+		return "[point (" + xAxis + ", " + yAxis + ")" + ":" + getDegree()
+				+ "]";
 	}
 
 	public boolean isEqual(double x, double y) {
@@ -46,16 +45,14 @@ public class Point {
 	public void addRoad(Road road) {
 		if (road.startPoint.equals(this) || road.endPoint.equals(this)) {
 			roadList.add(road);
-			++degree;
 		}
 	}
 
 	public int removeRoad(Road road) {
 		if (roadList.contains(road)) {
 			roadList.remove(road);
-			--degree;
 		}
-		return degree;
+		return roadList.size();
 	}
 
 	public double getXAxis() {
@@ -67,7 +64,7 @@ public class Point {
 	}
 
 	public int getDegree() {
-		return degree;
+		return roadList.size();
 	}
 
 	public Iterator<Road> getRoadList() {

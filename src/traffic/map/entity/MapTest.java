@@ -1,7 +1,7 @@
 package traffic.map.entity;
 
 import java.util.Iterator;
-import java.util.LinkedList;
+import java.util.Vector;
 
 import org.junit.Test;
 
@@ -10,7 +10,7 @@ import traffic.basic.Lib;
 public class MapTest {
 
 	Map map = null;
-	LinkedList<Point> list = null;
+	Vector<Point> list = null;
 
 	@Test
 	public void testMap() {
@@ -21,7 +21,7 @@ public class MapTest {
 			map.newPoint(Lib.random() * 100, Lib.random() * 100);
 		System.out.println("point created");
 
-		list = new LinkedList<Point>();
+		list = new Vector<Point>();
 		for (Iterator<Point> itr = map.getPointList(); itr.hasNext();) {
 			Point p = itr.next();
 			list.add(p);

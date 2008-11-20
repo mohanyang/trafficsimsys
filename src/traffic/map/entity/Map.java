@@ -14,8 +14,7 @@ public class Map {
 		pointMap = new HashMap<Long, Point>();
 	}
 
-	public Point newPoint(double x, double y) {
-		Point p = new Point(x, y);
+	public Point newPoint(Point p) {
 		Point o = pointMap.get(p.hash());
 		if (o == null) {
 			pointMap.put(p.hash(), p);
@@ -25,8 +24,12 @@ public class Map {
 		}
 	}
 
-	public Road newRoad(double x1, double y1, double x2, double y2, int l) {
-		Point s = newPoint(x1, y1), e = newPoint(x2, y2);
+	public Point newPoint(double x, double y) {
+		return newPoint(new Point(x, y));
+	}
+
+	public Road newRoad(Point ps, Point pe, int l) {
+		Point s = newPoint(ps), e = newPoint(pe);
 		for (Iterator<Road> itr = s.getRoadList(); itr.hasNext();) {
 			Road next = itr.next();
 			if (next.endPoint.equals(e)) {
@@ -38,6 +41,14 @@ public class Map {
 		s.addRoad(road);
 		e.addRoad(road);
 		return road;
+	}
+
+	public Road newRoad(Road r) {
+		return newRoad(r.getStartPoint(), r.getEndPoint(), r.getLane());
+	}
+
+	public Road newRoad(double x1, double y1, double x2, double y2, int l) {
+		return newRoad(new Point(x1, y1), new Point(x2, y2), l);
 	}
 
 	public Vehicle newVehicle(VehicleInf inf) {

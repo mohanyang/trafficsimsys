@@ -1,26 +1,21 @@
-package traffic.map.handler;
+package traffic.simulation.kernel;
 
 import java.util.Iterator;
-
-import org.junit.Test;
 
 import traffic.basic.Config;
 import traffic.map.entity.Map;
 import traffic.map.entity.Point;
 import traffic.map.entity.Road;
+import traffic.map.handler.LoadHandler;
 
-/**
- * @author Isaac
- * 
- */
-public class LoadHandlerTest {
+public class Simulator {
+	private Map map = null;
 
-	@Test
-	public void testRun() {
+	public Simulator() {
 		Config.load("traffic.ini");
-		Map m = new LoadHandler().run();
+		map = new LoadHandler().run();
 		System.out.println("map");
-		for (Iterator<Point> itr = m.getPointList(); itr.hasNext();) {
+		for (Iterator<Point> itr = map.getPointList(); itr.hasNext();) {
 			Point p = itr.next();
 			System.out.println(p);
 			for (Iterator<Road> itrr = p.getRoadList(); itrr.hasNext();)

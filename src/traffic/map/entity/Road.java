@@ -13,7 +13,7 @@ public class Road {
 	protected int lane;
 	private LinkedList<Vehicle> vehicleList = new LinkedList<Vehicle>();
 
-	protected Road(Point s, Point e, int l) {
+	public Road(Point s, Point e, int l) {
 		startPoint = s;
 		endPoint = e;
 		lane = l;

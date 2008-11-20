@@ -1,0 +1,42 @@
+<map>
+  <road>
+    <start_point x-axis="10.00" y-axis="20.00" />
+    <end_point x-axis="100.00" y-axis="200.00" />
+    <lane>2</lane>
+  </road>
+  <road>
+    <start_point x-axis="10.00" y-axis="20.00" />
+    <end_point x-axis="300.00" y-axis="100.00" />
+    <lane>3</lane>
+  </road>
+  <road>
+    <start_point x-axis="40.00" y-axis="20.00" />
+    <end_point x-axis="300.00" y-axis="100.00" />
+    <lane>1</lane>
+  </road>
+ <road>
+    <start_point x-axis="50.00" y-axis="20.00" />
+    <end_point x-axis="300.00" y-axis="100.00" />
+    <lane>1</lane>
+  </road>
+ <road>
+    <start_point x-axis="70.00" y-axis="20.00" />
+    <end_point x-axis="400.00" y-axis="100.00" />
+    <lane>1</lane>
+  </road>
+ <road>
+    <start_point x-axis="100.00" y-axis="20.00" />
+    <end_point x-axis="600.00" y-axis="100.00" />
+    <lane>1</lane>
+  </road>
+ <road>
+    <start_point x-axis="40.00" y-axis="20.00" />
+    <end_point x-axis="300.00" y-axis="600.00" />
+    <lane>1</lane>
+  </road>
+ <road>
+    <start_point x-axis="50.00" y-axis="50.00" />
+    <end_point x-axis="300.00" y-axis="100.00" />
+    <lane>1</lane>
+  </road>
+</map>

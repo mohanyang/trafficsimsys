@@ -15,7 +15,7 @@ public class Point {
 	private long hashCode = 0;
 	private LinkedList<Road> roadList = new LinkedList<Road>();
 
-	protected Point(double x, double y) {
+	public Point(double x, double y) {
 		xAxis = x;
 		yAxis = y;
 		hashCode = Long.rotateLeft(Lib.doubleToInt(x), 32) | Lib.doubleToInt(y);

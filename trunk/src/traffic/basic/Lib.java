@@ -518,6 +518,26 @@ public class Lib {
 	}
 
 	/**
+	 * Create and return a new instance of the named class, using the
+	 * constructor that takes params as arguments.
+	 * 
+	 * @param className
+	 *            the name of the class to instantiate.
+	 * @param params
+	 *            the parameters needed for the instantiation of the class
+	 * @return a new instance of the class.
+	 */
+	public static Object constructObject(String className, Object[] params) {
+		try {
+			Class[] param_types = new Class[0];
+			return loadClass(className).getConstructor(param_types)
+					.newInstance(params);
+		} catch (Throwable e) {
+			return null;
+		}
+	}
+
+	/**
 	 * Verify that the specified class extends or implements the specified
 	 * superclass.
 	 * 

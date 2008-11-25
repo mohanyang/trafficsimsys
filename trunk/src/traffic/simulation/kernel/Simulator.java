@@ -15,13 +15,6 @@ public class Simulator {
 	public Simulator() {
 		Config.load("traffic.ini");
 		map = new LoadHandler().run();
-		// System.out.println("map");
-		// for (Iterator<Point> itr = map.getPointList(); itr.hasNext();) {
-		// Point p = itr.next();
-		// System.out.println(p);
-		// for (Iterator<Road> itrr = p.getRoadList(); itrr.hasNext();)
-		// System.out.println(itrr.next());
-		// }
 		console = (Console) Lib.constructObject(Config
 				.getString("traffic.console"));
 		console.write(new Event(map, Event.CREATE));

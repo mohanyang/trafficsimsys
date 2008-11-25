@@ -4,13 +4,20 @@ import java.util.Timer;
 import java.util.TimerTask;
 
 public class Scheduler {
+	static Scheduler instance = null;
 	Timer timer;
 
-	public Scheduler() {
+	private Scheduler() {
 		timer = new Timer();
 	}
 
-	public void schedulder(final Runnable handler, long time) {
+	public static Scheduler getInstance() {
+		if (instance == null)
+			instance = new Scheduler();
+		return instance;
+	}
+
+	public void scheduler(final Runnable handler, long time) {
 		timer.schedule(new TimerTask() {
 			public void run() {
 				handler.run();

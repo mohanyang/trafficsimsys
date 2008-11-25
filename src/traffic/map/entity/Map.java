@@ -62,4 +62,16 @@ public class Map {
 	public Iterator<Vehicle> getVehicleOnRoad(Road r) {
 		return r.getVehicleList();
 	}
+
+	public String toString() {
+		StringBuffer buf = new StringBuffer();
+		buf.append("map\n");
+		for (Iterator<Point> itr = getPointList(); itr.hasNext();) {
+			Point p = itr.next();
+			buf.append(p + "\n");
+			for (Iterator<Road> itrr = p.getRoadList(); itrr.hasNext();)
+				buf.append(itrr.next() + "\n");
+		}
+		return buf.toString();
+	}
 }

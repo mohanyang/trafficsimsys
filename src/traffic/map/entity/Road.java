@@ -38,7 +38,10 @@ public class Road {
 	}
 
 	protected void addVehicle(Vehicle v) {
-		if (!v.road.equals(this) && !vehicleList.contains(v)) {
+		if (v.road == null && !vehicleList.contains(v)) {
+			v.road = this;
+			vehicleList.add(v);
+		} else if (!v.road.equals(this) && !vehicleList.contains(v)) {
 			v.road = this;
 			vehicleList.add(v);
 		}

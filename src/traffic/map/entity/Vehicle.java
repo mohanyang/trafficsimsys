@@ -30,6 +30,12 @@ public class Vehicle {
 		return ((Vehicle) obj).id == id;
 	}
 
+	@Override
+	public String toString() {
+		return "Vehicle " + id + " on " + road + " at speed of " + speed
+				+ " current at " + current;
+	}
+
 	public Road getRoad() {
 		return road;
 	}

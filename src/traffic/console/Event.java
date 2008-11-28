@@ -25,5 +25,5 @@ public class Event {
 		return "Event-" + type + " " + o.toString();
 	}
 
-	public static int CREATE = 0, MOVE = 1;
+	public static final int CREATE = 0, MOVE = 1;
 }

@@ -6,7 +6,7 @@ public class SimulatorTest {
 
 	@Test
 	public void testSimulator() {
-		new Simulator().start();
+
 	}
 
 }

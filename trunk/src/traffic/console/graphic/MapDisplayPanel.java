@@ -71,15 +71,25 @@ public class MapDisplayPanel extends JPanel {
 			Vehicle v = itr.next();
 			Point s = v.getRoad().getStartPoint(), e = v.getRoad()
 					.getEndPoint();
-			int direct = v.getSpeed() > 0 ? 1 : -1;
-			trans.setToRotation(direct * (e.getXAxis() - s.getXAxis()), e
-					.getYAxis()
-					- s.getYAxis(), v.getPoint().getXAxis(), v.getPoint()
-					.getYAxis());
+			double tanv = (e.getYAxis() - s.getYAxis())
+					/ (e.getXAxis() - s.getXAxis()), theta, x = v.getPoint()
+					.getXAxis(), y = v.getPoint().getYAxis();
+			if (tanv == Double.POSITIVE_INFINITY) {
+				theta = 0;
+				x = x + 13;
+			} else if (tanv == Double.NEGATIVE_INFINITY) {
+				theta = Math.toRadians(180);
+				x = x + 13;
+			} else {
+				theta = Math.atan(tanv) - Math.toRadians(90);
+				y = y - 13;
+			}
+			if (v.getSpeed() > 0)
+				theta += Math.toRadians(180);
+			trans.setToRotation(theta);
 			BufferedImageOp op = new AffineTransformOp(trans,
 					AffineTransformOp.TYPE_BICUBIC);
-			((Graphics2D) graphics).drawImage(img, op, (int) v.getPoint()
-					.getXAxis(), (int) v.getPoint().getYAxis() - 16);
+			((Graphics2D) graphics).drawImage(img, op, (int) x, (int) y);
 		}
 	}
 }

@@ -1,6 +1,7 @@
 package traffic.console.graphic;
 
 import java.awt.BasicStroke;
+import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.geom.AffineTransform;
@@ -24,7 +25,7 @@ import traffic.map.entity.Vehicle;
 public class MapDisplayPanel extends JPanel {
 	static public final long serialVersionUID = 2L;
 	private Map map = null;
-	BufferedImage img = null;
+	BufferedImage[] img = null;
 	AffineTransform trans = null;
 
 	public MapDisplayPanel() {
@@ -34,7 +35,11 @@ public class MapDisplayPanel extends JPanel {
 		} catch (Exception e) {
 		}
 		try {
-			img = ImageIO.read(new File("./image/1.gif"));
+			img = new BufferedImage[4];
+			img[0] = ImageIO.read(new File("./image/1.gif"));
+			img[1] = ImageIO.read(new File("./image/2.gif"));
+			img[2] = ImageIO.read(new File("./image/3.gif"));
+			img[3] = ImageIO.read(new File("./image/4.gif"));
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
@@ -46,6 +51,9 @@ public class MapDisplayPanel extends JPanel {
 		Graphics graphics = getGraphics();
 		if (graphics != null) {
 			this.map = map;
+			// Color c = graphics.getColor();
+			// graphics.fillRect(0, 0, 800, 600);
+			graphics.setColor(Color.white);
 			drawMapOnGraphics((Graphics2D) graphics);
 		}
 	}
@@ -60,6 +68,14 @@ public class MapDisplayPanel extends JPanel {
 					graphics.setStroke(new BasicStroke(r.getLane() * 26));
 					graphics.draw(new Line2D.Double(p.getXAxis(), p.getYAxis(),
 							pe.getXAxis(), pe.getYAxis()));
+				}
+			}
+		}
+		for (Iterator<Point> PointItr = map.getPointList(); PointItr.hasNext();) {
+			Point p = PointItr.next();
+			for (Iterator<Road> RoadItr = p.getRoadList(); RoadItr.hasNext();) {
+				Road r = RoadItr.next();
+				if (r.getStartPoint().equals(p)) {
 					drawVehicleOnRoad(graphics, r);
 				}
 			}
@@ -78,18 +94,20 @@ public class MapDisplayPanel extends JPanel {
 				theta = 0;
 				x = x + 13;
 			} else if (tanv == Double.NEGATIVE_INFINITY) {
-				theta = Math.toRadians(180);
+				theta = 180;
 				x = x + 13;
 			} else {
-				theta = Math.atan(tanv) - Math.toRadians(90);
+				theta = Math.toDegrees(Math.atan(tanv)) + 270;
 				y = y - 13;
 			}
+			System.out.println(r + "\n" + theta);
 			if (v.getSpeed() > 0)
-				theta += Math.toRadians(180);
-			trans.setToRotation(theta);
+				theta += 180;
+			trans.setToRotation(Math.toRadians(theta));
 			BufferedImageOp op = new AffineTransformOp(trans,
 					AffineTransformOp.TYPE_BICUBIC);
-			((Graphics2D) graphics).drawImage(img, op, (int) x, (int) y);
+			((Graphics2D) graphics).drawImage(img[v.getVehicleInf()
+					.getImageID()], op, (int) x, (int) y);
 		}
 	}
 }

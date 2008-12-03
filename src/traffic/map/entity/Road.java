@@ -3,6 +3,8 @@ package traffic.map.entity;
 import java.util.Iterator;
 import java.util.LinkedList;
 
+import traffic.map.entity.Vehicle;
+
 /**
  * @author Isaac
  * 
@@ -10,6 +12,7 @@ import java.util.LinkedList;
 public class Road {
 	protected Point startPoint;
 	protected Point endPoint;
+	protected double length;
 	protected int lane;
 	private LinkedList<Vehicle> vehicleList = new LinkedList<Vehicle>();
 
@@ -17,6 +20,7 @@ public class Road {
 		startPoint = s;
 		endPoint = e;
 		lane = l;
+		length=Point.distance(s, e);
 	}
 
 	@Override
@@ -59,6 +63,23 @@ public class Road {
 
 	public Point getEndPoint() {
 		return endPoint;
+	}
+	
+	public boolean canMove(int lane){
+		return true;
+	}
+	
+	public double closestDistance(Vehicle p){
+		double ret=Double.MAX_VALUE;
+		Vehicle curr=null;
+		for (Iterator<Vehicle> itr=vehicleList.iterator(); itr.hasNext();
+			curr=itr.next()){
+			if (curr.getLane()==p.getLane()) {
+				ret=(ret<Point.distance(p.getPoint(), curr.getPoint()))?
+						ret:Point.distance(p.getPoint(), curr.getPoint());
+			}
+		}
+		return ret;		
 	}
 
 	public int getLane() {

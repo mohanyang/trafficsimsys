@@ -14,6 +14,11 @@ public class Point {
 	protected double yAxis = 0;
 	private long hashCode = 0;
 	private LinkedList<Road> roadList = new LinkedList<Road>();
+	
+	public static double distance(Point p1, Point p2){
+		return (p1.xAxis-p2.xAxis)*(p1.xAxis-p2.xAxis)
+				+(p1.yAxis-p2.yAxis)*(p1.yAxis-p2.yAxis);
+	}
 
 	public Point(double x, double y) {
 		xAxis = x;

@@ -1,5 +1,7 @@
 package traffic.map.entity;
 
+import traffic.basic.*;
+
 /**
  * @author Isaac
  * 
@@ -34,7 +36,7 @@ public class Vehicle {
 	@Override
 	public String toString() {
 		return "Vehicle " + id + " on " + road + " at speed of " + speed
-				+ " current at " + current;
+				+ " current at " + getPoint();
 	}
 	
 	public double getPosition(){
@@ -56,11 +58,21 @@ public class Vehicle {
 	}
 
 	public Point getPoint() {
-		
+		double retx=(road.endPoint.xAxis-road.startPoint.xAxis)*currentPosition/road.length
+				+road.startPoint.xAxis;
+		double rety=(road.endPoint.yAxis-road.startPoint.yAxis)*currentPosition/road.length
+				+road.startPoint.yAxis;
+		return new Point(retx, rety);
 	}
 
 	public void setPoint(Point p) {
-		current = p;
+		double rate;
+		if (Math.abs(road.startPoint.xAxis-road.endPoint.xAxis)<
+				Math.abs(road.startPoint.yAxis-road.endPoint.yAxis))
+			rate=(p.yAxis-road.startPoint.yAxis)/(road.endPoint.yAxis-road.startPoint.yAxis);
+		else
+			rate=(p.xAxis-road.startPoint.xAxis)/(road.endPoint.xAxis-road.startPoint.xAxis);
+		currentPosition=road.length*rate;
 	}
 	
 	public int getLane(){

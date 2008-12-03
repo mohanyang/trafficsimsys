@@ -82,6 +82,10 @@ public class Vehicle {
 	public double getSpeed() {
 		return speed;
 	}
+	
+	public void proceed(){
+		currentPosition+=speed*300;
+	}
 
 	public void setSpeed(double speed) {
 		this.speed = speed;

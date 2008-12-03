@@ -70,13 +70,13 @@ public class Road {
 	}
 	
 	public double closestDistance(Vehicle p){
-		double ret=Double.MAX_VALUE;
-		Vehicle curr=null;
+		double ret=length-p.getPosition();
+		Vehicle curr=vehicleList.iterator().next();
 		for (Iterator<Vehicle> itr=vehicleList.iterator(); itr.hasNext();
 			curr=itr.next()){
-			if (curr.getLane()==p.getLane()) {
-				ret=(ret<Point.distance(p.getPoint(), curr.getPoint()))?
-						ret:Point.distance(p.getPoint(), curr.getPoint());
+			if (curr!=p && curr.getLane()==p.getLane() && curr.getPosition()>=p.getPosition()) {
+				ret=ret<(-p.getPosition()+curr.getPosition())?
+						ret:(-p.getPosition()+curr.getPosition());
 			}
 		}
 		return ret;		

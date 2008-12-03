@@ -12,6 +12,7 @@ import traffic.map.entity.Point;
 import traffic.map.entity.Road;
 import traffic.map.entity.Vehicle;
 import traffic.map.handler.LoadHandler;
+import traffic.simulation.vehicle.*;
 
 public class Simulator {
 	private Map map = null;
@@ -49,21 +50,23 @@ public class Simulator {
 									.hasNext();) {
 								Vehicle v = itr.next();
 								System.out.println(v);
-								double x1 = v.getRoad().getStartPoint().getXAxis(), 
-										y1 = v.getRoad().getStartPoint().getYAxis(), 
-										x2 = v.getRoad().getEndPoint().getXAxis(), 
-										y2 = v.getRoad().getEndPoint().getYAxis(), 
-										x = v.getPoint().getXAxis(), 
-										y = v.getPoint().getYAxis(), 
-										l = v.getSpeed();
-								double tanv = (y2 - y1) / (x2 - x1), 
-										cosv = 1 / Math.sqrt(1 + tanv * tanv), 
-										sinv = Math.sqrt(1 - cosv * cosv);
-								double sy = Math.signum(y2 - y1), 
-										sx = Math.signum(x2 - x1);
-								x += l * cosv * sx;
-								y += l * sinv * sy;
-								v.setPoint(new Point(x, y));
+//								double x1 = v.getRoad().getStartPoint().getXAxis(), 
+//										y1 = v.getRoad().getStartPoint().getYAxis(), 
+//										x2 = v.getRoad().getEndPoint().getXAxis(), 
+//										y2 = v.getRoad().getEndPoint().getYAxis(), 
+//										x = v.getPoint().getXAxis(), 
+//										y = v.getPoint().getYAxis(), 
+//										l = v.getSpeed();
+//								double tanv = (y2 - y1) / (x2 - x1), 
+//										cosv = 1 / Math.sqrt(1 + tanv * tanv), 
+//										sinv = Math.sqrt(1 - cosv * cosv);
+//								double sy = Math.signum(y2 - y1), 
+//										sx = Math.signum(x2 - x1);
+//								x += l * cosv * sx;
+//								y += l * sinv * sy;
+//								v.setPoint(new Point(x, y));
+								// TODO use interface here
+								new BasicVehicleController().react(v);
 								System.out.println(v);
 							}
 					}

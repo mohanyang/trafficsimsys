@@ -53,7 +53,7 @@ public class MapDisplayPanel extends JPanel {
 			this.map = map;
 			// Color c = graphics.getColor();
 			// graphics.fillRect(0, 0, 800, 600);
-			graphics.setColor(Color.white);
+			// graphics.setColor(Color.white);
 			drawMapOnGraphics((Graphics2D) graphics);
 		}
 	}
@@ -71,6 +71,15 @@ public class MapDisplayPanel extends JPanel {
 				}
 			}
 		}
+		// for (Iterator<Point> PointItr = map.getPointList();
+		// PointItr.hasNext();) {
+		// Point p = PointItr.next();
+		// Color c = graphics.getColor();
+		// graphics.setColor(Color.RED);
+		// graphics.drawRect((int) p.getXAxis() - 5, (int) p.getYAxis() - 5,
+		// 10, 10);
+		// graphics.setColor(c);
+		// }
 		for (Iterator<Point> PointItr = map.getPointList(); PointItr.hasNext();) {
 			Point p = PointItr.next();
 			for (Iterator<Road> RoadItr = p.getRoadList(); RoadItr.hasNext();) {

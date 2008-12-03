@@ -30,7 +30,7 @@ public class Lib {
 
 	private static final double epsilon = 1e-2;
 	private static final double amplitude = 1 / epsilon;
-
+	
 	/**
 	 * Test if two double are equal
 	 * 

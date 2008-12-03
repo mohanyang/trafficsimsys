@@ -7,11 +7,12 @@ package traffic.map.entity;
 public class Vehicle {
 	protected Road road;
 	protected double speed;
-	protected Point current;
+	protected double currentPosition;
 	private VehicleInf inf;
 
 	private int id = 0;
 	private static int count = 0;
+	private int lane = 0;
 
 	protected Vehicle(VehicleInf inf) {
 		id = count++;
@@ -35,7 +36,15 @@ public class Vehicle {
 		return "Vehicle " + id + " on " + road + " at speed of " + speed
 				+ " current at " + current;
 	}
-
+	
+	public double getPosition(){
+		return currentPosition;
+	}
+	
+	public void setPosition(double p){
+		currentPosition=p;
+	}
+	
 	public Road getRoad() {
 		return road;
 	}
@@ -47,11 +56,15 @@ public class Vehicle {
 	}
 
 	public Point getPoint() {
-		return current;
+		
 	}
 
 	public void setPoint(Point p) {
 		current = p;
+	}
+	
+	public int getLane(){
+		return lane;
 	}
 
 	public double getSpeed() {

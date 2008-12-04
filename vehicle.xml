@@ -4,39 +4,4 @@
     <end_point x-axis="100" y-axis="200" />
     <lane>2</lane>
   </road>
-  <road>
-    <start_point x-axis="10" y-axis="20" />
-    <end_point x-axis="300" y-axis="100" />
-    <lane>3</lane>
-  </road>
-  <road>
-    <start_point x-axis="40" y-axis="20" />
-    <end_point x-axis="300" y-axis="100" />
-    <lane>1</lane>
-  </road>
- <road>
-    <start_point x-axis="50" y-axis="20" />
-    <end_point x-axis="300" y-axis="100" />
-    <lane>1</lane>
-  </road>
- <road>
-    <start_point x-axis="70" y-axis="20" />
-    <end_point x-axis="400" y-axis="100" />
-    <lane>1</lane>
-  </road>
- <road>
-    <start_point x-axis="100" y-axis="20" />
-    <end_point x-axis="600" y-axis="100" />
-    <lane>1</lane>
-  </road>
- <road>
-    <start_point x-axis="40" y-axis="20" />
-    <end_point x-axis="300" y-axis="600" />
-    <lane>1</lane>
-  </road>
- <road>
-    <start_point x-axis="50" y-axis="50" />
-    <end_point x-axis="300" y-axis="100" />
-    <lane>1</lane>
-  </road>
 </map>

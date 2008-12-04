@@ -54,6 +54,7 @@ public class Vehicle {
 
 	public void setRoad(Road r) {
 		if (road != null) {
+			Lib.assertTrue(road.isHeldByCurrentThread());
 			road.removeVehicle(this);
 		}
 		r.acquireLock();

@@ -45,32 +45,32 @@ public class Simulator {
 					Point p = pp.next();
 					for (Iterator<Road> rr = p.getRoadList(); rr.hasNext();) {
 						Road r = rr.next();
-						synchronized (r.getVehicleLinkedList()) {
-							if (r.getStartPoint().equals(p))
-								for (Iterator<Vehicle> itr = r.getVehicleList(); itr
-										.hasNext();) {
-									Vehicle v = itr.next();
-									System.out.println(v);
-	//								double x1 = v.getRoad().getStartPoint().getXAxis(), 
-	//										y1 = v.getRoad().getStartPoint().getYAxis(), 
-	//										x2 = v.getRoad().getEndPoint().getXAxis(), 
-	//										y2 = v.getRoad().getEndPoint().getYAxis(), 
-	//										x = v.getPoint().getXAxis(), 
-	//										y = v.getPoint().getYAxis(), 
-	//										l = v.getSpeed();
-	//								double tanv = (y2 - y1) / (x2 - x1), 
-	//										cosv = 1 / Math.sqrt(1 + tanv * tanv), 
-	//										sinv = Math.sqrt(1 - cosv * cosv);
-	//								double sy = Math.signum(y2 - y1), 
-	//										sx = Math.signum(x2 - x1);
-	//								x += l * cosv * sx;
-	//								y += l * sinv * sy;
-	//								v.setPoint(new Point(x, y));
-									// TODO use interface here
-									new BasicVehicleController().react(v);
-									System.out.println(v);
-								}
-						}
+						r.acquireLock();
+						if (r.getStartPoint().equals(p))
+							for (Iterator<Vehicle> itr = r.getVehicleList(); itr
+									.hasNext();) {
+								Vehicle v = itr.next();
+								System.out.println(v);
+//								double x1 = v.getRoad().getStartPoint().getXAxis(), 
+//										y1 = v.getRoad().getStartPoint().getYAxis(), 
+//										x2 = v.getRoad().getEndPoint().getXAxis(), 
+//										y2 = v.getRoad().getEndPoint().getYAxis(), 
+//										x = v.getPoint().getXAxis(), 
+//										y = v.getPoint().getYAxis(), 
+//										l = v.getSpeed();
+//								double tanv = (y2 - y1) / (x2 - x1), 
+//										cosv = 1 / Math.sqrt(1 + tanv * tanv), 
+//										sinv = Math.sqrt(1 - cosv * cosv);
+//								double sy = Math.signum(y2 - y1), 
+//										sx = Math.signum(x2 - x1);
+//								x += l * cosv * sx;
+//								y += l * sinv * sy;
+//								v.setPoint(new Point(x, y));
+								// TODO use interface here
+								new BasicVehicleController().react(v);
+								System.out.println(v);
+							}
+						r.releaseLock();						
 					}
 				}
 				console.write(new Event(map, Event.MOVE));

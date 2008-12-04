@@ -36,7 +36,7 @@ public class LoadHandler {
 						Vehicle v = map
 								.newVehicle(new VehicleInf(Lib.random(4)));
 						v.setPosition(0);
-						v.setSpeed(10+Lib.random(10));
+						v.setSpeed(Lib.random(10));
 						v.setRoad(r);
 						break;
 					}

@@ -70,6 +70,7 @@ public class Road {
 	}
 	
 	public double closestDistance(Vehicle p){
+		// TODO should calculate the length of the car
 		double ret=length-p.getPosition();
 		Vehicle curr=vehicleList.iterator().next();
 		for (Iterator<Vehicle> itr=vehicleList.iterator(); itr.hasNext();
@@ -81,7 +82,7 @@ public class Road {
 		}
 		return ret;		
 	}
-
+	
 	public int getLane() {
 		return lane;
 	}

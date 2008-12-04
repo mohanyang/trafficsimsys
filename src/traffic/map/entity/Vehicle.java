@@ -84,7 +84,7 @@ public class Vehicle {
 	}
 	
 	public void proceed(){
-		currentPosition+=speed*300;
+		currentPosition+=speed;
 	}
 
 	public void setSpeed(double speed) {

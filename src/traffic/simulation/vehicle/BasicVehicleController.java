@@ -18,6 +18,13 @@ public class BasicVehicleController implements IVehicleControl {
 			
 			Iterator<Road> intitr=v.getPoint().getRoadList();
 			int count=v.getPoint().getDegree();
+			if (count>0){
+				count=Lib.random(count);
+				while (count>0){
+					Lib.assertTrue(intitr.hasNext());
+					intitr.next();					
+				}
+			}
 		}
 		else {
 			// stop policy

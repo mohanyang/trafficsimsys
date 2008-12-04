@@ -9,8 +9,15 @@ import java.util.Iterator;
  */
 public class Map {
 	private HashMap<Long, Point> pointMap = null;
+	
+	private static Map _instance;
+	
+	public static Map getInstance(){
+		return _instance;
+	}
 
 	public Map() {
+		_instance=this;
 		pointMap = new HashMap<Long, Point>();
 	}
 
@@ -18,6 +25,15 @@ public class Map {
 		Point o = pointMap.get(p.hash());
 		if (o == null) {
 			pointMap.put(p.hash(), p);
+			return p;
+		} else {
+			return o;
+		}
+	}
+	
+	public Point getPoint(Point p) {
+		Point o = pointMap.get(p.hash());
+		if (o == null) {
 			return p;
 		} else {
 			return o;

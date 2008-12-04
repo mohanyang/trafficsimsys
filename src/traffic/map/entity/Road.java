@@ -1,7 +1,9 @@
 package traffic.map.entity;
 
 import java.util.Iterator;
+import java.util.List;
 import java.util.LinkedList;
+import java.util.Collections;
 
 import traffic.map.entity.Vehicle;
 
@@ -14,7 +16,9 @@ public class Road {
 	protected Point endPoint;
 	protected double length;
 	protected int lane;
-	private LinkedList<Vehicle> vehicleList = new LinkedList<Vehicle>();
+	private List<Vehicle> vehicleList =
+		Collections.synchronizedList(
+		new LinkedList<Vehicle>());
 
 	public Road(Point s, Point e, int l) {
 		startPoint = s;
@@ -42,7 +46,7 @@ public class Road {
 	}
 
 	protected void addVehicle(Vehicle v) {
-		synchronized (this) {
+		synchronized (vehicleList) {
 			if (v.road == null && !vehicleList.contains(v)) {
 				v.road = this;
 				vehicleList.add(v);
@@ -54,7 +58,7 @@ public class Road {
 	}
 
 	protected int removeVehicle(Vehicle v) {
-		synchronized (this) {
+		synchronized (vehicleList) {
 			if (v.road.equals(this) && vehicleList.contains(v))
 				vehicleList.remove(v);
 			return vehicleList.size();
@@ -74,7 +78,7 @@ public class Road {
 	}
 	
 	public double closestDistance(Vehicle p){
-		synchronized (this) {
+		synchronized (vehicleList) {
 			// TODO should calculate the length of the car
 			double ret=length-p.getPosition();
 			Vehicle curr=vehicleList.iterator().next();
@@ -96,9 +100,15 @@ public class Road {
 	public void setLane(int lane) {
 		this.lane = lane;
 	}
+	
+	public List<Vehicle> getVehicleLinkedList(){
+		synchronized (vehicleList) {
+			return vehicleList;
+		}
+	}
 
 	public Iterator<Vehicle> getVehicleList() {
-		synchronized (this) {
+		synchronized (vehicleList) {
 			return vehicleList.iterator();
 		}
 	}

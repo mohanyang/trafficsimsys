@@ -1,6 +1,7 @@
 package traffic.map.entity;
 
 import traffic.basic.*;
+import traffic.map.entity.Map;
 
 /**
  * @author Isaac
@@ -62,7 +63,7 @@ public class Vehicle {
 				+road.startPoint.xAxis;
 		double rety=(road.endPoint.yAxis-road.startPoint.yAxis)*currentPosition/road.length
 				+road.startPoint.yAxis;
-		return new Point(retx, rety);
+		return Map.getInstance().getPoint(new Point(retx, rety));
 	}
 
 	public void setPoint(Point p) {

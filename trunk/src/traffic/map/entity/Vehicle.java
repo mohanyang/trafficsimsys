@@ -53,9 +53,12 @@ public class Vehicle {
 	}
 
 	public void setRoad(Road r) {
-		if (road != null)
+		if (road != null) {
 			road.removeVehicle(this);
+		}
+		r.acquireLock();
 		r.addVehicle(this);
+		r.releaseLock();
 		currentPosition=0;
 	}
 

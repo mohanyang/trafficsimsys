@@ -51,7 +51,7 @@ public class Vehicle {
 	public Road getRoad() {
 		return road;
 	}
-
+	
 	public void setRoad(Road r) {
 		if (road != null) {
 			Lib.assertTrue(road.isHeldByCurrentThread());
@@ -59,14 +59,24 @@ public class Vehicle {
 		}
 		r.acquireLock();
 		r.addVehicle(this);
-		r.releaseLock();
 		currentPosition=0;
+		r.releaseLock();
 	}
 
 	public Point getPoint() {
 		double retx=(road.endPoint.xAxis-road.startPoint.xAxis)*currentPosition/road.length
 				+road.startPoint.xAxis;
 		double rety=(road.endPoint.yAxis-road.startPoint.yAxis)*currentPosition/road.length
+				+road.startPoint.yAxis;
+		return Map.getInstance().getPoint(new Point(retx, rety));
+	}
+	
+	public Point getNextPoint() {
+		double retx=(road.endPoint.xAxis-road.startPoint.xAxis)
+				*(currentPosition+speed)/road.length
+				+road.startPoint.xAxis;
+		double rety=(road.endPoint.yAxis-road.startPoint.yAxis)
+				*(currentPosition+speed)/road.length
 				+road.startPoint.yAxis;
 		return Map.getInstance().getPoint(new Point(retx, rety));
 	}

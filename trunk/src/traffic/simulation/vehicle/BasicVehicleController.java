@@ -12,15 +12,19 @@ public class BasicVehicleController implements IVehicleControl {
 		if (curr.canMove(v.getLane())){
 			// check closest distance
 			double temp=curr.closestDistance(v);
+			if (temp<0)
+				v.setSpeed(0);
+			else
 			if (temp<v.getSpeed() || Lib.isEqual(v.getSpeed(), 0))
 				v.setSpeed(temp);
+			
 //			else
 //				v.setSpeed(v.getSpeed()+1);
 			v.proceed();
 			
-			int count=v.getPoint().getDegree();
-			if (count>0 && Lib.isEqual(v.getPosition()+v.getSpeed(), v.getRoad().getLength())){
-				Iterator<Road> intitr=v.getPoint().getRoadList();
+			int count=v.getNextPoint(19).getDegree();
+			if (count>0 && Lib.isEqual(v.getPosition()+19, v.getRoad().getLength())){
+				Iterator<Road> intitr=v.getNextPoint(19).getRoadList();
 				Road nextRoad=intitr.next();
 				count=Lib.random(count)-1;
 				while (count>0){

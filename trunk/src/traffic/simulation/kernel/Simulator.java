@@ -62,7 +62,7 @@ public class Simulator {
 						}
 					}
 					console.write(new Event(map, Event.MOVE));
-					Scheduler.getInstance().scheduler(KThread, 34);
+					Scheduler.getInstance().scheduler(KThread, 100);
 					System.out.println("===finished===");
 				}
 			}

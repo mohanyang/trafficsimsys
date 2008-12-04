@@ -71,12 +71,12 @@ public class Vehicle {
 		return Map.getInstance().getPoint(new Point(retx, rety));
 	}
 	
-	public Point getNextPoint() {
+	public Point getNextPoint(double dist) {
 		double retx=(road.endPoint.xAxis-road.startPoint.xAxis)
-				*(currentPosition+speed)/road.length
+				*(currentPosition+dist)/road.length
 				+road.startPoint.xAxis;
 		double rety=(road.endPoint.yAxis-road.startPoint.yAxis)
-				*(currentPosition+speed)/road.length
+				*(currentPosition+dist)/road.length
 				+road.startPoint.yAxis;
 		return Map.getInstance().getPoint(new Point(retx, rety));
 	}

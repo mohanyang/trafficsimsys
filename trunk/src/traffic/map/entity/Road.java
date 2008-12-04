@@ -116,7 +116,7 @@ public class Road {
 			}
 		}
 		// TODO vehicle length
-		return ret;
+		return ret-19;
 	}
 	
 	public int getLane() {

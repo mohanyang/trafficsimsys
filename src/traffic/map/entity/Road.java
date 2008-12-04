@@ -32,7 +32,11 @@ public class Road {
 	public boolean isHeldByCurrentThread(){
 		return lock.isHeldByCurrentThread();
 	}
-
+	
+	public double getLength(){
+		return length;
+	}
+	
 	public Road(Point s, Point e, int l) {
 		startPoint = s;
 		endPoint = e;
@@ -111,6 +115,7 @@ public class Road {
 						ret:(-p.getPosition()+curr.getPosition());
 			}
 		}
+		// TODO vehicle length
 		return ret;
 	}
 	

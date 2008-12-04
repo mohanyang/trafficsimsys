@@ -42,19 +42,23 @@ public class Road {
 	}
 
 	protected void addVehicle(Vehicle v) {
-		if (v.road == null && !vehicleList.contains(v)) {
-			v.road = this;
-			vehicleList.add(v);
-		} else if (!v.road.equals(this) && !vehicleList.contains(v)) {
-			v.road = this;
-			vehicleList.add(v);
+		synchronized (this) {
+			if (v.road == null && !vehicleList.contains(v)) {
+				v.road = this;
+				vehicleList.add(v);
+			} else if (!v.road.equals(this) && !vehicleList.contains(v)) {
+				v.road = this;
+				vehicleList.add(v);
+			}
 		}
 	}
 
 	protected int removeVehicle(Vehicle v) {
-		if (v.road.equals(this) && vehicleList.contains(v))
-			vehicleList.remove(v);
-		return vehicleList.size();
+		synchronized (this) {
+			if (v.road.equals(this) && vehicleList.contains(v))
+				vehicleList.remove(v);
+			return vehicleList.size();
+		}
 	}
 
 	public Point getStartPoint() {
@@ -70,17 +74,19 @@ public class Road {
 	}
 	
 	public double closestDistance(Vehicle p){
-		// TODO should calculate the length of the car
-		double ret=length-p.getPosition();
-		Vehicle curr=vehicleList.iterator().next();
-		for (Iterator<Vehicle> itr=vehicleList.iterator(); itr.hasNext();
-			curr=itr.next()){
-			if (curr!=p && curr.getLane()==p.getLane() && curr.getPosition()>=p.getPosition()) {
-				ret=ret<(-p.getPosition()+curr.getPosition())?
-						ret:(-p.getPosition()+curr.getPosition());
+		synchronized (this) {
+			// TODO should calculate the length of the car
+			double ret=length-p.getPosition();
+			Vehicle curr=vehicleList.iterator().next();
+			for (Iterator<Vehicle> itr=vehicleList.iterator(); itr.hasNext();
+				curr=itr.next()){
+				if (curr!=p && curr.getLane()==p.getLane() && curr.getPosition()>=p.getPosition()) {
+					ret=ret<(-p.getPosition()+curr.getPosition())?
+							ret:(-p.getPosition()+curr.getPosition());
+				}
 			}
+			return ret;
 		}
-		return ret;		
 	}
 	
 	public int getLane() {
@@ -92,6 +98,8 @@ public class Road {
 	}
 
 	public Iterator<Vehicle> getVehicleList() {
-		return vehicleList.iterator();
+		synchronized (this) {
+			return vehicleList.iterator();
+		}
 	}
 }

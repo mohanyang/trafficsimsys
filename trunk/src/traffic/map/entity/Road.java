@@ -17,6 +17,7 @@ public class Road {
 	protected double length;
 	protected int lane;
 	private LinkedList<Vehicle> vehicleList = new LinkedList<Vehicle>();
+	private LinkedList<Vehicle> removeList = new LinkedList<Vehicle>();
 	private ReentrantLock lock=new ReentrantLock();
 	
 	public void acquireLock(){
@@ -26,6 +27,10 @@ public class Road {
 	public void releaseLock(){
 		Lib.assertTrue(lock.isHeldByCurrentThread());
 		lock.unlock();
+	}
+	
+	public boolean isHeldByCurrentThread(){
+		return lock.isHeldByCurrentThread();
 	}
 
 	public Road(Point s, Point e, int l) {
@@ -57,18 +62,29 @@ public class Road {
 		Lib.assertTrue(lock.isHeldByCurrentThread());
 		if (v.road == null && !vehicleList.contains(v)) {
 			v.road = this;
-			vehicleList.add(v);
+			Lib.assertTrue(vehicleList.add(v));
 		} else if (!v.road.equals(this) && !vehicleList.contains(v)) {
 			v.road = this;
-			vehicleList.add(v);
+			Lib.assertTrue(vehicleList.add(v));
 		}
 	}
 
 	protected int removeVehicle(Vehicle v) {
 		Lib.assertTrue(lock.isHeldByCurrentThread());
-		if (v.road.equals(this) && vehicleList.contains(v))
+		if (v.road.equals(this) && vehicleList.contains(v)) {
+//			vehicleList.remove(v);
+			removeList.add(v);
+		}
+		return vehicleList.size()-removeList.size();
+	}
+	
+	public void performRemoval(){
+		Lib.assertTrue(lock.isHeldByCurrentThread());
+		while (!removeList.isEmpty()){
+			Vehicle v=removeList.pollFirst();
 			vehicleList.remove(v);
-		return vehicleList.size();
+		}
+		removeList.clear();
 	}
 
 	public Point getStartPoint() {
@@ -107,7 +123,6 @@ public class Road {
 	}
 	
 	public Iterator<Vehicle> getVehicleList() {
-//		Lib.assertTrue(lock.isHeldByCurrentThread());
 		return vehicleList.iterator();
 	}
 }

@@ -16,14 +16,18 @@ public class BasicVehicleController implements IVehicleControl {
 				v.setSpeed(temp);
 			v.proceed();
 			
-			Iterator<Road> intitr=v.getPoint().getRoadList();
 			int count=v.getPoint().getDegree();
-			if (count>0){
+			if (count>0 && v.getPoint().equals(v.getRoad().getEndPoint())){
+				Iterator<Road> intitr=v.getPoint().getRoadList();
+				Road nextRoad=intitr.next();
 				count=Lib.random(count);
 				while (count>0){
 					Lib.assertTrue(intitr.hasNext());
-					intitr.next();					
+					nextRoad=intitr.next();				
+					--count;
 				}
+				v.setRoad(nextRoad);
+				v.setSpeed(Lib.random(10));
 			}
 		}
 		else {

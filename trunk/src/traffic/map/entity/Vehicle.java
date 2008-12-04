@@ -56,6 +56,7 @@ public class Vehicle {
 		if (road != null)
 			road.removeVehicle(this);
 		r.addVehicle(this);
+		currentPosition=0;
 	}
 
 	public Point getPoint() {

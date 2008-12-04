@@ -16,8 +16,8 @@ public class Point {
 	private LinkedList<Road> roadList = new LinkedList<Road>();
 	
 	public static double distance(Point p1, Point p2){
-		return (p1.xAxis-p2.xAxis)*(p1.xAxis-p2.xAxis)
-				+(p1.yAxis-p2.yAxis)*(p1.yAxis-p2.yAxis);
+		return Math.sqrt((p1.xAxis-p2.xAxis)*(p1.xAxis-p2.xAxis)
+				+(p1.yAxis-p2.yAxis)*(p1.yAxis-p2.yAxis));
 	}
 
 	public Point(double x, double y) {

@@ -20,10 +20,11 @@ import traffic.map.entity.Map;
 public class MapFrame extends JFrame implements ActionListener {
 	static public final long serialVersionUID = 1L;
 	JLabel statusLabel;
-	JMenuItem openMenu, saveMenu;
-	JButton openButton, saveButton;
+	JMenuItem openMenu, saveMenu, setMenu;
+	JButton openButton, saveButton,setButton;
 	MapDisplayPanel mapDisplay;
 	String baseDirectory = "./";
+	GenerateConsole generatedialog;
 
 	public MapFrame() {
 		try {
@@ -65,6 +66,13 @@ public class MapFrame extends JFrame implements ActionListener {
 		saveMenu.addActionListener(this);
 		saveMenu.setEnabled(false);
 		menu.add(saveMenu);
+/*		setMenu = new JMenuItem("Set");
+		setMenu.setIcon(getImageIcon(baseDirectory + "/image/sset.gif"));
+		setMenu.setActionCommand("Set");
+		setMenu.addActionListener(this);
+		setMenu.setEnabled(false);
+		menu.add(setMenu);*/
+
 
 		// View menu
 		menu = new JMenu("View");
@@ -75,7 +83,7 @@ public class MapFrame extends JFrame implements ActionListener {
 		toolbar.setFloatable(false);
 		openButton = new JButton(
 				getImageIcon(baseDirectory + "/image/open.gif"));
-		openButton.setActionCommand("Open");
+		openButton.setActionCommand("Set");
 		openButton.addActionListener(this);
 		toolbar.add(openButton);
 		saveButton = new JButton(
@@ -84,7 +92,13 @@ public class MapFrame extends JFrame implements ActionListener {
 		saveButton.addActionListener(this);
 		saveButton.setEnabled(false);
 		toolbar.add(saveButton);
-		toolbar.addSeparator();
+/*		setButton = new JButton(
+				getImageIcon(baseDirectory + "/image/sset.gif"));
+		setButton.setActionCommand("Set");
+		setButton.addActionListener(this);
+		setButton.setEnabled(false);
+		toolbar.add(setButton);
+		toolbar.addSeparator();*/
 
 		statusLabel = new JLabel("Traffic simulating system started.");
 
@@ -99,11 +113,17 @@ public class MapFrame extends JFrame implements ActionListener {
 		getContentPane().add(statusLabel, BorderLayout.SOUTH);
 
 		getContentPane().add(toolbar, BorderLayout.NORTH);
+		
+        generatedialog = new GenerateConsole();
+        generatedialog.pack();
 	}
 
 	public void actionPerformed(ActionEvent arg0) {
 		String cmd = arg0.getActionCommand();
 		System.out.println(cmd.toString());
+		if(cmd.toString().equals("Set")){
+			generatedialog.setVisible(true);
+		}
 		if (cmd.toString().equals("Exit"))
 			this.dispose();
 	}

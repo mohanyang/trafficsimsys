@@ -13,7 +13,14 @@ public class GenerateController {
 	public GenerateController(){
 	}
 	
-	public static int generateVehicle(){
+	public static synchronized GenerateController getInstance(){
+		if(instance==null){
+			instance=new GenerateController();
+		}
+		return instance;
+	}
+	
+	public int generateVehicle(){
 		Road r=SearchBornPoint(bornpoint);
 		if(r==null){
 			return -1;
@@ -27,7 +34,7 @@ public class GenerateController {
 		return 0;
 	}
 	
-	private static Road SearchBornPoint(int index){
+	private Road SearchBornPoint(int index){
 		int i=0;
 		Point p=null;
 		for (Iterator<Point> itr =Map.getInstance().getPointList(); itr.hasNext();) {
@@ -53,7 +60,7 @@ public class GenerateController {
 		return null;
 	}
 	
-	public static int setbornpoint(int bpoint){
+	public int setbornpoint(int bpoint){
 		if(bpoint>=pointnum){
 			bpoint=pointnum-1;
 			return -1;
@@ -62,15 +69,15 @@ public class GenerateController {
 		return 0;
 	}
 	
-	public static void setinitspeed(int ispeed){
+	public void setinitspeed(int ispeed){
 		initspeed=ispeed;
 	}
 	
-	public static void setmaxspeed(int mspeed){
+	public void setmaxspeed(int mspeed){
 		maxspeed=mspeed;
 	}
 	
-	public static int settype(int t){
+	public int settype(int t){
 		if(t>=typenum){
 			type=typenum-1;
 			return -1;
@@ -79,14 +86,15 @@ public class GenerateController {
 		return 0;
 	}
 	
-	public static int Randomnum(int low, int high){
+	public int Randomnum(int low, int high){
 		return (int)(low+(high-low)*Lib.random());
 	}
 	 
-	private static int maxspeed;
-	private static int initspeed;
-	private static int type;
-	private static int bornpoint;
+	private static GenerateController instance=null;
+	private int maxspeed=0;
+	private int initspeed=0;
+	private int type=0;
+	private int bornpoint=0;
 	private static int typenum=4;
 	private static int pointnum=40;
 }

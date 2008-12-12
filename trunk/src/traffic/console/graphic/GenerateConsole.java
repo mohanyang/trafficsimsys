@@ -20,17 +20,21 @@ import traffic.external.generate.GenerateController;
 
 public class GenerateConsole extends JFrame implements ActionListener{
 	
-	protected static final String[] tag=new String[5];
-	JTextField[] textField=new JTextField[4]; 
-	JLabel[] textFieldLabel=new JLabel[4];
+	protected static String[] tag;
+	JTextField[] textField; 
+	JLabel[] textFieldLabel; 
     protected JLabel actionLabel;
+    private static int paranum=4;
     
 	public GenerateConsole(){
+		tag=new String[paranum];
+		textField=new JTextField[paranum]; 
+		textFieldLabel=new JLabel[paranum]; 
 		tag[0]="maxspeed";
 		tag[1]="initspeed";
 		tag[2]="type";
 		tag[3]="bornpoint";
-		for(int i=0;i<4;i++){
+		for(int i=0;i<paranum;i++){
 			textField[i]=new JTextField(10);
 			textField[i].setActionCommand(tag[i]);
 			textField[i].addActionListener(this);
@@ -92,11 +96,11 @@ public class GenerateConsole extends JFrame implements ActionListener{
 
     class confirmListener implements ActionListener {
         public void actionPerformed(ActionEvent e) {
-        	for(int i=0;i<4;i++){
+        	for(int i=0;i<paranum;i++){
         		int tmp=Integer.valueOf(textField[i].getText());
         		paraconfig(i,tmp);
         	}
-        	if(GenerateController.generateVehicle()<0){
+        	if(GenerateController.getInstance().generateVehicle()<0){
         		System.out.print("fail in adding vehicle\n");
         	}
         	setVisible(false);   
@@ -106,18 +110,18 @@ public class GenerateConsole extends JFrame implements ActionListener{
     void paraconfig(int index,int value){
     	switch(index){
     	case 0:
-    		GenerateController.setmaxspeed(value);
+    		GenerateController.getInstance().setmaxspeed(value);
     		break;
     	case 1:
-    		GenerateController.setinitspeed(value);
+    		GenerateController.getInstance().setinitspeed(value);
     		break;
     	case 2:
-    		if(GenerateController.settype(value)<0){
+    		if(GenerateController.getInstance().settype(value)<0){
     			 actionLabel.setText("error type");
     		}
     		break;
     	case 3:
-    		if(GenerateController.setbornpoint(value)<0){
+    		if(GenerateController.getInstance().setbornpoint(value)<0){
     			 actionLabel.setText("error born point");
     		}
     		break;
@@ -126,6 +130,7 @@ public class GenerateConsole extends JFrame implements ActionListener{
     	break;
     	}
     }
+    
     private void addLabelTextRows(JLabel[] labels, JTextField[] textFields, GridBagLayout gridbag, Container container) {
         GridBagConstraints c = new GridBagConstraints();
         c.anchor = GridBagConstraints.EAST;
@@ -167,23 +172,16 @@ public class GenerateConsole extends JFrame implements ActionListener{
     }
     
     public void actionPerformed(ActionEvent e){
-        if (e.getActionCommand().equals(tag[0])) {
-            JTextField source = (JTextField)e.getSource();
-            GenerateController.setmaxspeed(Integer.valueOf(source.getText()));
-//            actionLabel.setText(source.getText());
-        } else if(e.getActionCommand().equals(tag[1])){
-            JTextField source = (JTextField)e.getSource();
-            GenerateController.setinitspeed(Integer.valueOf(source.getText()));
-//            actionLabel.setText(source.getText());
-        } else if(e.getActionCommand().equals(tag[2])){
-            JTextField source = (JTextField)e.getSource();
-            GenerateController.settype(Integer.valueOf(source.getText()));
-//            actionLabel.setText(source.getText());
-        } else if(e.getActionCommand().equals(tag[3])){
-            JTextField source = (JTextField)e.getSource();
-            GenerateController.setbornpoint(Integer.valueOf(source.getText()));
-        } else {
-        	System.out.print("error action\n");
-        }
+    	int i;
+    	for(i=0;i<paranum;i++){
+    		if (e.getActionCommand().equals(tag[i])) {
+                JTextField source = (JTextField)e.getSource();
+                paraconfig(i,Integer.valueOf(source.getText()));
+                break;
+            }
+    	}
+    	if(i==paranum){
+    		System.out.print("error action\n");
+    	}
     }
 }

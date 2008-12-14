@@ -26,7 +26,10 @@ public class MapDisplayPanel extends JPanel {
 	static public final long serialVersionUID = 2L;
 	private Map map = null;
 	BufferedImage[] img = null;
+	BufferedImage bg = null;
 	AffineTransform trans = null;
+	
+	Graphics2D bgGraph;
 
 	public MapDisplayPanel() {
 		try {
@@ -45,6 +48,8 @@ public class MapDisplayPanel extends JPanel {
 		}
 		trans = new AffineTransform();
 		this.setSize(800, 600);
+		bg=new BufferedImage(800,600,BufferedImage.TYPE_INT_RGB);
+		bgGraph=bg.createGraphics();
 	}
 
 	public void paint(Map map) {
@@ -59,14 +64,16 @@ public class MapDisplayPanel extends JPanel {
 	}
 
 	private void drawMapOnGraphics(Graphics2D graphics) {
+		Graphics2D bf=(Graphics2D)bg.getGraphics();
 		for (Iterator<Point> PointItr = map.getPointList(); PointItr.hasNext();) {
 			Point p = PointItr.next();
 			for (Iterator<Road> RoadItr = p.getRoadList(); RoadItr.hasNext();) {
 				Road r = RoadItr.next();
 				if (r.getStartPoint().equals(p)) {
 					Point pe = r.getEndPoint();
-					graphics.setStroke(new BasicStroke(r.getLane() * 26));
-					graphics.draw(new Line2D.Double(p.getXAxis(), p.getYAxis(),
+					bf.setStroke(new BasicStroke(r.getLane() * 26));
+					bf.setColor(Color.GRAY);
+					bf.draw(new Line2D.Double(p.getXAxis(), p.getYAxis(),
 							pe.getXAxis(), pe.getYAxis()));
 				}
 			}
@@ -85,10 +92,11 @@ public class MapDisplayPanel extends JPanel {
 			for (Iterator<Road> RoadItr = p.getRoadList(); RoadItr.hasNext();) {
 				Road r = RoadItr.next();
 				if (r.getStartPoint().equals(p)) {
-					drawVehicleOnRoad(graphics, r);
+					drawVehicleOnRoad(bf, r);
 				}
 			}
 		}
+		graphics.drawImage(bg, null, 0, 0);
 	}
 
 	private void drawVehicleOnRoad(Graphics2D graphics, Road r) {

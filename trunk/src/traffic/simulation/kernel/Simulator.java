@@ -33,7 +33,6 @@ public class Simulator {
 		console = (Console) Lib.constructObject(Config
 				.getString("traffic.console"));
 		console.write(new Event(map, Event.CREATE));
-		start();
 	}
 
 	public void start() {

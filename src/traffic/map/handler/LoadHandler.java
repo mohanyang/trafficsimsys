@@ -38,7 +38,7 @@ public class LoadHandler {
 								.newVehicle(new VehicleInf(Lib.random(4),10,5));
 						v.setPosition(0);
 						v.setSpeed(Lib.random(5)+5);
-						v.setRoad(r);
+						v.setRoad(r, 0);
 						r.releaseLock();
 						break;
 					}

@@ -8,7 +8,12 @@ public class Driver {
 	 * @param args
 	 */
 	public static void main(String[] args) {
-		new Simulator().start();
+		try {
+			Simulator simulator = new Simulator();
+			simulator.initialize();
+			simulator.start();
+		} catch (Exception e) {
+			System.out.println("Error in simulator");
+		}
 	}
-
 }

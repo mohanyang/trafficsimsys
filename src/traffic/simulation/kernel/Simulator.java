@@ -40,8 +40,8 @@ public class Simulator {
 				.getString("traffic.console"));
 		Lib.assertTrue(console != null);
 		console.write(new Event(map, Event.CREATE));
-		stat = (IStat) Lib
-				.constructObject(Config.getString("traffic.statistic"));
+		stat = (IStat) Lib.constructObject(Config.getString(
+				"traffic.statistics", "traffic.simulation.statistics.Stat"));
 		Lib.assertTrue(stat != null);
 	}
 
@@ -52,6 +52,7 @@ public class Simulator {
 			controller = new BasicVehicleController();
 			controller.setVehicle(v);
 			v.setController(controller);
+			controller.addEventListener(stat);
 		}
 		return controller;
 	}

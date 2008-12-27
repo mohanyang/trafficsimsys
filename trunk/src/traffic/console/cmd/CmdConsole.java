@@ -4,7 +4,7 @@ import java.util.concurrent.ArrayBlockingQueue;
 
 import traffic.basic.Scheduler;
 import traffic.console.Console;
-import traffic.console.Event;
+import traffic.event.Event;
 
 public class CmdConsole implements Console {
 

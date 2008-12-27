@@ -6,7 +6,7 @@ import traffic.basic.Config;
 import traffic.basic.Lib;
 import traffic.basic.Scheduler;
 import traffic.console.Console;
-import traffic.console.Event;
+import traffic.event.Event;
 import traffic.map.entity.Map;
 import traffic.map.entity.Point;
 import traffic.map.entity.Road;

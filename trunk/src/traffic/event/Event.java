@@ -1,4 +1,4 @@
-package traffic.console;
+package traffic.event;
 
 /**
  * @author Isaac

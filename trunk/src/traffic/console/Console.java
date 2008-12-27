@@ -1,5 +1,7 @@
 package traffic.console;
 
+import traffic.event.Event;
+
 /**
  * @author Isaac
  * 

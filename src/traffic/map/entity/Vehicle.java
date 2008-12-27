@@ -1,7 +1,7 @@
 package traffic.map.entity;
 
-import traffic.basic.*;
-import traffic.map.entity.Map;
+import traffic.basic.Lib;
+import traffic.simulation.vehicle.IVehicleControl;
 
 /**
  * @author Isaac
@@ -11,6 +11,7 @@ public class Vehicle {
 	protected double speed;
 	protected RoadInfo rInfo;
 	private VehicleInf inf;
+	private IVehicleControl controller = null;
 
 	private int id = 0;
 	private static int count = 0;
@@ -88,5 +89,13 @@ public class Vehicle {
 
 	public VehicleInf getVehicleInf() {
 		return inf;
+	}
+	
+	public void setController(IVehicleControl c) {
+		controller = c;
+	}
+	
+	public IVehicleControl getController() {
+		return controller;
 	}
 }

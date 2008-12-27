@@ -105,7 +105,7 @@ public final class Config {
 	 *         present.
 	 */
 	public static String getString(String key) {
-		return (String) config.get(key);
+		return config.get(key);
 	}
 
 	/**

@@ -4,7 +4,7 @@ import java.util.LinkedList;
 import java.util.List;
 
 /**
- * Classes that dispatches events will extend this class or use an instance of
+ * Classes that dispatches events may extend this class or use an instance of
  * this class as a member.
  * 
  * @author xrchen

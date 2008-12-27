@@ -41,7 +41,7 @@ public class CmdConsole implements Console {
 	}
 
 	private void scheduleReceiveInterrupt() {
-		Scheduler.getInstance().scheduler(receiveInterrupt, Scheduler.RECEIVE);
+		Scheduler.getInstance().schedule(receiveInterrupt, Scheduler.RECEIVE);
 	}
 
 	private Runnable receiveInterrupt;

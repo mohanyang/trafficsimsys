@@ -17,10 +17,10 @@ public class Scheduler {
 		return instance;
 	}
 
-	public void scheduler(final Runnable handler, long time) {
+	public void schedule(final Runnable task, long time) {
 		timer.schedule(new TimerTask() {
 			public void run() {
-				handler.run();
+				task.run();
 			}
 		}, time);
 	}

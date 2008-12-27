@@ -24,6 +24,10 @@ public class RoadInfo {
 		return road;
 	}
 	
+	public void setRoad(Road r){
+		road=r;
+	}
+	
 	public void setLane(int i){
 		if (i<road.getLane())
 			currentLane=i;
@@ -47,6 +51,15 @@ public class RoadInfo {
 		double rety=(road.endPoint.yAxis-road.startPoint.yAxis)*currentPosition/road.length
 				+road.startPoint.yAxis;
 		return Map.getInstance().getPoint(new Point(retx, rety));
+	}
+	
+	public Point getNextPoint(double p){
+		double retx=(road.endPoint.xAxis-road.startPoint.xAxis)*(currentPosition+p)
+				/road.length+road.startPoint.xAxis;
+		double rety=(road.endPoint.yAxis-road.startPoint.yAxis)*(currentPosition+p)
+				/road.length+road.startPoint.yAxis;
+		return Map.getInstance().getPoint(new Point(retx, rety));
+		
 	}
 	
 	public void setPoint(Point p){

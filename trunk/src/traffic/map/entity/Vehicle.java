@@ -19,6 +19,7 @@ public class Vehicle {
 	protected Vehicle(VehicleInf inf) {
 		id = count++;
 		this.inf = inf;
+		rInfo=new RoadInfo(null, 0, 0);
 	}
 
 	@Override
@@ -58,6 +59,7 @@ public class Vehicle {
 		}
 		r.acquireLock();
 		r.addVehicle(this, lane);
+		rInfo.setRoad(r);
 		rInfo.setPosition(0);
 		rInfo.setLane(lane);
 		r.releaseLock();
@@ -65,6 +67,10 @@ public class Vehicle {
 
 	public Point getPoint() {
 		return rInfo.getCurrentPoint();
+	}
+	
+	public Point getNextPoint(double p) {
+		return rInfo.getNextPoint(p);
 	}
 	
 	public void setPoint(Point p) {

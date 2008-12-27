@@ -62,13 +62,13 @@ public class Road {
 				|| (s.equals(endPoint) && e.equals(startPoint));
 	}
 
-	protected void addVehicle(Vehicle v) {
+	protected void addVehicle(Vehicle v, int lane) {
 		Lib.assertTrue(lock.isHeldByCurrentThread());
-		if (v.road == null && !vehicleList.contains(v)) {
-			v.road = this;
+		if (v.getRoad() == null && !vehicleList.contains(v)) {
+			// TODO
 			Lib.assertTrue(vehicleList.add(v));
-		} else if (!v.road.equals(this) && !vehicleList.contains(v)) {
-			v.road = this;
+		} else if (!v.getRoad().equals(this) && !vehicleList.contains(v)) {
+			// TODO
 			Lib.assertTrue(vehicleList.add(v));
 		}
 	}

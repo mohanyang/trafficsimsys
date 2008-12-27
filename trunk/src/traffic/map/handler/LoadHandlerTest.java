@@ -18,7 +18,7 @@ public class LoadHandlerTest {
 	@Test
 	public void testRun() {
 		Config.load("traffic.ini");
-		Map m = new LoadHandler().run();
+		Map m = new LoadHandler().load();
 		System.out.println("map");
 		for (Iterator<Point> itr = m.getPointList(); itr.hasNext();) {
 			Point p = itr.next();

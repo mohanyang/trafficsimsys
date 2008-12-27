@@ -44,7 +44,7 @@ public class BasicVehicleController implements IVehicleControl {
 				}
 				System.out.println("+++" + v + " changing road");
 				if (nextRoad!=v.getRoad()) {
-					v.setRoad(nextRoad);
+					v.setRoad(nextRoad,0);
 					v.setSpeed(Lib.random(5)+5);
 				}
 			}

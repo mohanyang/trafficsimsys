@@ -75,7 +75,7 @@ public class Road {
 
 	protected int removeVehicle(Vehicle v) {
 		Lib.assertTrue(lock.isHeldByCurrentThread());
-		if (v.road.equals(this) && vehicleList.contains(v)) {
+		if (v.getRoad().equals(this) && vehicleList.contains(v)) {
 //			vehicleList.remove(v);
 			removeList.add(v);
 		}

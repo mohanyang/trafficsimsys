@@ -1,7 +1,7 @@
 package traffic.console.graphic;
 
 import traffic.console.Console;
-import traffic.console.Event;
+import traffic.event.Event;
 import traffic.map.entity.Map;
 
 public class GraphicConsole implements Console {

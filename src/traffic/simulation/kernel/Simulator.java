@@ -1,6 +1,5 @@
 package traffic.simulation.kernel;
 
-import java.util.HashMap;
 import java.util.Iterator;
 
 import traffic.basic.Config;
@@ -13,18 +12,23 @@ import traffic.map.entity.Point;
 import traffic.map.entity.Road;
 import traffic.map.entity.Vehicle;
 import traffic.map.handler.LoadHandler;
+import traffic.simulation.statistics.IStat;
 import traffic.simulation.vehicle.BasicVehicleController;
 import traffic.simulation.vehicle.IVehicleControl;
 
 public class Simulator {
 	private Map map = null;
 	private Console console = null;
-	private Thread KThread = null;
+	private Runnable simuTask = null;
+	public static IStat stat = null;
 
 	public Simulator() {
-		Lib.seedRandom(0);
+	}
+
+	public void initialize() {
 		Config.load("traffic.ini");
-		map = new LoadHandler().run();
+		Lib.seedRandom(Config.getInteger("traffic.randomSeed", 0));
+		map = new LoadHandler().load();
 		System.out.println("Vehicle list");
 		for (Iterator<Point> p = map.getPointList(); p.hasNext();)
 			for (Iterator<Road> r = p.next().getRoadList(); r.hasNext();)
@@ -34,7 +38,11 @@ public class Simulator {
 		System.out.println();
 		console = (Console) Lib.constructObject(Config
 				.getString("traffic.console"));
+		Lib.assertTrue(console != null);
 		console.write(new Event(map, Event.CREATE));
+		stat = (IStat) Lib
+				.constructObject(Config.getString("traffic.statistic"));
+		Lib.assertTrue(stat != null);
 	}
 
 	private IVehicleControl getController(Vehicle v) {
@@ -49,9 +57,9 @@ public class Simulator {
 	}
 
 	public void start() {
-		if (KThread != null)
+		if (simuTask != null)
 			return;
-		KThread = new Thread(new Runnable() {
+		simuTask = new Runnable() {
 			public void run() {
 				synchronized (lock) {
 					System.out.println("+++starting+++");
@@ -73,17 +81,18 @@ public class Simulator {
 						}
 					}
 					console.write(new Event(map, Event.MOVE));
-					Scheduler.getInstance().schedule(KThread, 100);
+					if (simuTask != null)
+						Scheduler.getInstance().schedule(simuTask, 100);
 					System.out.println("===finished===");
 				}
 			}
-		});
-		KThread.run();
+		};
+		simuTask.run();
 	}
 
 	private byte lock[] = new byte[0];
 
 	public void stop() {
-		KThread = null;
+		simuTask = null;
 	}
 }

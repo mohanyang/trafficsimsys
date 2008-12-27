@@ -17,7 +17,7 @@ import traffic.map.entity.VehicleInf;
  * 
  */
 public class LoadHandler {
-	public Map run() {
+	public Map load() {
 		Map map = new Map();
 		RoadInfSystem roadSys = (RoadInfSystem) Lib.constructObject(Config
 				.getString("traffic.external.system.road.RoadInfSystem"));

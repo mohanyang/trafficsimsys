@@ -8,14 +8,12 @@ import traffic.map.entity.Map;
  * 
  */
 public class Vehicle {
-	protected Road road;
 	protected double speed;
-	protected double currentPosition;
+	protected RoadInfo rInfo;
 	private VehicleInf inf;
 
 	private int id = 0;
 	private static int count = 0;
-	private int lane = 0;
 
 	protected Vehicle(VehicleInf inf) {
 		id = count++;
@@ -36,20 +34,20 @@ public class Vehicle {
 
 	@Override
 	public String toString() {
-		return "Vehicle " + id + " on " + road + " at speed of " + speed
+		return "Vehicle " + id + " on " + rInfo.getCurrentRoad() + " at speed of " + speed
 				+ " current at " + getPoint();
 	}
 	
 	public double getPosition(){
-		return currentPosition;
+		return rInfo.getCurrentPosition();
 	}
 	
 	public void setPosition(double p){
-		currentPosition=p;
+		rInfo.setPosition(p);
 	}
 	
 	public Road getRoad() {
-		return road;
+		return rInfo.getCurrentRoad();
 	}
 	
 	public void setRoad(Road r) {
@@ -64,35 +62,15 @@ public class Vehicle {
 	}
 
 	public Point getPoint() {
-		double retx=(road.endPoint.xAxis-road.startPoint.xAxis)*currentPosition/road.length
-				+road.startPoint.xAxis;
-		double rety=(road.endPoint.yAxis-road.startPoint.yAxis)*currentPosition/road.length
-				+road.startPoint.yAxis;
-		return Map.getInstance().getPoint(new Point(retx, rety));
+		return rInfo.getCurrentPoint();
 	}
 	
-	public Point getNextPoint(double dist) {
-		double retx=(road.endPoint.xAxis-road.startPoint.xAxis)
-				*(currentPosition+dist)/road.length
-				+road.startPoint.xAxis;
-		double rety=(road.endPoint.yAxis-road.startPoint.yAxis)
-				*(currentPosition+dist)/road.length
-				+road.startPoint.yAxis;
-		return Map.getInstance().getPoint(new Point(retx, rety));
-	}
-
 	public void setPoint(Point p) {
-		double rate;
-		if (Math.abs(road.startPoint.xAxis-road.endPoint.xAxis)<
-				Math.abs(road.startPoint.yAxis-road.endPoint.yAxis))
-			rate=(p.yAxis-road.startPoint.yAxis)/(road.endPoint.yAxis-road.startPoint.yAxis);
-		else
-			rate=(p.xAxis-road.startPoint.xAxis)/(road.endPoint.xAxis-road.startPoint.xAxis);
-		currentPosition=road.length*rate;
+		rInfo.setPoint(p);
 	}
 	
 	public int getLane(){
-		return lane;
+		return rInfo.getCurrentLane();
 	}
 
 	public double getSpeed() {
@@ -100,7 +78,7 @@ public class Vehicle {
 	}
 	
 	public void proceed(){
-		currentPosition+=speed;
+		rInfo.moveBy(speed);
 	}
 
 	public void setSpeed(double speed) {

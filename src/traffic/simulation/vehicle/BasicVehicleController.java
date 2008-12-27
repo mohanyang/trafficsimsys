@@ -5,9 +5,18 @@ import traffic.basic.Lib;
 import java.util.Iterator;
 
 public class BasicVehicleController implements IVehicleControl {
+	
+	private Vehicle assoc;
+	
+	public void setVehicle(Vehicle v){
+		assoc=v;
+	}
 
 	@Override
-	public void react(Vehicle v) {
+	public void react() {
+		if (assoc==null)
+			return;
+		Vehicle v=assoc;
 		Road curr=v.getRoad();
 		if (curr.canMove(v.getLane())){
 			// check closest distance

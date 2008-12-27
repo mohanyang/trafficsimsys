@@ -1,5 +1,6 @@
 package traffic.simulation.kernel;
 
+import java.util.HashMap;
 import java.util.Iterator;
 
 import traffic.basic.Config;
@@ -12,7 +13,8 @@ import traffic.map.entity.Point;
 import traffic.map.entity.Road;
 import traffic.map.entity.Vehicle;
 import traffic.map.handler.LoadHandler;
-import traffic.simulation.vehicle.*;
+import traffic.simulation.vehicle.BasicVehicleController;
+import traffic.simulation.vehicle.IVehicleControl;
 
 public class Simulator {
 	private Map map = null;
@@ -35,12 +37,23 @@ public class Simulator {
 		console.write(new Event(map, Event.CREATE));
 	}
 
+	private IVehicleControl getController(Vehicle v) {
+		IVehicleControl controller = v.getController();
+		if (controller == null) {
+			// TODO use something like factory to create controller.
+			controller = new BasicVehicleController();
+			controller.setVehicle(v);
+			v.setController(controller);
+		}
+		return controller;
+	}
+
 	public void start() {
 		if (KThread != null)
 			return;
 		KThread = new Thread(new Runnable() {
 			public void run() {
-				synchronized(lock) {
+				synchronized (lock) {
 					System.out.println("+++starting+++");
 					for (Iterator<Point> pp = map.getPointList(); pp.hasNext();) {
 						Point p = pp.next();
@@ -52,12 +65,11 @@ public class Simulator {
 										.hasNext();) {
 									Vehicle v = itr.next();
 									System.out.println(v);
-									// TODO use interface here
-									new BasicVehicleController().react(v);
+									getController(v).react();
 									System.out.println(v);
 								}
 							r.performRemoval();
-							r.releaseLock();						
+							r.releaseLock();
 						}
 					}
 					console.write(new Event(map, Event.MOVE));
@@ -68,8 +80,8 @@ public class Simulator {
 		});
 		KThread.run();
 	}
-	
-	private byte lock[]=new byte[0];
+
+	private byte lock[] = new byte[0];
 
 	public void stop() {
 		KThread = null;

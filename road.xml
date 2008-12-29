@@ -2,22 +2,27 @@
   <road>
     <start_point x-axis="0.00" y-axis="50.00" />
     <end_point x-axis="50.00" y-axis="50.00" />
-    <lane>1</lane>
+    <lane>3</lane>
+    <lanedescr>
+    	<descr>1</descr>
+    	<descr>1</descr>
+    	<descr>0</descr>
+    </lanedescr>
   </road>
   <road>
     <start_point x-axis="50.00" y-axis="50.00" />
     <end_point x-axis="350.00" y-axis="50.00" />
-    <lane>1</lane>
+    <lane>2</lane>
   </road>
   <road>
     <start_point x-axis="350.00" y-axis="50.00" />
     <end_point x-axis="550.00" y-axis="50.00" />
-    <lane>1</lane>
+    <lane>3</lane>
   </road>
   <road>
     <start_point x-axis="550.00" y-axis="50.00" />
     <end_point x-axis="750.00" y-axis="50.00" />
-    <lane>1</lane>
+    <lane>2</lane>
   </road>
   <road>
     <start_point x-axis="750.00" y-axis="50.00" />
@@ -27,12 +32,12 @@
   <road>
     <start_point x-axis="0.00" y-axis="550.00" />
     <end_point x-axis="50.00" y-axis="550.00" />
-    <lane>1</lane>
+    <lane>4</lane>
   </road>
   <road>
     <start_point x-axis="50.00" y-axis="550.00" />
     <end_point x-axis="350.00" y-axis="550.00" />
-    <lane>1</lane>
+    <lane>2</lane>
   </road>
    <road>
     <start_point x-axis="350.00" y-axis="550.00" />
@@ -42,7 +47,7 @@
    <road>
     <start_point x-axis="550.00" y-axis="550.00" />
     <end_point x-axis="750.00" y-axis="550.00" />
-    <lane>1</lane>
+    <lane>2</lane>
   </road>
   <road>
     <start_point x-axis="750.00" y-axis="550.00" />

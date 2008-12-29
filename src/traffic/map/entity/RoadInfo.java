@@ -46,20 +46,11 @@ public class RoadInfo {
 	}
 	
 	public Point getCurrentPoint(){
-		double retx=(road.endPoint.xAxis-road.startPoint.xAxis)*currentPosition/road.length
-				+road.startPoint.xAxis;
-		double rety=(road.endPoint.yAxis-road.startPoint.yAxis)*currentPosition/road.length
-				+road.startPoint.yAxis;
-		return Map.getInstance().getPoint(new Point(retx, rety));
+		return road.getPositionOnRoad(currentPosition, currentLane);
 	}
 	
 	public Point getNextPoint(double p){
-		double retx=(road.endPoint.xAxis-road.startPoint.xAxis)*(currentPosition+p)
-				/road.length+road.startPoint.xAxis;
-		double rety=(road.endPoint.yAxis-road.startPoint.yAxis)*(currentPosition+p)
-				/road.length+road.startPoint.yAxis;
-		return Map.getInstance().getPoint(new Point(retx, rety));
-		
+		return road.getPositionOnRoad(currentPosition+p, currentLane);
 	}
 	
 	public void setPoint(Point p){

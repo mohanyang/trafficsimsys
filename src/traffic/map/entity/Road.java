@@ -15,7 +15,10 @@ public class Road {
 	protected Point startPoint;
 	protected Point endPoint;
 	protected double length;
-	protected int lane;
+	
+	protected byte[] laneInfo;
+	protected boolean[] laneMove;
+	
 	private LinkedList<Vehicle> vehicleList = new LinkedList<Vehicle>();
 	private LinkedList<Vehicle> removeList = new LinkedList<Vehicle>();
 	private ReentrantLock lock=new ReentrantLock();
@@ -37,10 +40,14 @@ public class Road {
 		return length;
 	}
 	
-	public Road(Point s, Point e, int l) {
+	public Road(Point s, Point e, byte[] l) {
 		startPoint = s;
 		endPoint = e;
-		lane = l;
+		laneInfo=new byte[l.length];
+		System.arraycopy(l, 0, laneInfo, 0, laneInfo.length);
+		laneMove=new boolean[l.length];
+		for (int i=0; i<l.length; ++i)
+			laneMove[i]=true;
 		length=Point.distance(s, e);
 	}
 
@@ -99,8 +106,32 @@ public class Road {
 		return endPoint;
 	}
 	
+	public Point getPositionOnRoad(double distance, int lane){
+		Point p1=startPoint, p2=endPoint;
+		if (laneInfo[lane]!=0) {
+			Point temp=p1;
+			p1=p2;
+			p2=temp;
+		}
+		if (distance<0)
+			distance=0;
+		else if (distance>length)
+			distance=length;
+		double retx=(p2.xAxis-p1.xAxis)*(distance)/length+p1.xAxis;
+		double rety=(p2.yAxis-p1.yAxis)*(distance)/length+p1.yAxis;
+		return Map.getInstance().getPoint(new Point(retx, rety));
+	}
+	
 	public boolean canMove(int lane){
-		return true;
+		return laneMove[lane];
+	}
+	
+	public void setMove(int lane, boolean f){
+		laneMove[lane]=f;
+	}
+	
+	public byte getDirection(int lane){
+		return laneInfo[lane];
 	}
 	
 	public double closestDistance(Vehicle p){
@@ -120,11 +151,7 @@ public class Road {
 	}
 	
 	public int getLane() {
-		return lane;
-	}
-
-	public void setLane(int lane) {
-		this.lane = lane;
+		return laneInfo.length;
 	}
 	
 	public Iterator<Vehicle> getVehicleList() {

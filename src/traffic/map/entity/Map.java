@@ -46,14 +46,14 @@ public class Map {
 
 	public Road newRoad(Point ps, Point pe, int l) {
 		Point s = newPoint(ps), e = newPoint(pe);
-		for (Iterator<Road> itr = s.getRoadList(); itr.hasNext();) {
-			Road next = itr.next();
-			if (next.endPoint.equals(e)) {
-				next.setLane(l);
-				return next;
-			}
-		}
-		Road road = new Road(s, e, l);
+//		for (Iterator<Road> itr = s.getRoadList(); itr.hasNext();) {
+//			Road next = itr.next();
+//			if (next.endPoint.equals(e)) {
+//				next.setLane(l);
+//				return next;
+//			}
+//		}
+		Road road = new Road(s, e, new byte[l]);
 		s.addRoad(road);
 		e.addRoad(road);
 		return road;

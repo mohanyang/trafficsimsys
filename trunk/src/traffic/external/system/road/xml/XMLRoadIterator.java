@@ -16,6 +16,7 @@ public class XMLRoadIterator extends RoadIterator {
 	private Node node = null;
 	private double[] axis = null;
 	private int lane = 0;
+	private byte[] laneInfo;
 	private int n = 0;
 
 	public XMLRoadIterator(Node n) {
@@ -37,7 +38,7 @@ public class XMLRoadIterator extends RoadIterator {
 			node = node.getNextSibling();
 		} while (node != null && !node.getNodeName().equals("road"));
 		return new Road(new Point(axis[0], axis[1]),
-				new Point(axis[2], axis[3]), lane);
+				new Point(axis[2], axis[3]), laneInfo);
 	}
 
 	private void analysisRoad(Node node) {
@@ -50,8 +51,22 @@ public class XMLRoadIterator extends RoadIterator {
 					analysisPoint(child);
 				else if (name.equals("lane"))
 					analysisLane(child);
+				else if (name.equals("lanedescr"))
+					analysisLaneDescription(child);
 			}
 		}
+	}
+	
+	private void analysisLaneDescription(Node node){
+		for (Node child=node.getFirstChild(); child!=null; child=child.getNextSibling()){
+			String name=child.getNodeName();
+			if (name.equals("descr"))
+				analysisDirection(child);
+		}
+	}
+	
+	private void analysisDirection(Node node){
+		laneInfo[lane++] = Byte.parseByte(node.getTextContent());
 	}
 
 	private void analysisPoint(Node node) {
@@ -64,5 +79,7 @@ public class XMLRoadIterator extends RoadIterator {
 
 	private void analysisLane(Node node) {
 		lane = Integer.parseInt(node.getTextContent());
+		laneInfo = new byte[lane];
+		lane = 0;
 	}
 }

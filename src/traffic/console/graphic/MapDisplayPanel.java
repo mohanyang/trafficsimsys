@@ -72,8 +72,8 @@ public class MapDisplayPanel extends JPanel {
 				if (r.getStartPoint().equals(p)) {
 					bf.setStroke(new BasicStroke(r.getLane() * 26));
 					bf.setColor(Color.GRAY);
-					Point p1=r.getPositionOnRoad(r.getLane()*13, 0);
-					Point p2=r.getPositionOnRoad(r.getLength()-r.getLane()*13, 0);
+					Point p1=r.getPositionOnRoad(r.getLane()*13, 0, false);
+					Point p2=r.getPositionOnRoad(r.getLength()-r.getLane()*13, 0, false);
 					bf.draw(new Line2D.Double(
 							p1.getXAxis(), p1.getYAxis(),
 							p2.getXAxis(), p2.getYAxis()));

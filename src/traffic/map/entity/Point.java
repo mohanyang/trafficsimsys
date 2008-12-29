@@ -25,6 +25,12 @@ public class Point {
 		yAxis = y;
 		hashCode = Long.rotateLeft(Lib.doubleToInt(x), 32) | Lib.doubleToInt(y);
 	}
+	
+	public Point(Point p){
+		xAxis=p.xAxis;
+		yAxis=p.yAxis;
+		hashCode=p.hashCode;
+	}
 
 	public long hash() {
 		return hashCode;

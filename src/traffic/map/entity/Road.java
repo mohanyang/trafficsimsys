@@ -106,8 +106,24 @@ public class Road {
 		return endPoint;
 	}
 	
+	private void moveLine(Point start, Point end, double d){
+		double distance=Point.distance(start, end);
+		double theta=Math.asin((end.getYAxis()-start.getYAxis())/distance)+Math.PI/2;
+		start.xAxis+=d*Math.cos(theta);
+		start.yAxis+=d*Math.sin(theta);
+		end.xAxis+=d*Math.cos(theta);
+		end.yAxis+=d*Math.sin(theta);
+	}
+	
 	public Point getPositionOnRoad(double distance, int lane){
-		Point p1=startPoint, p2=endPoint;
+		return getPositionOnRoad(distance, lane, true);
+	}
+	
+	public Point getPositionOnRoad(double distance, int lane, boolean moveLine){
+		Point p1=new Point(startPoint.xAxis, startPoint.yAxis), 
+				p2=new Point(endPoint.xAxis, endPoint.yAxis);
+		if (moveLine)
+			moveLine(p1, p2, laneInfo.length*26/2-lane*26-13);
 		if (laneInfo[lane]!=0) {
 			Point temp=p1;
 			p1=p2;

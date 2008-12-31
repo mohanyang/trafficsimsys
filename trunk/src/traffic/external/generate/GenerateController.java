@@ -27,9 +27,9 @@ public class GenerateController {
 		}
 		r.acquireLock();
 		Vehicle v = Map.getInstance().newVehicle(new VehicleInf(type,maxspeed,initspeed));
+		v.setRoad(r,0);
 		v.setPosition(0);
 		v.setSpeed(initspeed);
-		v.setRoad(r);
 		r.releaseLock();
 		return 0;
 	}

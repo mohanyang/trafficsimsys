@@ -43,10 +43,9 @@ public class BasicVehicleController extends EventDispatcher implements
 			v.proceed();
 
 			int count = v.getNextPoint(19).getDegree();
-			if (count > 0
-					&& Lib.isEqual(v.getPosition() + 19, v.getRoad()
+			if (Lib.isEqual(v.getPosition() + 19, v.getRoad()
 							.getLength())) {
-				LinkedList<RoadEntranceInfo> adj=v.getNextPoint(19).getIntersectionList();
+				LinkedList<RoadEntranceInfo> adj=v.getRoad().getIntersectionList(v.getLane());
 				if (adj.size()==0){
 					
 				}

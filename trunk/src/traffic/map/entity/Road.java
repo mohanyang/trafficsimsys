@@ -49,6 +49,10 @@ public class Road {
 		for (int i=0; i<l.length; ++i)
 			laneMove[i]=true;
 		length=Point.distance(s, e);
+		System.out.print(this);
+		for (int i=0; i<l.length; ++i)
+			System.out.print(" " + laneInfo[i]);
+		System.out.println();
 	}
 
 	@Override
@@ -159,7 +163,7 @@ public class Road {
 		// TODO should calculate the length of the car
 		double ret=Double.MAX_VALUE;
 		int dir;
-		if (laneInfo[lane]!=0)
+		if (laneInfo[lane]==0)
 			dir=-1;
 		else
 			dir=1;
@@ -182,5 +186,12 @@ public class Road {
 	
 	public Iterator<Vehicle> getVehicleList() {
 		return vehicleList.iterator();
+	}
+	
+	public LinkedList<RoadEntranceInfo> getIntersectionList(int lane){
+		if (laneInfo[lane]==0)
+			return startPoint.getIntersectionList();
+		else
+			return endPoint.getIntersectionList();
 	}
 }

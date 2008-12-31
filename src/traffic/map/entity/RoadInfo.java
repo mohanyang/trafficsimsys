@@ -1,5 +1,14 @@
 package traffic.map.entity;
 
+/**
+ * A RoadInfo class represents the road information
+ * of a specific vehicle, including its road, lane
+ * and position on the road.
+ * 
+ * @author huangsx
+ *
+ */
+
 public class RoadInfo {
 	
 	private Road road;

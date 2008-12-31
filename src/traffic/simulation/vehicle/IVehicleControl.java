@@ -1,5 +1,10 @@
 package traffic.simulation.vehicle;
 
+/**
+ * 
+ * @author huangsx
+ */
+
 import traffic.event.EventListener;
 import traffic.map.entity.Vehicle;
 

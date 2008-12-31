@@ -1,12 +1,19 @@
 package traffic.simulation.vehicle;
 
+/**
+ * 
+ * @author huangsx
+ */
+
 import java.util.Iterator;
+import java.util.LinkedList;
 
 import traffic.basic.Lib;
 import traffic.event.Event;
 import traffic.event.EventDispatcher;
 import traffic.map.entity.Road;
 import traffic.map.entity.Vehicle;
+import traffic.map.entity.RoadEntranceInfo;
 
 public class BasicVehicleController extends EventDispatcher implements
 		IVehicleControl {
@@ -39,25 +46,23 @@ public class BasicVehicleController extends EventDispatcher implements
 			if (count > 0
 					&& Lib.isEqual(v.getPosition() + 19, v.getRoad()
 							.getLength())) {
-				Iterator<Road> intitr = v.getNextPoint(19).getRoadList();
-				Road nextRoad = intitr.next();
-				count = Lib.random(count) - 1;
-				while (count > 0) {
-					Lib.assertTrue(intitr.hasNext());
-					nextRoad = intitr.next();
-					if (nextRoad != v.getRoad())
-						--count;
+				LinkedList<RoadEntranceInfo> adj=v.getNextPoint(19).getIntersectionList();
+				if (adj.size()==0){
+					
 				}
-				System.out.println("+++" + v + " changing road");
-				if (nextRoad != v.getRoad()) {
+				else {
+					count = Lib.random(adj.size()) - 1;
+					RoadEntranceInfo target=adj.get(count);
+					System.out.println("+++" + v + " changing road");
 					dispatchEvent(new Event(this, Event.LEAVE_ROAD, v.getRoad()));
-					dispatchEvent(new Event(this, Event.ENTER_ROAD, nextRoad));
-					v.setRoad(nextRoad,0);
+					dispatchEvent(new Event(this, Event.ENTER_ROAD, target.getRoad()));
+					v.setRoad(target.getRoad(), target.getLane());
 					v.setSpeed(Lib.random(5) + 5);
 				}
 			}
 		} else {
-			// stop policy
+			System.out.println("+++" + v + " dying");
+			dispatchEvent(new Event(this, Event.LEAVE_ROAD, v.getRoad()));
 		}
 	}
 

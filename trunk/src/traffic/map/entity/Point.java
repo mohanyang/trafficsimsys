@@ -81,4 +81,20 @@ public class Point {
 	public Iterator<Road> getRoadList() {
 		return roadList.iterator();
 	}
+	
+	public LinkedList<RoadEntranceInfo> getIntersectionList(){
+		return getIntersectionList(true);
+	}
+	
+	public LinkedList<RoadEntranceInfo> getIntersectionList(boolean direction){
+		LinkedList<RoadEntranceInfo> ret=new LinkedList<RoadEntranceInfo>();
+		for (Iterator<Road> itr=getRoadList(); itr.hasNext(); ){
+			Road curr=itr.next();
+			for (int i=0; i<curr.getLane(); ++i)
+				if (curr.getPositionOnRoad(0, i)==this || !direction){
+					ret.add(new RoadEntranceInfo(curr, i));
+				}
+		}
+		return ret;
+	}
 }

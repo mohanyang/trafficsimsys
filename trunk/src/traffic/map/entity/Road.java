@@ -124,7 +124,7 @@ public class Road {
 				p2=new Point(endPoint.xAxis, endPoint.yAxis);
 		if (moveLine)
 			moveLine(p1, p2, laneInfo.length*26/2-lane*26-13);
-		if (laneInfo[lane]!=0) {
+		if (laneInfo[lane]==0) {
 			Point temp=p1;
 			p1=p2;
 			p2=temp;
@@ -151,15 +151,25 @@ public class Road {
 	}
 	
 	public double closestDistance(Vehicle p){
+		return closestDistance(p.getPosition(), p.getLane(), p);
+	}
+	
+	public double closestDistance(double position, int lane, Vehicle pv){
 		Lib.assertTrue(lock.isHeldByCurrentThread());
 		// TODO should calculate the length of the car
-		double ret=length-p.getPosition();
+		double ret=Double.MAX_VALUE;
+		int dir;
+		if (laneInfo[lane]!=0)
+			dir=-1;
+		else
+			dir=1;
 		Vehicle curr=vehicleList.iterator().next();
 		for (Iterator<Vehicle> itr=vehicleList.iterator(); itr.hasNext();
 			curr=itr.next()){
-			if (curr!=p && curr.getLane()==p.getLane() && curr.getPosition()>=p.getPosition()) {
-				ret=ret<(-p.getPosition()+curr.getPosition())?
-						ret:(-p.getPosition()+curr.getPosition());
+			if (curr!=pv && curr.getLane()==lane 
+					&& curr.getPosition()*dir>=position*dir) {
+				ret=ret<(dir*(curr.getPosition()-position))?
+						ret:(dir*(curr.getPosition()-position));
 			}
 		}
 		// TODO vehicle length

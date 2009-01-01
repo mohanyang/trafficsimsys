@@ -117,7 +117,7 @@ public class Road {
 		return endPoint;
 	}
 
-	private void moveLine(Point start, Point end, double d) {
+	public void moveLine(Point start, Point end, double d) {
 		double distance = Point.distance(start, end);
 		double theta = Math
 				.asin((end.getYAxis() - start.getYAxis()) / distance)

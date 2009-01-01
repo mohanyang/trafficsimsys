@@ -66,6 +66,14 @@ public class Vehicle {
 		rInfo.setLane(lane);
 		r.releaseLock();
 	}
+	
+	public void removeFromCurrent(){
+		Road temp=rInfo.getCurrentRoad();
+		temp.acquireLock();
+		temp.removeVehicle(this);
+		temp.releaseLock();
+		
+	}
 
 	public Point getPoint() {
 		return rInfo.getCurrentPoint();

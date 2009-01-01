@@ -170,7 +170,7 @@ public class Road {
 	public double closestDistance(double position, int lane, Vehicle pv) {
 		Lib.assertTrue(lock.isHeldByCurrentThread());
 		// TODO should calculate the length of the car
-		double ret = Double.MAX_VALUE;
+		double ret = length-position;
 		int dir;
 		if (laneInfo[lane] == 0)
 			dir = -1;
@@ -186,7 +186,7 @@ public class Road {
 			}
 		}
 		// TODO vehicle length
-		return ret - 19;
+		return ret;
 	}
 
 	public int getLane() {

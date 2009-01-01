@@ -14,20 +14,20 @@ public class Point {
 	protected double yAxis = 0;
 	private long hashCode = 0;
 	private LinkedList<Road> roadList = new LinkedList<Road>();
-	
-	public static double distance(Point p1, Point p2){
-		return Math.sqrt((p1.xAxis-p2.xAxis)*(p1.xAxis-p2.xAxis)
-				+(p1.yAxis-p2.yAxis)*(p1.yAxis-p2.yAxis));
+
+	public static double distance(Point p1, Point p2) {
+		return Math.sqrt((p1.xAxis - p2.xAxis) * (p1.xAxis - p2.xAxis)
+				+ (p1.yAxis - p2.yAxis) * (p1.yAxis - p2.yAxis));
 	}
-	
+
 	public static Point diff(Point p1, Point p2) {
-		return new Point(p1.xAxis-p2.xAxis, p1.yAxis-p2.yAxis);
+		return new Point(p1.xAxis - p2.xAxis, p1.yAxis - p2.yAxis);
 	}
-	
+
 	public static double dotProduct(Point p1, Point p2) {
 		return p1.xAxis * p2.xAxis + p1.yAxis * p2.yAxis;
 	}
-	
+
 	public static double crossProduct(Point p1, Point p2) {
 		return p1.xAxis * p2.yAxis - p2.xAxis * p1.yAxis;
 	}
@@ -37,11 +37,11 @@ public class Point {
 		yAxis = y;
 		hashCode = Long.rotateLeft(Lib.doubleToInt(x), 32) | Lib.doubleToInt(y);
 	}
-	
-	public Point(Point p){
-		xAxis=p.xAxis;
-		yAxis=p.yAxis;
-		hashCode=p.hashCode;
+
+	public Point(Point p) {
+		xAxis = p.xAxis;
+		yAxis = p.yAxis;
+		hashCode = p.hashCode;
 	}
 
 	public long hash() {
@@ -59,6 +59,10 @@ public class Point {
 	public String toString() {
 		return "[point (" + xAxis + ", " + yAxis + ")" + ":" + getDegree()
 				+ "]";
+	}
+
+	public Point clone() {
+		return new Point(xAxis, yAxis);
 	}
 
 	public boolean isEqual(double x, double y) {
@@ -93,19 +97,19 @@ public class Point {
 	public Iterator<Road> getRoadList() {
 		return roadList.iterator();
 	}
-	
-	public LinkedList<RoadEntranceInfo> getIntersectionList(){
+
+	public LinkedList<RoadEntranceInfo> getIntersectionList() {
 		return getIntersectionList(true);
 	}
-	
-	public LinkedList<RoadEntranceInfo> getIntersectionList(boolean direction){
-		LinkedList<RoadEntranceInfo> ret=new LinkedList<RoadEntranceInfo>();
-		for (Iterator<Road> itr=getRoadList(); itr.hasNext(); ){
-			Road curr=itr.next();
-			for (int i=0; i<curr.getLane(); ++i)
-				if ((curr.endPoint==this && curr.laneInfo[i]==0)
-						|| (curr.startPoint==this && curr.laneInfo[i]==1)
-						|| !direction){
+
+	public LinkedList<RoadEntranceInfo> getIntersectionList(boolean direction) {
+		LinkedList<RoadEntranceInfo> ret = new LinkedList<RoadEntranceInfo>();
+		for (Iterator<Road> itr = getRoadList(); itr.hasNext();) {
+			Road curr = itr.next();
+			for (int i = 0; i < curr.getLane(); ++i)
+				if ((curr.endPoint == this && curr.laneInfo[i] == 0)
+						|| (curr.startPoint == this && curr.laneInfo[i] == 1)
+						|| !direction) {
 					ret.add(new RoadEntranceInfo(curr, i));
 				}
 		}

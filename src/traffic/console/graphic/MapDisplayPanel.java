@@ -22,9 +22,7 @@ import java.util.Iterator;
 import javax.imageio.ImageIO;
 import javax.swing.JPanel;
 import javax.swing.UIManager;
-import javax.swing.event.MouseInputListener;
 
-import traffic.basic.Lib;
 import traffic.map.entity.Map;
 import traffic.map.entity.Point;
 import traffic.map.entity.Road;
@@ -48,8 +46,17 @@ public class MapDisplayPanel extends JPanel implements MouseListener,
 	private boolean mouseInPanel = false;
 
 	private int startX = 0, startY = 0;
-	private static final Color roadColor = Color.GRAY;
-	private static final Color highLightRoadColor = Color.WHITE;
+	private static final Color bgColor = Color.decode("#5BDB57");
+	private static final Color roadColor = Color.decode("#7F7F7F");
+	private static final Color borderColor = Color.BLUE;
+	private static final Color dotLineColor = Color.WHITE;
+	private static final Color textColor = Color.decode("#F87858");
+
+	private static final Color highLightRoadColor = Color.YELLOW;
+	private static final BasicStroke borderStroke = new BasicStroke(0.1f);
+	private static final BasicStroke dotLineStroke = new BasicStroke(0.1f,
+			BasicStroke.CAP_ROUND, BasicStroke.JOIN_MITER, 1.0f, new float[] {
+					6.0f, 4.0f }, 0f);
 
 	private double transImgX(double mapX) {
 		return (mapX - startX) * scale;
@@ -85,16 +92,6 @@ public class MapDisplayPanel extends JPanel implements MouseListener,
 		trans = new AffineTransform();
 		this.setSize(imgWidth, imgHeight);
 
-		// isScale = Config.getBoolean("traffic.scale", false);
-		// if (isScale) {
-		// bg = new BufferedImage(MAXWIDTH, MAXHEIGHT,
-		// BufferedImage.TYPE_INT_RGB);
-		// bg.setAccelerationPriority(1);
-		// } else {
-		// bg = new BufferedImage(imgWidth, imgHeight,
-		// BufferedImage.TYPE_INT_RGB);
-		// }
-
 		bg = new BufferedImage(imgWidth, imgHeight, BufferedImage.TYPE_INT_RGB);
 		addMouseMotionListener(this);
 		addMouseWheelListener(this);
@@ -111,23 +108,95 @@ public class MapDisplayPanel extends JPanel implements MouseListener,
 	}
 
 	private void drawRoad(Graphics2D g, Road r, Color color) {
+		Point p1 = null, p2 = null, t1 = null, t2 = null;
+		if (r.n1 == -1) {
+			int n1 = 0, n2 = 0, n;
+			double lamda0 = r.getLamda(), lamda1 = 0.0;
+			p1 = r.getStartPoint();
+			p2 = r.getEndPoint();
+			n = p1.getDegree();
+			if (n != 1) {
+				for (Iterator<Road> itr = p1.getRoadList(); itr.hasNext();) {
+					Road tmp = itr.next();
+					lamda1 = tmp.getLamda();
+					if (lamda0 != lamda1) {
+						n1 = tmp.getLane();
+						break;
+					}
+				}
+			}
+			n = p2.getDegree();
+			if (n != 1) {
+				for (Iterator<Road> itr = p2.getRoadList(); itr.hasNext();) {
+					Road tmp = itr.next();
+					lamda1 = tmp.getLamda();
+					if (lamda0 != lamda1) {
+						n2 = tmp.getLane();
+						break;
+					}
+				}
+			}
+			r.n1 = n1;
+			r.n2 = n2;
+		}
+
 		g.setColor(color);
 		g.setStroke(new BasicStroke(
 				(float) (r.getLane() * Road.laneWidth * scale)));
-		Point p1 = r.getPositionOnRoad(r.getLane() * Road.laneWidth / 2, 0,
-				false);
-		Point p2 = r.getPositionOnRoad(r.getLength() - r.getLane()
-				* Road.laneWidth / 2, 0, false);
-		double x1 = transImgX(p1.getXAxis());
-		double y1 = transImgY(p1.getYAxis());
-		double x2 = transImgX(p2.getXAxis());
-		double y2 = transImgY(p2.getYAxis());
-		g.draw(new Line2D.Double(x1, y1, x2, y2));
+		p1 = r.getPositionOnRoad(r.getLane() * Road.laneWidth / 2, 0, false);
+		p2 = r.getPositionOnRoad(r.getLength() - r.getLane() * Road.laneWidth
+				/ 2, 0, false);
+		g.draw(new Line2D.Double(transImgX(p1.getXAxis()), transImgY(p1
+				.getYAxis()), transImgX(p2.getXAxis()),
+				transImgY(p2.getYAxis())));
+
+		if (r.getDirection(0) == 0) {
+			p1 = r.getPositionOnRoad(r.n2 * Road.laneWidth / 2, 0, false)
+					.clone();
+			p2 = r.getPositionOnRoad(r.getLength() - r.n1 * Road.laneWidth / 2,
+					0, false).clone();
+		} else {
+			p1 = r.getPositionOnRoad(r.n1 * Road.laneWidth / 2, 0, false)
+					.clone();
+			p2 = r.getPositionOnRoad(r.getLength() - r.n2 * Road.laneWidth / 2,
+					0, false).clone();
+		}
+
+		g.setStroke(borderStroke);
+		g.setColor(borderColor);
+		t1 = p1.clone();
+		t2 = p2.clone();
+		r.moveLine(t1, t2, -r.getLane() * Road.laneWidth / 2);
+		g.draw(new Line2D.Double(transImgX(t1.getXAxis()), transImgY(t1
+				.getYAxis()), transImgX(t2.getXAxis()),
+				transImgY(t2.getYAxis())));
+
+		for (int i = 0; i < r.getLane(); ++i) {
+			g.setStroke(dotLineStroke);
+			g.setColor(dotLineColor);
+			t1 = p1.clone();
+			t2 = p2.clone();
+			r.moveLine(t1, t2, r.getLane() * Road.laneWidth / 2 - i
+					* Road.laneWidth - 13);
+			g.draw(new Line2D.Double(transImgX(t1.getXAxis()), transImgY(t1
+					.getYAxis()), transImgX(t2.getXAxis()), transImgY(t2
+					.getYAxis())));
+
+			g.setStroke(borderStroke);
+			g.setColor(borderColor);
+			t1 = p1.clone();
+			t2 = p2.clone();
+			r.moveLine(t1, t2, r.getLane() * Road.laneWidth / 2 - i
+					* Road.laneWidth);
+			g.draw(new Line2D.Double(transImgX(t1.getXAxis()), transImgY(t1
+					.getYAxis()), transImgX(t2.getXAxis()), transImgY(t2
+					.getYAxis())));
+		}
 	}
 
 	private void drawMapOnGraphics(Graphics2D graphics) {
 		Graphics2D bf = (Graphics2D) bg.getGraphics();
-		bf.setColor(Color.BLACK);
+		bf.setColor(bgColor);
 		bf.fillRect(0, 0, MAXWIDTH, MAXHEIGHT);
 		for (Iterator<Point> PointItr = map.getPointList(); PointItr.hasNext();) {
 			Point p = PointItr.next();
@@ -145,15 +214,6 @@ public class MapDisplayPanel extends JPanel implements MouseListener,
 			drawRoad(bf, selectedRoad, highLightRoadColor);
 		}
 
-		// for (Iterator<Point> PointItr = map.getPointList();
-		// PointItr.hasNext();) {
-		// Point p = PointItr.next();
-		// Color c = graphics.getColor();
-		// graphics.setColor(Color.RED);
-		// graphics.drawRect((int) p.getXAxis() - 5, (int) p.getYAxis() - 5,
-		// 10, 10);
-		// graphics.setColor(c);
-		// }
 		for (Iterator<Point> PointItr = map.getPointList(); PointItr.hasNext();) {
 			Point p = PointItr.next();
 			for (Iterator<Road> RoadItr = p.getRoadList(); RoadItr.hasNext();) {
@@ -172,23 +232,13 @@ public class MapDisplayPanel extends JPanel implements MouseListener,
 			String msg1 = "average : "
 					+ String.format("%.2f", stat
 							.averageVehiclesOnRoad(selectedRoad));
-			bf.setFont(new Font(Font.MONOSPACED, Font.PLAIN, 10));
-			bf.setColor(Color.RED);
+			bf.setFont(new Font(Font.SANS_SERIF, Font.BOLD, 12));
+			bf.setColor(textColor);
 			bf.drawString(msg0, mouseX + 10, mouseY - 12);
 			bf.drawString(msg1, mouseX + 10, mouseY);
 		}
 
-		// if (isScale) {
-		// trans.setToScale(scale, scale);
-		// BufferedImageOp op = new AffineTransformOp(trans,
-		// AffineTransformOp.TYPE_NEAREST_NEIGHBOR);
-		// int xx = (int) (imgWidth / scale) + 1, yy = (int) (imgHeight / scale)
-		// + 1;
-		// graphics.drawImage(bg.getSubimage(0, 0, xx, yy), op, 0, 0);
-		// } else {
 		graphics.drawImage(bg, null, 0, 0);
-		// }
-
 	}
 
 	private void drawVehicleOnRoad(Graphics2D graphics, Road r) {
@@ -215,7 +265,6 @@ public class MapDisplayPanel extends JPanel implements MouseListener,
 			System.out.println(r + "\n" + theta);
 			theta += 180;
 			trans.setToRotation(Math.toRadians(theta));
-			// trans.setToScale(scale, scale);
 			AffineTransform tmp = new AffineTransform();
 			tmp.setToScale(scale, scale);
 			trans.concatenate(tmp);

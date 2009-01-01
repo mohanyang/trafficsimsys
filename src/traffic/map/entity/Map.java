@@ -9,15 +9,15 @@ import java.util.Iterator;
  */
 public class Map {
 	private HashMap<Long, Point> pointMap = null;
-	
+
 	private static Map _instance;
-	
-	public static Map getInstance(){
+
+	public static Map getInstance() {
 		return _instance;
 	}
 
 	public Map() {
-		_instance=this;
+		_instance = this;
 		pointMap = new HashMap<Long, Point>();
 	}
 
@@ -30,7 +30,7 @@ public class Map {
 			return o;
 		}
 	}
-	
+
 	public Point getPoint(Point p) {
 		Point o = pointMap.get(p.hash());
 		if (o == null) {
@@ -46,13 +46,13 @@ public class Map {
 
 	public Road newRoad(Point ps, Point pe, int l) {
 		Point s = newPoint(ps), e = newPoint(pe);
-//		for (Iterator<Road> itr = s.getRoadList(); itr.hasNext();) {
-//			Road next = itr.next();
-//			if (next.endPoint.equals(e)) {
-//				next.setLane(l);
-//				return next;
-//			}
-//		}
+		// for (Iterator<Road> itr = s.getRoadList(); itr.hasNext();) {
+		// Road next = itr.next();
+		// if (next.endPoint.equals(e)) {
+		// next.setLane(l);
+		// return next;
+		// }
+		// }
 		Road road = new Road(s, e, new byte[l]);
 		s.addRoad(road);
 		e.addRoad(road);
@@ -77,6 +77,27 @@ public class Map {
 
 	public Iterator<Vehicle> getVehicleOnRoad(Road r) {
 		return r.getVehicleList();
+	}
+
+	public Road getRoad(double x, double y) {
+		Point p = new Point(x, y);
+		for (Iterator<Point> pIter = getPointList(); pIter.hasNext();) {
+			Point point = pIter.next();
+			for (Iterator<Road> rIter = point.getRoadList(); rIter.hasNext();) {
+				Road road = rIter.next();
+				if (Point.dotProduct(Point.diff(p, road.startPoint), Point
+						.diff(road.endPoint, road.startPoint)) >= 0
+						&& Point.dotProduct(Point.diff(p, road.endPoint), Point
+								.diff(road.startPoint, road.endPoint)) >= 0) {
+					double h = Math.abs(Point.crossProduct(Point.diff(p,
+							road.endPoint), Point.diff(p, road.startPoint)))
+							* 2 / road.length;
+					if (h * 2 <= road.getLane() * Road.laneWidth)
+						return road;
+				}
+			}
+		}
+		return null;
 	}
 
 	public String toString() {

@@ -12,6 +12,9 @@ import traffic.basic.*;
  * 
  */
 public class Road {
+	
+	public static final int laneWidth = 26;
+	
 	protected Point startPoint;
 	protected Point endPoint;
 	protected double length;

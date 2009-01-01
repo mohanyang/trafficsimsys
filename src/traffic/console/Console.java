@@ -1,16 +1,9 @@
 package traffic.console;
 
-import traffic.event.Event;
+import traffic.event.EventListener;
 
-/**
- * @author Isaac
- * 
- */
-public interface Console {
-	public void setInterruptHandlers(Runnable receiveInterruptHandler,
-			Runnable sendInterruptHandler);
+public interface Console extends EventListener {
 
-	public Event read();
+	public void setInputHandlers(Runnable inputHandler);
 
-	public void write(Event e);
 }

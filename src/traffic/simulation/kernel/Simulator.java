@@ -20,7 +20,7 @@ public class Simulator {
 	private Map map = null;
 	private Console console = null;
 	private Runnable simuTask = null;
-	public static IStat stat = null;
+	private IStat stat = null;
 
 	public Simulator() {
 	}
@@ -39,7 +39,7 @@ public class Simulator {
 		console = (Console) Lib.constructObject(Config
 				.getString("traffic.console"));
 		Lib.assertTrue(console != null);
-		console.write(new Event(map, Event.CREATE));
+		console.eventOccured(new Event(map, Event.CREATE));
 		stat = (IStat) Lib.constructObject(Config.getString(
 				"traffic.statistics", "traffic.simulation.statistics.Stat"));
 		Lib.assertTrue(stat != null);
@@ -55,6 +55,10 @@ public class Simulator {
 			controller.addEventListener(stat);
 		}
 		return controller;
+	}
+
+	public IStat getStat() {
+		return stat;
 	}
 
 	public void start() {
@@ -81,9 +85,13 @@ public class Simulator {
 							r.releaseLock();
 						}
 					}
-					console.write(new Event(map, Event.MOVE));
-					if (simuTask != null)
+					console.eventOccured(new Event(map, Event.MOVE));
+					if (simuTask != null) {
 						Scheduler.getInstance().schedule(simuTask, 100);
+					} else {
+						// simulation finished
+						stop();
+					}
 					System.out.println("===finished===");
 				}
 			}
@@ -95,5 +103,6 @@ public class Simulator {
 
 	public void stop() {
 		simuTask = null;
+		stat.stop();
 	}
 }

@@ -12,17 +12,11 @@ public class GraphicConsole implements Console {
 	}
 
 	@Override
-	public Event read() {
-		return null;
+	public void setInputHandlers(Runnable inputHandler) {
 	}
 
 	@Override
-	public void setInterruptHandlers(Runnable receiveInterruptHandler,
-			Runnable sendInterruptHandler) {
-	}
-
-	@Override
-	public void write(Event e) {
+	public void eventOccured(Event e) {
 		if (e.getObj() instanceof Map) {
 			switch (e.getType()) {
 			case Event.CREATE:

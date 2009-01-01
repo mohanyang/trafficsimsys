@@ -2,19 +2,19 @@ package traffic.map.entity;
 
 import java.util.Iterator;
 import java.util.LinkedList;
-import java.util.concurrent.locks.*;
+import java.util.concurrent.locks.ReentrantLock;
 
-import traffic.map.entity.Vehicle;
-import traffic.basic.*;
+import traffic.basic.Lib;
 
 /**
  * @author Isaac
  * 
  */
 public class Road {
-	
+
 	public static final int laneWidth = 26;
-	
+
+	public int n1 = -1, n2 = -1;
 	protected Point startPoint;
 	protected Point endPoint;
 	protected double length;
@@ -48,7 +48,7 @@ public class Road {
 	/**
 	 * decide whether the lock is held by the current thread
 	 * 
-	 * @author huangsx	 * 
+	 * @author huangsx *
 	 * @return true if the lock is held by current thread
 	 */
 	public boolean isHeldByCurrentThread() {
@@ -57,6 +57,7 @@ public class Road {
 
 	/**
 	 * get the length of the current road
+	 * 
 	 * @author huangsx
 	 * @return
 	 */
@@ -66,14 +67,18 @@ public class Road {
 
 	/**
 	 * constructs a new road
+	 * 
 	 * @author huangsx
-	 * @param s source point
-	 * @param e destination point
-	 * @param l a byte array representing lane direction
+	 * @param s
+	 *            source point
+	 * @param e
+	 *            destination point
+	 * @param l
+	 *            a byte array representing lane direction
 	 */
 	public Road(Point s, Point e, byte[] l) {
 		System.out.println("=== lane info ===");
-		for (int i=0; i<l.length; ++i)
+		for (int i = 0; i < l.length; ++i)
 			System.out.println(" " + l[i]);
 		startPoint = s;
 		endPoint = e;
@@ -96,10 +101,10 @@ public class Road {
 
 	@Override
 	public String toString() {
-		String ret="road from " + startPoint.toString() + " to "
+		String ret = "road from " + startPoint.toString() + " to "
 				+ endPoint.toString();
-		for (int i=0; i<laneInfo.length; ++i)
-			ret+=" " + laneInfo[i];
+		for (int i = 0; i < laneInfo.length; ++i)
+			ret += " " + laneInfo[i];
 		return ret;
 	}
 
@@ -118,13 +123,14 @@ public class Road {
 	}
 
 	/**
-	 * remove the vehicle from the current road. must acquire 
-	 * the synchronization lock in advance.
-	 * the removed vehicle would be added into a removal queue,
-	 * rather than deleted directly, in order to provide concurrent
-	 * iterating.
+	 * remove the vehicle from the current road. must acquire the
+	 * synchronization lock in advance. the removed vehicle would be added into
+	 * a removal queue, rather than deleted directly, in order to provide
+	 * concurrent iterating.
+	 * 
 	 * @author huangsx
-	 * @param v the vehicle to be removed
+	 * @param v
+	 *            the vehicle to be removed
 	 * @return the number of vehicles remaining on the road
 	 */
 	protected int removeVehicle(Vehicle v) {
@@ -136,8 +142,9 @@ public class Road {
 	}
 
 	/**
-	 * perform actual removal. remove the vehicles in the removal queue.
-	 * must acquire concurrent visit lock first.
+	 * perform actual removal. remove the vehicles in the removal queue. must
+	 * acquire concurrent visit lock first.
+	 * 
 	 * @author huangsx
 	 */
 	public void performRemoval() {
@@ -158,13 +165,17 @@ public class Road {
 	}
 
 	/**
-	 * move the line from start and point to their right by d.
-	 * the resulting starting and destination point is stored
-	 * in start and end, i.e., the original parameter would be
-	 * modified. BE SURE TO CREATE A NEW ONE when necessary.
-	 * @param start starting point of the line
-	 * @param end ending point of the line
-	 * @param d the distance to be moved
+	 * move the line from start and point to their right by d. the resulting
+	 * starting and destination point is stored in start and end, i.e., the
+	 * original parameter would be modified. BE SURE TO CREATE A NEW ONE when
+	 * necessary.
+	 * 
+	 * @param start
+	 *            starting point of the line
+	 * @param end
+	 *            ending point of the line
+	 * @param d
+	 *            the distance to be moved
 	 */
 	public void moveLine(Point start, Point end, double d) {
 		double distance = Point.distance(start, end);
@@ -178,8 +189,9 @@ public class Road {
 	}
 
 	/**
-	 * get the coordinate (point) distance from the starting point
-	 * of the lane-th lane of the current road.
+	 * get the coordinate (point) distance from the starting point of the
+	 * lane-th lane of the current road.
+	 * 
 	 * @author huangsx
 	 * @param distance
 	 * @param lane
@@ -190,13 +202,15 @@ public class Road {
 	}
 
 	/**
-	 * get the coordinate (point) distance from the starting point
-	 * of the lane-th lane of the current road.
+	 * get the coordinate (point) distance from the starting point of the
+	 * lane-th lane of the current road.
+	 * 
 	 * @author huangsx
 	 * @param distance
 	 * @param lane
-	 * @param moveLine whether perform moveLine. false if only consider the
-	 * central axis of the road
+	 * @param moveLine
+	 *            whether perform moveLine. false if only consider the central
+	 *            axis of the road
 	 * @return the point of the corresponding position
 	 */
 	public Point getPositionOnRoad(double distance, int lane, boolean moveLine) {
@@ -219,7 +233,9 @@ public class Road {
 	}
 
 	/**
-	 * whether the cars in the current lane can move (e.g. blocked, signalled, etc.)
+	 * whether the cars in the current lane can move (e.g. blocked, signalled,
+	 * etc.)
+	 * 
 	 * @author huangsx
 	 * @param lane
 	 * @return
@@ -237,12 +253,14 @@ public class Road {
 	}
 
 	/**
-	 * return the closest distance on the road from the current vehicle
-	 * (in front of the vehicle)
+	 * return the closest distance on the road from the current vehicle (in
+	 * front of the vehicle)
+	 * 
 	 * @author huangsx
-	 * @param p the current vehicle
-	 * @return the closest distance from the other objects to p,
-	 * or the distance to the next intersection if it is closer.
+	 * @param p
+	 *            the current vehicle
+	 * @return the closest distance from the other objects to p, or the distance
+	 *         to the next intersection if it is closer.
 	 */
 	public double closestDistance(Vehicle p) {
 		return closestDistance(p.getPosition(), p.getLane(), p);
@@ -252,14 +270,15 @@ public class Road {
 	 * 
 	 * @param position
 	 * @param lane
-	 * @param pv the current vehicle
-	 * @return the closest distance from the other objects to p,
-	 * or the distance to the next intersection if it is closer.
+	 * @param pv
+	 *            the current vehicle
+	 * @return the closest distance from the other objects to p, or the distance
+	 *         to the next intersection if it is closer.
 	 */
 	public double closestDistance(double position, int lane, Vehicle pv) {
 		Lib.assertTrue(lock.isHeldByCurrentThread());
 		// TODO should calculate the length of the car
-		double ret = length-position;
+		double ret = length - position;
 		int dir;
 		if (laneInfo[lane] == 0)
 			dir = -1;
@@ -291,5 +310,10 @@ public class Road {
 			return startPoint.getIntersectionList();
 		else
 			return endPoint.getIntersectionList();
+	}
+
+	public double getLamda() {
+		return (endPoint.yAxis - startPoint.yAxis)
+				/ (endPoint.xAxis - startPoint.xAxis);
 	}
 }

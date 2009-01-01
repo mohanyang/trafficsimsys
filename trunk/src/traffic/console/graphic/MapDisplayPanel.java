@@ -6,6 +6,7 @@ import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
 import java.awt.event.MouseWheelEvent;
 import java.awt.event.MouseWheelListener;
@@ -21,7 +22,9 @@ import java.util.Iterator;
 import javax.imageio.ImageIO;
 import javax.swing.JPanel;
 import javax.swing.UIManager;
+import javax.swing.event.MouseInputListener;
 
+import traffic.basic.Lib;
 import traffic.map.entity.Map;
 import traffic.map.entity.Point;
 import traffic.map.entity.Road;
@@ -29,8 +32,8 @@ import traffic.map.entity.Vehicle;
 import traffic.simulation.kernel.Simulator;
 import traffic.simulation.statistics.IStat;
 
-public class MapDisplayPanel extends JPanel implements MouseWheelListener,
-		MouseMotionListener {
+public class MapDisplayPanel extends JPanel implements MouseListener,
+		MouseMotionListener, MouseWheelListener {
 	public static final long serialVersionUID = 2L;
 	public static final int MAXWIDTH = 5000, MAXHEIGHT = 5000;
 	private int imgWidth = 800, imgHeight = 600;
@@ -42,6 +45,7 @@ public class MapDisplayPanel extends JPanel implements MouseWheelListener,
 	double scale = 1.0;
 
 	private int mouseX, mouseY;
+	private boolean mouseInPanel = false;
 
 	private int startX = 0, startY = 0;
 	private static final Color roadColor = Color.GRAY;
@@ -94,6 +98,7 @@ public class MapDisplayPanel extends JPanel implements MouseWheelListener,
 		bg = new BufferedImage(imgWidth, imgHeight, BufferedImage.TYPE_INT_RGB);
 		addMouseMotionListener(this);
 		addMouseWheelListener(this);
+		addMouseListener(this);
 	}
 
 	public void paint(Map map) {
@@ -224,16 +229,16 @@ public class MapDisplayPanel extends JPanel implements MouseWheelListener,
 	}
 
 	private void moveScreen() {
-		if (mouseX - moveThreshold < 0) {
+		if (mouseInPanel && mouseX - moveThreshold < 0) {
 			startX = Math.max(0, startX - moveStep);
 		}
-		if (mouseX + moveThreshold > imgWidth) {
+		if (mouseInPanel && imgWidth < mouseX + moveThreshold) {
 			startX = Math.min(MAXWIDTH - imgWidth, startX + moveStep);
 		}
-		if (mouseY - moveThreshold < 0) {
+		if (mouseInPanel && mouseY - moveThreshold < 0) {
 			startY = Math.max(0, startY - moveStep);
 		}
-		if (mouseY + moveThreshold > imgHeight) {
+		if (mouseInPanel && mouseY + moveThreshold > imgHeight) {
 			startY = Math.min(MAXHEIGHT - imgHeight, startY + moveStep);
 		}
 	}
@@ -254,4 +259,30 @@ public class MapDisplayPanel extends JPanel implements MouseWheelListener,
 		int num = -e.getWheelRotation();
 		scale *= Math.pow(1.05, num);
 	}
+
+	@Override
+	public void mouseClicked(MouseEvent arg0) {
+		// nothing
+	}
+
+	@Override
+	public void mouseEntered(MouseEvent arg0) {
+		mouseInPanel = true;
+	}
+
+	@Override
+	public void mouseExited(MouseEvent arg0) {
+		mouseInPanel = false;
+	}
+
+	@Override
+	public void mousePressed(MouseEvent arg0) {
+		// nothing
+	}
+
+	@Override
+	public void mouseReleased(MouseEvent e) {
+		// nothing
+	}
+
 }

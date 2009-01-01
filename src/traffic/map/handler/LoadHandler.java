@@ -4,7 +4,7 @@ import java.util.Iterator;
 
 import traffic.basic.Config;
 import traffic.basic.Lib;
-import traffic.external.generate.GenerateController;
+import traffic.external.generate.*;
 import traffic.external.system.road.RoadInfSystem;
 import traffic.external.system.road.RoadIterator;
 import traffic.map.entity.Map;
@@ -28,14 +28,15 @@ public class LoadHandler {
 
 		int pointnum=map.getPointNum();
 		for(int i=0;i<pointnum;i++){
-			GenerateController.getInstance().setbornpoint(i);
+			MyFactory.getInstance().getVehicleGenerator().getInstance().setbornpoint(i);
 			for(int j=0;j<4;j++){
-				GenerateController.getInstance().setmaxspeed(20);
-				GenerateController.getInstance().settype(Lib.random(4));
-				GenerateController.getInstance().setinitspeed(Lib.random(5)+5);
-				GenerateController.getInstance().generateVehicle();
+				MyFactory.getInstance().getVehicleGenerator().getInstance().setmaxspeed(20);
+				MyFactory.getInstance().getVehicleGenerator().getInstance().settype(Lib.random(4));
+				MyFactory.getInstance().getVehicleGenerator().getInstance().setinitspeed(Lib.random(5)+5);
+				MyFactory.getInstance().getVehicleGenerator().getInstance().generate();
 			}
 		}
+		
 		// testing part
 /*		for (Iterator<Point> itr = map.getPointList(); itr.hasNext();) {
 			Point p = itr.next();

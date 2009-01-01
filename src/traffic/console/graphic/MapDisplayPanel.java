@@ -22,6 +22,7 @@ import javax.imageio.ImageIO;
 import javax.swing.JPanel;
 import javax.swing.UIManager;
 
+import traffic.basic.Config;
 import traffic.map.entity.Map;
 import traffic.map.entity.Point;
 import traffic.map.entity.Road;
@@ -43,6 +44,7 @@ public class MapDisplayPanel extends JPanel implements MouseWheelListener,
 
 	private int mouseX, mouseY;
 
+	private boolean isScale = false;
 	private static final Color roadColor = Color.GRAY;
 	private static final Color highLightRoadColor = Color.WHITE;
 
@@ -64,12 +66,20 @@ public class MapDisplayPanel extends JPanel implements MouseWheelListener,
 		trans = new AffineTransform();
 		this.setSize(800, 600);
 
-		bg = new BufferedImage(MAXWIDTH, MAXHEIGHT, BufferedImage.TYPE_INT_RGB);
-		transBG = new BufferedImage(MAXWIDTH, MAXHEIGHT,
-				BufferedImage.TYPE_INT_RGB);
-		disBG = new BufferedImage(800, 600, BufferedImage.TYPE_INT_RGB);
+		isScale = Config.getBoolean("traffic.scale", false);
+		if (isScale) {
+			bg = new BufferedImage(MAXWIDTH, MAXHEIGHT,
+					BufferedImage.TYPE_INT_RGB);
+			transBG = new BufferedImage(MAXWIDTH, MAXHEIGHT,
+					BufferedImage.TYPE_INT_RGB);
+			disBG = new BufferedImage(800, 600, BufferedImage.TYPE_INT_RGB);
+			addMouseWheelListener(this);
+		} else {
+			bg = new BufferedImage(800, 600, BufferedImage.TYPE_INT_RGB);
+		}
+
 		addMouseMotionListener(this);
-		addMouseWheelListener(this);
+
 	}
 
 	public void paint(Map map) {
@@ -146,14 +156,16 @@ public class MapDisplayPanel extends JPanel implements MouseWheelListener,
 			bf.drawString(msg0, mouseX + 10, mouseY - 12);
 			bf.drawString(msg1, mouseX + 10, mouseY);
 		}
-		// trans.setToScale(0.5, 0.5);
-		trans.setToScale(scale, scale);
-		BufferedImageOp op = new AffineTransformOp(trans,
-				AffineTransformOp.TYPE_NEAREST_NEIGHBOR);
-		op.filter(bg, transBG);
-		disBG.setData(transBG.getSubimage(0, 0, 800, 600).getRaster());
-
-		graphics.drawImage(disBG, null, 0, 0);
+		if (isScale) {
+			trans.setToScale(scale, scale);
+			BufferedImageOp op = new AffineTransformOp(trans,
+					AffineTransformOp.TYPE_NEAREST_NEIGHBOR);
+			op.filter(bg, transBG);
+			disBG.setData(transBG.getSubimage(0, 0, 800, 600).getRaster());
+			graphics.drawImage(disBG, null, 0, 0);
+		} else {
+			graphics.drawImage(bg, null, 0, 0);
+		}
 	}
 
 	private void drawVehicleOnRoad(Graphics2D graphics, Road r) {

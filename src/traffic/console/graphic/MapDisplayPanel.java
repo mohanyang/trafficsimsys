@@ -20,7 +20,6 @@ import javax.imageio.ImageIO;
 import javax.swing.JPanel;
 import javax.swing.UIManager;
 
-import traffic.basic.Lib;
 import traffic.map.entity.Map;
 import traffic.map.entity.Point;
 import traffic.map.entity.Road;
@@ -59,6 +58,7 @@ public class MapDisplayPanel extends JPanel implements MouseMotionListener {
 		}
 		trans = new AffineTransform();
 		this.setSize(800, 600);
+
 		bg = new BufferedImage(800, 600, BufferedImage.TYPE_INT_RGB);
 		bgGraph = bg.createGraphics();
 		addMouseMotionListener(this);
@@ -153,17 +153,18 @@ public class MapDisplayPanel extends JPanel implements MouseMotionListener {
 					.getXAxis(), y = v.getPoint().getYAxis();
 			if (tanv == Double.POSITIVE_INFINITY) {
 				theta = 0;
-				x = x + 13;
+				x = x - 13;
 			} else if (tanv == Double.NEGATIVE_INFINITY) {
 				theta = 180;
-				x = x + 13;
+				x = x - 13;
 			} else {
 				theta = Math.toDegrees(Math.atan(tanv)) + 270;
 				y = y - 13;
 			}
 			System.out.println(r + "\n" + theta);
-			// if (v.getSpeed() > 0)
 			theta += 180;
+			if (r.getDirection(v.getLane()) == 0)
+				theta += 180;
 			trans.setToRotation(Math.toRadians(theta));
 			BufferedImageOp op = new AffineTransformOp(trans,
 					AffineTransformOp.TYPE_BICUBIC);

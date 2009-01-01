@@ -150,28 +150,25 @@ public class MapDisplayPanel extends JPanel implements MouseMotionListener {
 			Vehicle v = itr.next();
 			Point s = v.getRoad().getPositionOnRoad(0, v.getLane()); 
 			Point e = v.getRoad().getPositionOnRoad(v.getRoad().getLength(), v.getLane());
-			double tanv = (e.getYAxis() - s.getYAxis())
-					/ (e.getXAxis() - s.getXAxis()), theta, x = v.getPoint()
-					.getXAxis(), y = v.getPoint().getYAxis();
+			double tanv = (e.getYAxis() - s.getYAxis())	/ (e.getXAxis() - s.getXAxis());
+			double theta;
+			Point px=new Point(v.getPoint().getXAxis(), v.getPoint().getYAxis());
+			v.getRoad().moveLine(new Point(s.getXAxis(), s.getYAxis()), px, 
+					-Road.laneWidth/2);
 			if (tanv == Double.POSITIVE_INFINITY) {
 				theta = 0;
-				x = x - 13;
 			} else if (tanv == Double.NEGATIVE_INFINITY) {
 				theta = 180;
-				x = x - 13;
 			} else {
 				theta = Math.toDegrees(Math.atan(tanv)) + 270;
-				y = y - 13;
 			}
 			System.out.println(r + "\n" + theta);
 			theta += 180;
-			if (r.getDirection(v.getLane()) == 0)
-				theta += 180;
 			trans.setToRotation(Math.toRadians(theta));
 			BufferedImageOp op = new AffineTransformOp(trans,
 					AffineTransformOp.TYPE_BICUBIC);
 			((Graphics2D) graphics).drawImage(img[v.getVehicleInf()
-					.getImageID()], op, (int) x, (int) y);
+					.getImageID()], op, (int) px.getXAxis(), (int) px.getYAxis());
 		}
 		r.releaseLock();
 	}

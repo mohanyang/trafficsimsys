@@ -19,6 +19,18 @@ public class Point {
 		return Math.sqrt((p1.xAxis-p2.xAxis)*(p1.xAxis-p2.xAxis)
 				+(p1.yAxis-p2.yAxis)*(p1.yAxis-p2.yAxis));
 	}
+	
+	public static Point diff(Point p1, Point p2) {
+		return new Point(p1.xAxis-p2.xAxis, p1.yAxis-p2.yAxis);
+	}
+	
+	public static double dotProduct(Point p1, Point p2) {
+		return p1.xAxis * p2.xAxis + p1.yAxis * p2.yAxis;
+	}
+	
+	public static double crossProduct(Point p1, Point p2) {
+		return p1.xAxis * p2.yAxis - p2.xAxis * p1.yAxis;
+	}
 
 	public Point(double x, double y) {
 		xAxis = x;

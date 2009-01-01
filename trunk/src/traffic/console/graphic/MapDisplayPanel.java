@@ -4,6 +4,8 @@ import java.awt.BasicStroke;
 import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseMotionListener;
 import java.awt.geom.AffineTransform;
 import java.awt.geom.Line2D;
 import java.awt.image.AffineTransformOp;
@@ -22,7 +24,7 @@ import traffic.map.entity.Point;
 import traffic.map.entity.Road;
 import traffic.map.entity.Vehicle;
 
-public class MapDisplayPanel extends JPanel {
+public class MapDisplayPanel extends JPanel implements MouseMotionListener {
 	static public final long serialVersionUID = 2L;
 	private Map map = null;
 	BufferedImage[] img = null;
@@ -30,6 +32,8 @@ public class MapDisplayPanel extends JPanel {
 	AffineTransform trans = null;
 	
 	Graphics2D bgGraph;
+	
+	private int mouseX, mouseY;
 
 	public MapDisplayPanel() {
 		try {
@@ -50,21 +54,25 @@ public class MapDisplayPanel extends JPanel {
 		this.setSize(800, 600);
 		bg=new BufferedImage(800,600,BufferedImage.TYPE_INT_RGB);
 		bgGraph=bg.createGraphics();
+		addMouseMotionListener(this);
 	}
 
 	public void paint(Map map) {
 		Graphics graphics = getGraphics();
 		if (graphics != null) {
 			this.map = map;
-			// Color c = graphics.getColor();
-			// graphics.fillRect(0, 0, 800, 600);
-			// graphics.setColor(Color.white);
+//			 Color c = graphics.getColor();
+//			 graphics.fillRect(0, 0, 800, 600);
+//			 graphics.setColor(Color.white);
 			drawMapOnGraphics((Graphics2D) graphics);
 		}
 	}
 
 	private void drawMapOnGraphics(Graphics2D graphics) {
 		Graphics2D bf=(Graphics2D)bg.getGraphics();
+		bf.setColor(Color.BLACK);
+		bf.fillRect(0, 0, 800, 600);
+		Road selectedRoad = map.getRoad(mouseX, mouseY);
 		for (Iterator<Point> PointItr = map.getPointList(); PointItr.hasNext();) {
 			Point p = PointItr.next();
 			for (Iterator<Road> RoadItr = p.getRoadList(); RoadItr.hasNext();) {
@@ -72,6 +80,8 @@ public class MapDisplayPanel extends JPanel {
 				if (r.getStartPoint().equals(p)) {
 					bf.setStroke(new BasicStroke(r.getLane() * 26));
 					bf.setColor(Color.GRAY);
+					if (r == selectedRoad)
+						bf.setColor(Color.WHITE);
 					Point p1=r.getPositionOnRoad(r.getLane()*13, 0, false);
 					Point p2=r.getPositionOnRoad(r.getLength()-r.getLane()*13, 0, false);
 					bf.draw(new Line2D.Double(
@@ -131,5 +141,16 @@ public class MapDisplayPanel extends JPanel {
 					.getImageID()], op, (int) x, (int) y);
 		}
 		r.releaseLock();
+	}
+
+	@Override
+	public void mouseDragged(MouseEvent e) {
+		// do nothing
+	}
+
+	@Override
+	public void mouseMoved(MouseEvent e) {
+		mouseX = e.getX();
+		mouseY = e.getY();
 	}
 }

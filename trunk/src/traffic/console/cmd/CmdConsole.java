@@ -17,17 +17,11 @@ public class CmdConsole implements Console {
 	}
 
 	@Override
-	public void setInterruptHandlers(Runnable receiveInterruptHandler,
-			Runnable sendInterruptHandler) {
+	public void setInputHandlers(Runnable inputHandler) {
 	}
 
 	@Override
-	public Event read() {
-		return null;
-	}
-
-	@Override
-	public void write(Event e) {
+	public void eventOccured(Event e) {
 		receiveQueue.add(e);
 		receiveInterrupt.run();
 	}

@@ -9,6 +9,11 @@ import traffic.event.EventListener;
 import traffic.map.entity.Vehicle;
 
 public interface IVehicleControl {
+	
+	public void start();
+	
+	public void stop();
+	
 	public void react();
 
 	public void setVehicle(Vehicle v);

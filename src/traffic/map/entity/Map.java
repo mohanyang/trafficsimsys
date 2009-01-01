@@ -92,7 +92,7 @@ public class Map {
 					double h = Math.abs(Point.crossProduct(Point.diff(p,
 							road.endPoint), Point.diff(p, road.startPoint)))
 							* 2 / road.length;
-					if (h * 2 <= road.getLane() * Road.laneWidth)
+					if (h <= road.getLane() * Road.laneWidth)
 						return road;
 				}
 			}

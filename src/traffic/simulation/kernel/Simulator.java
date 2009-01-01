@@ -62,6 +62,7 @@ public class Simulator {
 			controller.setVehicle(v);
 			v.setController(controller);
 			controller.addEventListener(stat);
+			controller.start();
 		}
 		return controller;
 	}

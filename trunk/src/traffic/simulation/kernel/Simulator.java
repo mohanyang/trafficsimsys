@@ -36,7 +36,8 @@ public class Simulator {
 
 	public void initialize() {
 		Config.load("traffic.ini");
-		Lib.seedRandom(Config.getInteger("traffic.randomSeed", (int) System.currentTimeMillis()));
+		Lib.seedRandom(Config.getInteger("traffic.randomSeed", (int) System
+				.currentTimeMillis()));
 		map = new LoadHandler().load();
 		System.out.println("Vehicle list");
 		for (Iterator<Point> p = map.getPointList(); p.hasNext();)
@@ -45,9 +46,8 @@ public class Simulator {
 						.hasNext();)
 					System.out.println(v.next());
 		System.out.println();
-		console = new traffic.console.graphic.GraphicConsole();
-//		console = (Console) Lib.constructObject(Config
-//				.getString("traffic.console"));
+		console = (Console) Lib.constructObject(Config
+				.getString("traffic.console"));
 		Lib.assertTrue(console != null);
 		console.eventOccured(new Event(map, Event.CREATE));
 		stat = (IStat) Lib.constructObject(Config.getString(

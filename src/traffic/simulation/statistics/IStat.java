@@ -12,5 +12,7 @@ public interface IStat extends EventListener {
 	public int currentVehiclesOnRoad(Road r);
 
 	public double averageVehiclesOnRoad(Road r);
+	
+	public int accidentsOnRoad(Road r);
 
 }

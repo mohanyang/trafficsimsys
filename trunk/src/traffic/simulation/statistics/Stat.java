@@ -45,6 +45,12 @@ public class Stat implements IStat {
 		infos.clear();
 	}
 
+	@Override
+	public int accidentsOnRoad(Road r) {
+		// TODO unimplemented
+		return 0;
+	}
+
 	protected StatInfo getInfo(Road r) {
 		StatInfo info = infos.get(r);
 		if (info == null) {

@@ -32,7 +32,7 @@ import traffic.simulation.statistics.IStat;
 public class MapDisplayPanel extends JPanel implements MouseWheelListener,
 		MouseMotionListener {
 	static public final long serialVersionUID = 2L;
-	static final int MAXWIDTH = 2000, MAXHEIGHT = 2000;
+	static final int MAXWIDTH = 5000, MAXHEIGHT = 5000;
 	private Map map = null;
 	BufferedImage[] img = null;
 	BufferedImage bg = null;
@@ -149,7 +149,7 @@ public class MapDisplayPanel extends JPanel implements MouseWheelListener,
 		// trans.setToScale(0.5, 0.5);
 		trans.setToScale(scale, scale);
 		BufferedImageOp op = new AffineTransformOp(trans,
-				AffineTransformOp.TYPE_BICUBIC);
+				AffineTransformOp.TYPE_NEAREST_NEIGHBOR);
 		op.filter(bg, transBG);
 		disBG.setData(transBG.getSubimage(0, 0, 800, 600).getRaster());
 
@@ -181,7 +181,7 @@ public class MapDisplayPanel extends JPanel implements MouseWheelListener,
 			theta += 180;
 			trans.setToRotation(Math.toRadians(theta));
 			BufferedImageOp op = new AffineTransformOp(trans,
-					AffineTransformOp.TYPE_BICUBIC);
+					AffineTransformOp.TYPE_NEAREST_NEIGHBOR);
 			((Graphics2D) graphics).drawImage(img[v.getVehicleInf()
 					.getImageID()], op, (int) px.getXAxis(), (int) px
 					.getYAxis());

@@ -22,7 +22,6 @@ import javax.imageio.ImageIO;
 import javax.swing.JPanel;
 import javax.swing.UIManager;
 
-import traffic.basic.Config;
 import traffic.map.entity.Map;
 import traffic.map.entity.Point;
 import traffic.map.entity.Road;
@@ -32,8 +31,10 @@ import traffic.simulation.statistics.IStat;
 
 public class MapDisplayPanel extends JPanel implements MouseWheelListener,
 		MouseMotionListener {
-	static public final long serialVersionUID = 2L;
-	static final int MAXWIDTH = 5000, MAXHEIGHT = 5000;
+	public static final long serialVersionUID = 2L;
+	public static final int MAXWIDTH = 5000, MAXHEIGHT = 5000;
+	private int imgWidth = 800, imgHeight = 600;
+	private int moveThreshold = 50, moveStep = 50;
 	private Map map = null;
 	BufferedImage[] img = null;
 	BufferedImage bg = null;
@@ -42,10 +43,25 @@ public class MapDisplayPanel extends JPanel implements MouseWheelListener,
 
 	private int mouseX, mouseY;
 
-	private int imgWidth = 800, imgHeight = 600;
-	private boolean isScale = false;
+	private int startX = 0, startY = 0;
 	private static final Color roadColor = Color.GRAY;
 	private static final Color highLightRoadColor = Color.WHITE;
+
+	private double transImgX(double mapX) {
+		return (mapX - startX) * scale;
+	}
+
+	private double transImgY(double mapY) {
+		return (mapY - startY) * scale;
+	}
+
+	private double transMapX(double imgX) {
+		return imgX / scale + startX;
+	}
+
+	private double transMapY(double imgY) {
+		return imgY / scale + startY;
+	}
 
 	public MapDisplayPanel() {
 		try {
@@ -65,39 +81,43 @@ public class MapDisplayPanel extends JPanel implements MouseWheelListener,
 		trans = new AffineTransform();
 		this.setSize(imgWidth, imgHeight);
 
-		isScale = Config.getBoolean("traffic.scale", false);
-		if (isScale) {
-			bg = new BufferedImage(MAXWIDTH, MAXHEIGHT,
-					BufferedImage.TYPE_INT_RGB);
-			bg.setAccelerationPriority(1);
-			addMouseWheelListener(this);
-		} else {
-			bg = new BufferedImage(imgWidth, imgHeight,
-					BufferedImage.TYPE_INT_RGB);
-		}
+		// isScale = Config.getBoolean("traffic.scale", false);
+		// if (isScale) {
+		// bg = new BufferedImage(MAXWIDTH, MAXHEIGHT,
+		// BufferedImage.TYPE_INT_RGB);
+		// bg.setAccelerationPriority(1);
+		// } else {
+		// bg = new BufferedImage(imgWidth, imgHeight,
+		// BufferedImage.TYPE_INT_RGB);
+		// }
 
+		bg = new BufferedImage(imgWidth, imgHeight, BufferedImage.TYPE_INT_RGB);
 		addMouseMotionListener(this);
-
+		addMouseWheelListener(this);
 	}
 
 	public void paint(Map map) {
 		Graphics graphics = getGraphics();
 		if (graphics != null) {
 			this.map = map;
+			moveScreen();
 			drawMapOnGraphics((Graphics2D) graphics);
 		}
 	}
 
 	private void drawRoad(Graphics2D g, Road r, Color color) {
 		g.setColor(color);
-		g.setStroke(new BasicStroke(r.getLane() * Road.laneWidth));
+		g.setStroke(new BasicStroke(
+				(float) (r.getLane() * Road.laneWidth * scale)));
 		Point p1 = r.getPositionOnRoad(r.getLane() * Road.laneWidth / 2, 0,
 				false);
 		Point p2 = r.getPositionOnRoad(r.getLength() - r.getLane()
 				* Road.laneWidth / 2, 0, false);
-		g.draw(new Line2D.Double(p1.getXAxis(), p1.getYAxis(), p2.getXAxis(),
-				p2.getYAxis()));
-
+		double x1 = transImgX(p1.getXAxis());
+		double y1 = transImgY(p1.getYAxis());
+		double x2 = transImgX(p2.getXAxis());
+		double y2 = transImgY(p2.getYAxis());
+		g.draw(new Line2D.Double(x1, y1, x2, y2));
 	}
 
 	private void drawMapOnGraphics(Graphics2D graphics) {
@@ -115,7 +135,7 @@ public class MapDisplayPanel extends JPanel implements MouseWheelListener,
 		}
 
 		// draw the selected road
-		Road selectedRoad = map.getRoad(mouseX, mouseY);
+		Road selectedRoad = map.getRoad(transMapX(mouseX), transMapY(mouseY));
 		if (selectedRoad != null) {
 			drawRoad(bf, selectedRoad, highLightRoadColor);
 		}
@@ -152,15 +172,18 @@ public class MapDisplayPanel extends JPanel implements MouseWheelListener,
 			bf.drawString(msg0, mouseX + 10, mouseY - 12);
 			bf.drawString(msg1, mouseX + 10, mouseY);
 		}
-		if (isScale) {
-			trans.setToScale(scale, scale);
-			BufferedImageOp op = new AffineTransformOp(trans,
-					AffineTransformOp.TYPE_NEAREST_NEIGHBOR);
-			int xx = (int) (imgWidth / scale) + 1, yy = (int) (imgHeight / scale) + 1;
-			graphics.drawImage(bg.getSubimage(0, 0, xx, yy), op, 0, 0);
-		} else {
-			graphics.drawImage(bg, null, 0, 0);
-		}
+
+		// if (isScale) {
+		// trans.setToScale(scale, scale);
+		// BufferedImageOp op = new AffineTransformOp(trans,
+		// AffineTransformOp.TYPE_NEAREST_NEIGHBOR);
+		// int xx = (int) (imgWidth / scale) + 1, yy = (int) (imgHeight / scale)
+		// + 1;
+		// graphics.drawImage(bg.getSubimage(0, 0, xx, yy), op, 0, 0);
+		// } else {
+		graphics.drawImage(bg, null, 0, 0);
+		// }
+
 	}
 
 	private void drawVehicleOnRoad(Graphics2D graphics, Road r) {
@@ -187,13 +210,32 @@ public class MapDisplayPanel extends JPanel implements MouseWheelListener,
 			System.out.println(r + "\n" + theta);
 			theta += 180;
 			trans.setToRotation(Math.toRadians(theta));
+			// trans.setToScale(scale, scale);
+			AffineTransform tmp = new AffineTransform();
+			tmp.setToScale(scale, scale);
+			trans.concatenate(tmp);
 			BufferedImageOp op = new AffineTransformOp(trans,
 					AffineTransformOp.TYPE_NEAREST_NEIGHBOR);
-			((Graphics2D) graphics).drawImage(img[v.getVehicleInf()
-					.getImageID()], op, (int) px.getXAxis(), (int) px
-					.getYAxis());
+			graphics.drawImage(img[v.getVehicleInf().getImageID()], op,
+					(int) transImgX(px.getXAxis()), (int) transImgY(px
+							.getYAxis()));
 		}
 		r.releaseLock();
+	}
+
+	private void moveScreen() {
+		if (mouseX - moveThreshold < 0) {
+			startX = Math.max(0, startX - moveStep);
+		}
+		if (mouseX + moveThreshold > imgWidth) {
+			startX = Math.min(MAXWIDTH - imgWidth, startX + moveStep);
+		}
+		if (mouseY - moveThreshold < 0) {
+			startY = Math.max(0, startY - moveStep);
+		}
+		if (mouseY + moveThreshold > imgHeight) {
+			startY = Math.min(MAXHEIGHT - imgHeight, startY + moveStep);
+		}
 	}
 
 	@Override

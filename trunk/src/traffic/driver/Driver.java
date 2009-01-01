@@ -9,7 +9,7 @@ public class Driver {
 	 */
 	public static void main(String[] args) {
 		try {
-			Simulator simulator = new Simulator();
+			Simulator simulator = Simulator.getInstance();
 			simulator.initialize();
 			simulator.start();
 		} catch (Exception e) {

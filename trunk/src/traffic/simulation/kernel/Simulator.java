@@ -21,8 +21,17 @@ public class Simulator {
 	private Console console = null;
 	private Runnable simuTask = null;
 	private IStat stat = null;
+	
+	private static Simulator instance = null;
 
 	public Simulator() {
+	}
+	
+	public static Simulator getInstance() {
+		if (instance == null) {
+			instance = new Simulator();
+		}
+		return instance;
 	}
 
 	public void initialize() {

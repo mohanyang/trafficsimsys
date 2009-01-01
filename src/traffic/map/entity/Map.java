@@ -44,27 +44,22 @@ public class Map {
 		return newPoint(new Point(x, y));
 	}
 
-	public Road newRoad(Point ps, Point pe, int l) {
+	public Road newRoad(Point ps, Point pe, byte[] l) {
 		Point s = newPoint(ps), e = newPoint(pe);
-		// for (Iterator<Road> itr = s.getRoadList(); itr.hasNext();) {
-		// Road next = itr.next();
-		// if (next.endPoint.equals(e)) {
-		// next.setLane(l);
-		// return next;
-		// }
-		// }
-		Road road = new Road(s, e, new byte[l]);
+		Road road = new Road(s, e, l);
 		s.addRoad(road);
 		e.addRoad(road);
 		return road;
 	}
 
 	public Road newRoad(Road r) {
-		return newRoad(r.getStartPoint(), r.getEndPoint(), r.getLane());
+		System.out.println("initializing newRoad " + r);
+		return newRoad(r.getStartPoint(), r.getEndPoint(), r.laneInfo);
 	}
 
 	public Road newRoad(double x1, double y1, double x2, double y2, int l) {
-		return newRoad(new Point(x1, y1), new Point(x2, y2), l);
+		System.out.println("initializing newRoad ");
+		return newRoad(new Point(x1, y1), new Point(x2, y2), new byte[l]);
 	}
 
 	public Vehicle newVehicle(VehicleInf inf) {

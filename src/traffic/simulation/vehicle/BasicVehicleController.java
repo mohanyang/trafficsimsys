@@ -60,6 +60,7 @@ public class BasicVehicleController extends EventDispatcher implements
 				if (adj.size()==0){
 					dispatchEvent(new Event(this, Event.LEAVE_ROAD, v.getRoad()));
 					v.removeFromCurrent();
+					stop();
 				}
 				else {
 					int abc=adj.size();
@@ -80,6 +81,7 @@ public class BasicVehicleController extends EventDispatcher implements
 			System.out.println("+++" + v + " dying");
 			dispatchEvent(new Event(this, Event.LEAVE_ROAD, v.getRoad()));
 			v.removeFromCurrent();
+			stop();
 		}
 	}
 

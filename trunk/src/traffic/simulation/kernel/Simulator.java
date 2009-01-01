@@ -21,12 +21,12 @@ public class Simulator {
 	private Console console = null;
 	private Runnable simuTask = null;
 	private IStat stat = null;
-	
+
 	private static Simulator instance = null;
 
 	public Simulator() {
 	}
-	
+
 	public static Simulator getInstance() {
 		if (instance == null) {
 			instance = new Simulator();
@@ -45,8 +45,9 @@ public class Simulator {
 						.hasNext();)
 					System.out.println(v.next());
 		System.out.println();
-		console = (Console) Lib.constructObject(Config
-				.getString("traffic.console"));
+		console = new traffic.console.graphic.GraphicConsole();
+//		console = (Console) Lib.constructObject(Config
+//				.getString("traffic.console"));
 		Lib.assertTrue(console != null);
 		console.eventOccured(new Event(map, Event.CREATE));
 		stat = (IStat) Lib.constructObject(Config.getString(

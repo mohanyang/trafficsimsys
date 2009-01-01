@@ -7,6 +7,8 @@ import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseMotionListener;
+import java.awt.event.MouseWheelEvent;
+import java.awt.event.MouseWheelListener;
 import java.awt.geom.AffineTransform;
 import java.awt.geom.Line2D;
 import java.awt.image.AffineTransformOp;
@@ -27,14 +29,17 @@ import traffic.map.entity.Vehicle;
 import traffic.simulation.kernel.Simulator;
 import traffic.simulation.statistics.IStat;
 
-public class MapDisplayPanel extends JPanel implements MouseMotionListener {
+public class MapDisplayPanel extends JPanel implements MouseWheelListener,
+		MouseMotionListener {
 	static public final long serialVersionUID = 2L;
+	static final int MAXWIDTH = 2000, MAXHEIGHT = 2000;
 	private Map map = null;
 	BufferedImage[] img = null;
 	BufferedImage bg = null;
+	BufferedImage transBG = null;
+	BufferedImage disBG = null;
 	AffineTransform trans = null;
-
-	Graphics2D bgGraph;
+	double scale = 1.0;
 
 	private int mouseX, mouseY;
 
@@ -59,9 +64,12 @@ public class MapDisplayPanel extends JPanel implements MouseMotionListener {
 		trans = new AffineTransform();
 		this.setSize(800, 600);
 
-		bg = new BufferedImage(800, 600, BufferedImage.TYPE_INT_RGB);
-		bgGraph = bg.createGraphics();
+		bg = new BufferedImage(MAXWIDTH, MAXHEIGHT, BufferedImage.TYPE_INT_RGB);
+		transBG = new BufferedImage(MAXWIDTH, MAXHEIGHT,
+				BufferedImage.TYPE_INT_RGB);
+		disBG = new BufferedImage(800, 600, BufferedImage.TYPE_INT_RGB);
 		addMouseMotionListener(this);
+		addMouseWheelListener(this);
 	}
 
 	public void paint(Map map) {
@@ -89,7 +97,7 @@ public class MapDisplayPanel extends JPanel implements MouseMotionListener {
 	private void drawMapOnGraphics(Graphics2D graphics) {
 		Graphics2D bf = (Graphics2D) bg.getGraphics();
 		bf.setColor(Color.BLACK);
-		bf.fillRect(0, 0, 800, 600);
+		bf.fillRect(0, 0, MAXWIDTH, MAXHEIGHT);
 		for (Iterator<Point> PointItr = map.getPointList(); PointItr.hasNext();) {
 			Point p = PointItr.next();
 			for (Iterator<Road> RoadItr = p.getRoadList(); RoadItr.hasNext();) {
@@ -138,23 +146,30 @@ public class MapDisplayPanel extends JPanel implements MouseMotionListener {
 			bf.drawString(msg0, mouseX + 10, mouseY - 12);
 			bf.drawString(msg1, mouseX + 10, mouseY);
 		}
-		trans.setToScale(1, 1);
+		// trans.setToScale(0.5, 0.5);
+		trans.setToScale(scale, scale);
 		BufferedImageOp op = new AffineTransformOp(trans,
 				AffineTransformOp.TYPE_BICUBIC);
-		graphics.drawImage(bg, op, 0, 0);
+		op.filter(bg, transBG);
+		disBG.setData(transBG.getSubimage(0, 0, 800, 600).getRaster());
+
+		graphics.drawImage(disBG, null, 0, 0);
 	}
 
 	private void drawVehicleOnRoad(Graphics2D graphics, Road r) {
 		r.acquireLock();
 		for (Iterator<Vehicle> itr = r.getVehicleList(); itr.hasNext();) {
 			Vehicle v = itr.next();
-			Point s = v.getRoad().getPositionOnRoad(0, v.getLane()); 
-			Point e = v.getRoad().getPositionOnRoad(v.getRoad().getLength(), v.getLane());
-			double tanv = (e.getYAxis() - s.getYAxis())	/ (e.getXAxis() - s.getXAxis());
+			Point s = v.getRoad().getPositionOnRoad(0, v.getLane());
+			Point e = v.getRoad().getPositionOnRoad(v.getRoad().getLength(),
+					v.getLane());
+			double tanv = (e.getYAxis() - s.getYAxis())
+					/ (e.getXAxis() - s.getXAxis());
 			double theta;
-			Point px=new Point(v.getPoint().getXAxis(), v.getPoint().getYAxis());
-			v.getRoad().moveLine(new Point(s.getXAxis(), s.getYAxis()), px, 
-					-Road.laneWidth/2);
+			Point px = new Point(v.getPoint().getXAxis(), v.getPoint()
+					.getYAxis());
+			v.getRoad().moveLine(new Point(s.getXAxis(), s.getYAxis()), px,
+					-Road.laneWidth / 2);
 			if (tanv == Double.POSITIVE_INFINITY) {
 				theta = 0;
 			} else if (tanv == Double.NEGATIVE_INFINITY) {
@@ -168,7 +183,8 @@ public class MapDisplayPanel extends JPanel implements MouseMotionListener {
 			BufferedImageOp op = new AffineTransformOp(trans,
 					AffineTransformOp.TYPE_BICUBIC);
 			((Graphics2D) graphics).drawImage(img[v.getVehicleInf()
-					.getImageID()], op, (int) px.getXAxis(), (int) px.getYAxis());
+					.getImageID()], op, (int) px.getXAxis(), (int) px
+					.getYAxis());
 		}
 		r.releaseLock();
 	}
@@ -182,5 +198,11 @@ public class MapDisplayPanel extends JPanel implements MouseMotionListener {
 	public void mouseMoved(MouseEvent e) {
 		mouseX = e.getX();
 		mouseY = e.getY();
+	}
+
+	@Override
+	public void mouseWheelMoved(MouseWheelEvent e) {
+		int num = -e.getWheelRotation();
+		scale *= Math.pow(1.05, num);
 	}
 }

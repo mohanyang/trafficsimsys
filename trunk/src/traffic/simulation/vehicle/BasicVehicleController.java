@@ -53,12 +53,13 @@ public class BasicVehicleController extends EventDispatcher implements
 			// v.setSpeed(v.getSpeed()+1);
 			v.proceed();
 
-			int count = v.getNextPoint(19).getDegree();
-			if (Lib.isEqual(v.getPosition() + 20, v.getRoad()
+			int count;
+			if (Lib.isEqual(v.getPosition(), v.getRoad()
 							.getLength())) {
 				LinkedList<RoadEntranceInfo> adj=v.getRoad().getIntersectionList(v.getLane());
 				if (adj.size()==0){
 					dispatchEvent(new Event(this, Event.LEAVE_ROAD, v.getRoad()));
+					v.removeFromCurrent();
 				}
 				else {
 					int abc=adj.size();
@@ -78,6 +79,7 @@ public class BasicVehicleController extends EventDispatcher implements
 		} else {
 			System.out.println("+++" + v + " dying");
 			dispatchEvent(new Event(this, Event.LEAVE_ROAD, v.getRoad()));
+			v.removeFromCurrent();
 		}
 	}
 

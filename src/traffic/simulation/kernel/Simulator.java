@@ -36,7 +36,7 @@ public class Simulator {
 
 	public void initialize() {
 		Config.load("traffic.ini");
-		Lib.seedRandom(Config.getInteger("traffic.randomSeed", 0));
+		Lib.seedRandom(Config.getInteger("traffic.randomSeed", (int) System.currentTimeMillis()));
 		map = new LoadHandler().load();
 		System.out.println("Vehicle list");
 		for (Iterator<Point> p = map.getPointList(); p.hasNext();)

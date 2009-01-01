@@ -72,7 +72,6 @@ public class Stat implements IStat {
 				Scheduler.getInstance().schedule(updater, UPDATE_TIME);
 			}
 		}
-
 	};
 
 	private static final long UPDATE_TIME = 1000;

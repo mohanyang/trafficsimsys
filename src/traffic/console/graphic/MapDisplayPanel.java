@@ -131,7 +131,8 @@ public class MapDisplayPanel extends JPanel implements MouseMotionListener {
 			String msg0 = "vehicles: "
 					+ stat.currentVehiclesOnRoad(selectedRoad);
 			String msg1 = "average : "
-					+ stat.averageVehiclesOnRoad(selectedRoad);
+					+ String.format("%.2f", stat
+							.averageVehiclesOnRoad(selectedRoad));
 			bf.setFont(new Font(Font.MONOSPACED, Font.PLAIN, 10));
 			bf.setColor(Color.RED);
 			bf.drawString(msg0, mouseX + 10, mouseY - 12);

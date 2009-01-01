@@ -52,6 +52,7 @@ public class Simulator {
 		stat = (IStat) Lib.constructObject(Config.getString(
 				"traffic.statistics", "traffic.simulation.statistics.Stat"));
 		Lib.assertTrue(stat != null);
+		stat.start();
 	}
 
 	private IVehicleControl getController(Vehicle v) {

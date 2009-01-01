@@ -91,8 +91,8 @@ public class GenerateController {
 	}
 	 
 	private static GenerateController instance=null;
-	private int maxspeed=0;
-	private int initspeed=0;
+	private int maxspeed=10;
+	private int initspeed=10;
 	private int type=0;
 	private int bornpoint=0;
 	private static int typenum=4;

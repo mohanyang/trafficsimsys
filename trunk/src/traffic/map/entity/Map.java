@@ -11,7 +11,7 @@ public class Map {
 	private HashMap<Long, Point> pointMap = null;
 
 	private static Map _instance;
-
+	
 	public static Map getInstance() {
 		return _instance;
 	}
@@ -106,4 +106,15 @@ public class Map {
 		}
 		return buf.toString();
 	}
+	
+	public int getPointNum(){
+		int tmp=0;
+		for (Iterator<Point> pIter = getPointList(); pIter.hasNext();) {
+			Point p = pIter.next();
+			tmp++;
+		}
+		return tmp;
+	}
+	
+	private int pointnum=0;
 }

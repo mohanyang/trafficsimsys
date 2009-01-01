@@ -29,7 +29,7 @@ public class LoadHandler {
 		for (Iterator<Point> itr = map.getPointList(); itr.hasNext();) {
 			Point p = itr.next();
 			double rnd = Lib.random();
-			if (rnd < 0.5) {
+			if (rnd < 0.7) {
 				for (Iterator<Road> itrr = p.getRoadList(); itrr.hasNext();)
 					if (Lib.random() > 0.5) {
 						Road r = itrr.next();

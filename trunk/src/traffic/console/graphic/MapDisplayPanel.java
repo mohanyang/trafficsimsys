@@ -138,8 +138,10 @@ public class MapDisplayPanel extends JPanel implements MouseMotionListener {
 			bf.drawString(msg0, mouseX + 10, mouseY - 12);
 			bf.drawString(msg1, mouseX + 10, mouseY);
 		}
-
-		graphics.drawImage(bg, null, 0, 0);
+		trans.setToScale(0.5, 0.5);
+		BufferedImageOp op = new AffineTransformOp(trans,
+				AffineTransformOp.TYPE_BICUBIC);
+		graphics.drawImage(bg, op, 0, 0);
 	}
 
 	private void drawVehicleOnRoad(Graphics2D graphics, Road r) {

@@ -11,7 +11,7 @@ public class Map {
 	private HashMap<Long, Point> pointMap = null;
 
 	private static Map _instance;
-	
+
 	public static Map getInstance() {
 		return _instance;
 	}
@@ -44,22 +44,27 @@ public class Map {
 		return newPoint(new Point(x, y));
 	}
 
-	public Road newRoad(Point ps, Point pe, byte[] l) {
+	public Road newRoad(Point ps, Point pe, int l) {
 		Point s = newPoint(ps), e = newPoint(pe);
-		Road road = new Road(s, e, l);
+		// for (Iterator<Road> itr = s.getRoadList(); itr.hasNext();) {
+		// Road next = itr.next();
+		// if (next.endPoint.equals(e)) {
+		// next.setLane(l);
+		// return next;
+		// }
+		// }
+		Road road = new Road(s, e, new byte[l]);
 		s.addRoad(road);
 		e.addRoad(road);
 		return road;
 	}
 
 	public Road newRoad(Road r) {
-		System.out.println("initializing newRoad " + r);
-		return newRoad(r.getStartPoint(), r.getEndPoint(), r.laneInfo);
+		return newRoad(r.getStartPoint(), r.getEndPoint(), r.getLane());
 	}
 
 	public Road newRoad(double x1, double y1, double x2, double y2, int l) {
-		System.out.println("initializing newRoad ");
-		return newRoad(new Point(x1, y1), new Point(x2, y2), new byte[l]);
+		return newRoad(new Point(x1, y1), new Point(x2, y2), l);
 	}
 
 	public Vehicle newVehicle(VehicleInf inf) {
@@ -115,6 +120,4 @@ public class Map {
 		}
 		return tmp;
 	}
-	
-	private int pointnum=0;
 }

@@ -17,6 +17,7 @@ import javax.swing.JTextField;
  
 
 import traffic.external.generate.GenerateController;
+import traffic.external.generate.MyFactory;
 
 public class GenerateConsole extends JFrame implements ActionListener{
 	
@@ -100,7 +101,7 @@ public class GenerateConsole extends JFrame implements ActionListener{
         		int tmp=Integer.valueOf(textField[i].getText());
         		paraconfig(i,tmp);
         	}
-        	if(GenerateController.getInstance().generateVehicle()<0){
+        	if(MyFactory.getInstance().getVehicleGenerator().getInstance().generate()<0){
         		System.out.print("fail in adding vehicle\n");
         	}
         	setVisible(false);   
@@ -110,18 +111,18 @@ public class GenerateConsole extends JFrame implements ActionListener{
     void paraconfig(int index,int value){
     	switch(index){
     	case 0:
-    		GenerateController.getInstance().setmaxspeed(value);
+    		MyFactory.getInstance().getVehicleGenerator().getInstance().setmaxspeed(value);
     		break;
     	case 1:
-    		GenerateController.getInstance().setinitspeed(value);
+    		MyFactory.getInstance().getVehicleGenerator().getInstance().setinitspeed(value);
     		break;
     	case 2:
-    		if(GenerateController.getInstance().settype(value)<0){
+    		if(MyFactory.getInstance().getVehicleGenerator().getInstance().settype(value)<0){
     			 actionLabel.setText("error type");
     		}
     		break;
     	case 3:
-    		if(GenerateController.getInstance().setbornpoint(value)<0){
+    		if(MyFactory.getInstance().getVehicleGenerator().getInstance().setbornpoint(value)<0){
     			 actionLabel.setText("error born point");
     		}
     		break;

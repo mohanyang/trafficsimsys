@@ -53,6 +53,7 @@ public class BasicVehicleController extends EventDispatcher implements
 					count = Lib.random(adj.size()) - 1;
 					RoadEntranceInfo target=adj.get(count);
 					System.out.println("+++" + v + " changing road");
+					Lib.assertNotReached();
 					dispatchEvent(new Event(this, Event.LEAVE_ROAD, v.getRoad()));
 					dispatchEvent(new Event(this, Event.ENTER_ROAD, target.getRoad()));
 					v.setRoad(target.getRoad(), target.getLane());

@@ -44,6 +44,9 @@ public class Road {
 	}
 
 	public Road(Point s, Point e, byte[] l) {
+		System.out.println("=== lane info ===");
+		for (int i=0; i<l.length; ++i)
+			System.out.println(" " + l[i]);
 		startPoint = s;
 		endPoint = e;
 		laneInfo = new byte[l.length];
@@ -53,8 +56,6 @@ public class Road {
 			laneMove[i] = true;
 		length = Point.distance(s, e);
 		System.out.print(this);
-		for (int i = 0; i < l.length; ++i)
-			System.out.print(" " + laneInfo[i]);
 		System.out.println();
 	}
 
@@ -67,8 +68,11 @@ public class Road {
 
 	@Override
 	public String toString() {
-		return "road from " + startPoint.toString() + " to "
+		String ret="road from " + startPoint.toString() + " to "
 				+ endPoint.toString();
+		for (int i=0; i<laneInfo.length; ++i)
+			ret+=" " + laneInfo[i];
+		return ret;
 	}
 
 	public boolean isEqual(Point s, Point e) {

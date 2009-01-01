@@ -138,7 +138,7 @@ public class MapDisplayPanel extends JPanel implements MouseMotionListener {
 			bf.drawString(msg0, mouseX + 10, mouseY - 12);
 			bf.drawString(msg1, mouseX + 10, mouseY);
 		}
-		trans.setToScale(0.5, 0.5);
+		trans.setToScale(1, 1);
 		BufferedImageOp op = new AffineTransformOp(trans,
 				AffineTransformOp.TYPE_BICUBIC);
 		graphics.drawImage(bg, op, 0, 0);
@@ -148,8 +148,8 @@ public class MapDisplayPanel extends JPanel implements MouseMotionListener {
 		r.acquireLock();
 		for (Iterator<Vehicle> itr = r.getVehicleList(); itr.hasNext();) {
 			Vehicle v = itr.next();
-			Point s = v.getRoad().getStartPoint(), e = v.getRoad()
-					.getEndPoint();
+			Point s = v.getRoad().getPositionOnRoad(0, v.getLane()); 
+			Point e = v.getRoad().getPositionOnRoad(v.getRoad().getLength(), v.getLane());
 			double tanv = (e.getYAxis() - s.getYAxis())
 					/ (e.getXAxis() - s.getXAxis()), theta, x = v.getPoint()
 					.getXAxis(), y = v.getPoint().getYAxis();

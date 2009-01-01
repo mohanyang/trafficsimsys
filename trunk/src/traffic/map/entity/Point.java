@@ -103,7 +103,9 @@ public class Point {
 		for (Iterator<Road> itr=getRoadList(); itr.hasNext(); ){
 			Road curr=itr.next();
 			for (int i=0; i<curr.getLane(); ++i)
-				if (curr.getPositionOnRoad(0, i)==this || !direction){
+				if ((curr.endPoint==this && curr.laneInfo[i]==0)
+						|| (curr.startPoint==this && curr.laneInfo[i]==1)
+						|| !direction){
 					ret.add(new RoadEntranceInfo(curr, i));
 				}
 		}

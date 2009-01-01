@@ -36,7 +36,9 @@ public class Vehicle {
 
 	@Override
 	public String toString() {
-		return "Vehicle " + id + " on " + rInfo.getCurrentRoad() + " at speed of " + speed
+		return "Vehicle " + id + " on " + rInfo.getCurrentRoad() +  " at lane " 
+				+ rInfo.getCurrentLane()
+				+ " at speed of " + speed
 				+ " current at " + getPoint();
 	}
 	

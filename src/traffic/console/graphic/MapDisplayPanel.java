@@ -31,6 +31,7 @@ import traffic.map.entity.Road;
 import traffic.map.entity.Vehicle;
 import traffic.simulation.kernel.Simulator;
 import traffic.simulation.statistics.IStat;
+import traffic.simulation.statistics.StatBox;
 
 public class MapDisplayPanel extends JPanel implements MouseListener,
 		MouseMotionListener, MouseWheelListener {
@@ -216,7 +217,7 @@ public class MapDisplayPanel extends JPanel implements MouseListener,
 
 		// draw the selected road
 		Road selectedRoad = map.getRoad(transMapX(mouseX), transMapY(mouseY));
-		if (selectedRoad != null) {
+		if (mouseInPanel && selectedRoad != null) {
 			drawRoad(bf, selectedRoad, highLightRoadColor);
 		}
 
@@ -232,23 +233,15 @@ public class MapDisplayPanel extends JPanel implements MouseListener,
 
 		// draw statistic information
 		IStat stat = Simulator.getInstance().getStat();
-		if (selectedRoad != null && stat != null) {
-			String msg0 = "vehicles: "
-					+ stat.currentVehiclesOnRoad(selectedRoad);
-			String msg1 = "average : "
-					+ String.format("%.2f", stat
-							.averageVehiclesOnRoad(selectedRoad));
 
-			Point s = selectedRoad.getPositionOnRoad(0, 0);
-			Point e = selectedRoad.getPositionOnRoad(selectedRoad.getLength(),
-					0);
-			String msg2 = s.toString() + " " + e.toString();
+		if (mouseInPanel && selectedRoad != null && stat != null) {
+			StatBox box = StatBox.getInstance();
+			box.acquireLock();
+			box.prepare(stat, selectedRoad);
+			java.awt.Point pos = getBoxPosition(box.getWidth(), box.getHeight());
+			bf.drawImage(box, null, pos.x, pos.y);
+			box.releaseLock();
 
-			bf.setFont(new Font(Font.SANS_SERIF, Font.BOLD, 12));
-			bf.setColor(textColor);
-			bf.drawString(msg0, mouseX + 10, mouseY - 12);
-			bf.drawString(msg1, mouseX + 10, mouseY);
-			bf.drawString(msg2, mouseX + 10, mouseY + 12);
 		}
 
 		graphics.drawImage(bg, null, 0, 0);
@@ -315,6 +308,10 @@ public class MapDisplayPanel extends JPanel implements MouseListener,
 		if (mouseInPanel && mouseY + moveThreshold > imgHeight) {
 			startY = Math.min(MAXHEIGHT - imgHeight, startY + moveStep);
 		}
+	}
+
+	private java.awt.Point getBoxPosition(int width, int height) {
+		return new java.awt.Point(mouseX, mouseY - height);
 	}
 
 	@Override

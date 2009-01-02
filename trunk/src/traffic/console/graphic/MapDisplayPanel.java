@@ -56,7 +56,7 @@ public class MapDisplayPanel extends JPanel implements MouseListener,
 	private static final BasicStroke borderStroke = new BasicStroke(0.1f);
 	private static final BasicStroke dotLineStroke = new BasicStroke(0.1f,
 			BasicStroke.CAP_ROUND, BasicStroke.JOIN_MITER, 1.0f, new float[] {
-					6.0f, 4.0f }, 0f);
+					8.0f, 4.0f, 4.0f, 3.0f }, 0f);
 
 	private double transImgX(double mapX) {
 		return (mapX - startX) * scale;
@@ -174,8 +174,14 @@ public class MapDisplayPanel extends JPanel implements MouseListener,
 		for (int i = 0; i < r.getLane(); ++i) {
 			g.setStroke(dotLineStroke);
 			g.setColor(dotLineColor);
-			t1 = p1.clone();
-			t2 = p2.clone();
+			if (r.getDirection(i)==0){
+				t1=p2.clone();
+				t2=p1.clone();
+			}
+			else {
+				t1 = p1.clone();
+				t2 = p2.clone();
+			}
 			r.moveLine(t1, t2, r.getLane() * Road.laneWidth / 2 - i
 					* Road.laneWidth - 13);
 			g.draw(new Line2D.Double(transImgX(t1.getXAxis()), transImgY(t1
@@ -227,7 +233,7 @@ public class MapDisplayPanel extends JPanel implements MouseListener,
 		// draw statistic information
 		IStat stat = Simulator.getInstance().getStat();
 		if (selectedRoad != null && stat != null) {
-			String msg0 = "vehicles: "
+			String msg0 = "current: "
 					+ stat.currentVehiclesOnRoad(selectedRoad);
 			String msg1 = "average : "
 					+ String.format("%.2f", stat
@@ -263,7 +269,11 @@ public class MapDisplayPanel extends JPanel implements MouseListener,
 				theta = Math.toDegrees(Math.atan(tanv)) + 270;
 			}
 			System.out.println(r + "\n" + theta);
-			theta += 180;
+			if (v.getDirection()!=0) {
+				theta += 180;
+			}
+			else
+				v.getRoad().moveLine(s.clone(), px, Road.laneWidth);
 			trans.setToRotation(Math.toRadians(theta));
 			AffineTransform tmp = new AffineTransform();
 			tmp.setToScale(scale, scale);

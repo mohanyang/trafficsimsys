@@ -31,6 +31,18 @@ public class Point {
 	public static double crossProduct(Point p1, Point p2) {
 		return p1.xAxis * p2.yAxis - p2.xAxis * p1.yAxis;
 	}
+	
+	/**
+	 * 
+	 * @param p1
+	 * @param p2
+	 * @param d
+	 * @return a point on the line p1-p2, distance d from p2
+	 */
+	public static Point distanceSegment(Point p1, Point p2, double d){
+		return new Point(p2.getXAxis()-d*(p2.getXAxis()-p1.getXAxis())/distance(p1, p2),
+				p2.getYAxis()-d*(p2.getYAxis()-p1.getYAxis())/distance(p1, p2));
+	}
 
 	public Point(double x, double y) {
 		xAxis = x;

@@ -206,7 +206,7 @@ public class Road {
 	 * @param d
 	 *            the distance to be moved
 	 */
-	private void moveLine(Point start, Point end, double d) {
+	private static void moveLine(Point start, Point end, double d) {
 		double distance = Point.distance(start, end);
 		double theta = Math
 				.asin((end.getYAxis() - start.getYAxis()) / distance)
@@ -216,8 +216,9 @@ public class Road {
 		end.xAxis += d * Math.cos(theta);
 		end.yAxis += d * Math.sin(theta);
 	}
+
 	
-	public void moveLine(Point start, Point end, Point m, double d){
+	public static void moveLine(Point start, Point end, Point m, double d){
 		if (start.equals(m))
 			moveLine(m, end, d);
 		else

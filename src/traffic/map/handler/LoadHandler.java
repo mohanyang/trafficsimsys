@@ -28,7 +28,7 @@ public class LoadHandler {
 			vg.setbornpoint(i);
 			for (int j = 0; j < 1; j++) {
 				vg.setmaxspeed(20);
-				vg.settype(Lib.random(16));
+				vg.settype(Lib.random(VehicleGenerator.typenum + 1));
 				vg.setinitspeed(Lib.random(5) + 5);
 				vg.generate();
 			}

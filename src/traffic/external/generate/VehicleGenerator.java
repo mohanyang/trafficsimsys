@@ -170,7 +170,7 @@ public class VehicleGenerator implements GenerateController {
 	private int initspeed = 10;
 	private int type = 0;
 	private int bornpoint = 0;
-	private static int typenum = 4;
+	public static int typenum = 4;
 	private static int pointnum = 40;
 	private static int paranum = 4;
 }

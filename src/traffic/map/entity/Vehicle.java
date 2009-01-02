@@ -8,8 +8,10 @@ import traffic.simulation.vehicle.IVehicleControl;
  * 
  */
 public class Vehicle {
+	// TODO read from file
 	public static final int maxForwardSpeed = 20;
 	public static final int maxReverseSpeed = 10;
+	
 	protected double speed;
 	protected RoadInfo rInfo;
 	private VehicleInf inf;

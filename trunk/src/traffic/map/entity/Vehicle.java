@@ -70,7 +70,7 @@ public class Vehicle {
 		r.acquireLock();
 		r.addVehicle(this, lane);
 		rInfo.setRoad(r);
-		rInfo.setPosition(0);
+		rInfo.setPosition(inf.getLength()/2);
 		rInfo.setLane(lane);
 		r.releaseLock();
 	}

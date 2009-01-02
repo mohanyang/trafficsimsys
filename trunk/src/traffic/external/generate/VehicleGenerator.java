@@ -31,7 +31,7 @@ public class VehicleGenerator implements GenerateController {
 		Vehicle v = Map.getInstance().newVehicle(
 				new VehicleInf(type, maxspeed, initspeed));
 		v.setRoad(r, 0);
-		v.setPosition(0);
+		v.setPosition(v.getLength()/2);
 		v.setSpeed(initspeed);
 		r.acquireLock();
 		r.performInsertion();

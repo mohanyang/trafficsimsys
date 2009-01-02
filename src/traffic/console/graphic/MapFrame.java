@@ -1,6 +1,8 @@
 package traffic.console.graphic;
 
 import java.awt.BorderLayout;
+import java.awt.GridBagConstraints;
+import java.awt.GridBagLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
@@ -8,10 +10,10 @@ import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
-import javax.swing.JLayeredPane;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
+import javax.swing.JPanel;
 import javax.swing.JToolBar;
 import javax.swing.UIManager;
 
@@ -25,6 +27,7 @@ public class MapFrame extends JFrame implements ActionListener {
 	JMenuItem openMenu, saveMenu, setMenu;
 	JButton openButton, saveButton, setButton;
 	MapDisplayPanel mapDisplay;
+	ControlPanel controlPanel;
 	String baseDirectory = "./";
 	GenerateConsole generatedialog;
 
@@ -102,18 +105,33 @@ public class MapFrame extends JFrame implements ActionListener {
 
 		statusLabel = new JLabel("Traffic simulating system started.");
 
-		JLayeredPane MainDisplayPanel = new JLayeredPane();
+		JPanel MainDisplayPanel = new JPanel();
 		mapDisplay = new MapDisplayPanel();
-		MainDisplayPanel.add(mapDisplay, JLayeredPane.DEFAULT_LAYER);
-		// MainDisplayPanel.add(new VehicleDisplayPanel(),
-		// JLayeredPane.PALETTE_LAYER);
+		controlPanel = new ControlPanel();
+
+		GridBagLayout gridbag = new GridBagLayout();
+		GridBagConstraints c = new GridBagConstraints();
+		MainDisplayPanel.setLayout(gridbag);
+
+		c.fill = GridBagConstraints.BOTH;
+		c.gridx = 0;
+		c.gridy = 0;
+		c.weightx = 6.0;
+		c.weighty = 1.0;
+		gridbag.setConstraints(mapDisplay, c);
+		MainDisplayPanel.add(mapDisplay);
+		c.gridx = 1;
+		c.gridy = 0;
+		c.weightx = 2.0;
+		c.weighty = 1.0;
+		gridbag.setConstraints(controlPanel, c);
+		MainDisplayPanel.add(controlPanel);
 
 		getContentPane().setLayout(new BorderLayout());
 		getContentPane().add(MainDisplayPanel, BorderLayout.CENTER);
 		getContentPane().add(statusLabel, BorderLayout.SOUTH);
-		getContentPane().add(new ControlPanel(), BorderLayout.EAST);
-
 		getContentPane().add(toolbar, BorderLayout.NORTH);
+		pack();
 
 		mapDisplay.setStatusLabel(statusLabel);
 		generatedialog = new GenerateConsole();

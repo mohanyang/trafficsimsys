@@ -1,15 +1,17 @@
 package traffic.console.graphic;
 
+import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.image.BufferedImage;
 
 import javax.swing.JPanel;
 import javax.swing.UIManager;
+import javax.swing.border.LineBorder;
 
 public class ControlPanel extends JPanel {
 	public static final long serialVersionUID = 10L;
 
-	BufferedImage bf = ImageLoader.loadImageByName("infobg.gif");
+	BufferedImage bf = ImageLoader.loadImageByName("bgMap.gif");
 
 	public ControlPanel() {
 		try {
@@ -17,13 +19,12 @@ public class ControlPanel extends JPanel {
 					.getCrossPlatformLookAndFeelClassName());
 		} catch (Exception e) {
 		}
-		this.setToolTipText("11");
-		this.setSize(100, 200);
+		this.setBackground(Color.WHITE);
+		this.setSize(200, 750);
 	}
 
-	protected void paintComponent(Graphics g) {
-		setOpaque(true);
+	public void paintComponent(Graphics g) {
 		super.paintComponent(g);
-		g.drawImage(bf, 0, 0, null);
+		g.drawImage(bf, 0, 0, this);
 	}
 }

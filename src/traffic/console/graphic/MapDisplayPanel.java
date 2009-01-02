@@ -8,6 +8,8 @@ import java.awt.Graphics2D;
 import java.awt.Polygon;
 import java.awt.Rectangle;
 import java.awt.TexturePaint;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
@@ -36,6 +38,10 @@ import traffic.simulation.kernel.Simulator;
 import traffic.simulation.statistics.IStat;
 import traffic.simulation.statistics.StatBox;
 
+/**
+ * @author Isaac
+ * 
+ */
 public class MapDisplayPanel extends JPanel implements MouseListener,
 		MouseMotionListener, MouseWheelListener {
 	public static final long serialVersionUID = 2L;

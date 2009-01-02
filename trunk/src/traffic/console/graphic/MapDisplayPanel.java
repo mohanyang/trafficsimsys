@@ -5,6 +5,8 @@ import java.awt.Color;
 import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
+import java.awt.Rectangle;
+import java.awt.TexturePaint;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
@@ -39,6 +41,7 @@ public class MapDisplayPanel extends JPanel implements MouseListener,
 	private Map map = null;
 	BufferedImage[] img = null;
 	BufferedImage bg = null;
+	BufferedImage grassBG = null;
 	AffineTransform trans = null;
 	double scale = 1.0;
 
@@ -46,7 +49,7 @@ public class MapDisplayPanel extends JPanel implements MouseListener,
 	private boolean mouseInPanel = false;
 
 	private int startX = 0, startY = 0;
-	private static final Color bgColor = Color.decode("#5BDB57");
+	// private static final Color bgColor = Color.decode("#5BDB57");
 	private static final Color roadColor = Color.decode("#7F7F7F");
 	private static final Color borderColor = Color.BLUE;
 	private static final Color dotLineColor = Color.WHITE;
@@ -84,6 +87,7 @@ public class MapDisplayPanel extends JPanel implements MouseListener,
 			img = new BufferedImage[4];
 			for (int i=0; i<4; ++i)
 				img[i]=ImageLoader.loadImage(i);
+			grassBG = ImageIO.read(new File("./image/bg.bmp"));
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
@@ -194,7 +198,11 @@ public class MapDisplayPanel extends JPanel implements MouseListener,
 
 	private void drawMapOnGraphics(Graphics2D graphics) {
 		Graphics2D bf = (Graphics2D) bg.getGraphics();
-		bf.setColor(bgColor);
+		// bf.setColor(bgColor);
+		Rectangle rect = new Rectangle(0, 0, grassBG.getWidth(), grassBG
+				.getHeight());
+		TexturePaint texture = new TexturePaint(grassBG, rect);
+		bf.setPaint(texture);
 		bf.fillRect(0, 0, MAXWIDTH, MAXHEIGHT);
 		for (Iterator<Point> PointItr = map.getPointList(); PointItr.hasNext();) {
 			Point p = PointItr.next();
@@ -230,10 +238,17 @@ public class MapDisplayPanel extends JPanel implements MouseListener,
 			String msg1 = "average : "
 					+ String.format("%.2f", stat
 							.averageVehiclesOnRoad(selectedRoad));
+
+			Point s = selectedRoad.getPositionOnRoad(0, 0);
+			Point e = selectedRoad.getPositionOnRoad(selectedRoad.getLength(),
+					0);
+			String msg2 = s.toString() + " " + e.toString();
+
 			bf.setFont(new Font(Font.SANS_SERIF, Font.BOLD, 12));
 			bf.setColor(textColor);
 			bf.drawString(msg0, mouseX + 10, mouseY - 12);
 			bf.drawString(msg1, mouseX + 10, mouseY);
+			bf.drawString(msg2, mouseX + 10, mouseY + 12);
 		}
 
 		graphics.drawImage(bg, null, 0, 0);
@@ -253,17 +268,27 @@ public class MapDisplayPanel extends JPanel implements MouseListener,
 					.getYAxis());
 			v.getRoad().moveLine(new Point(s.getXAxis(), s.getYAxis()), px, px,
 					-Road.laneWidth / 2);
+			double xx = px.getXAxis(), yy = px.getYAxis();
 			if (tanv == Double.POSITIVE_INFINITY) {
 				theta = 0;
+
 			} else if (tanv == Double.NEGATIVE_INFINITY) {
 				theta = 180;
-
 			} else {
 				theta = Math.toDegrees(Math.atan(tanv)) + 270;
 			}
 
 			System.out.println(r + "\n" + theta);
 			theta += 180;
+			
+			if (s.getXAxis() > e.getXAxis()) {
+				theta += 180;
+				yy = yy + 26;
+			}
+//			if(s.getYAxis() > e.getYAxis()){
+//				theta += 180;
+//				xx = xx + 26;
+//			}
 
 			trans.setToRotation(Math.toRadians(theta));
 			AffineTransform tmp = new AffineTransform();
@@ -272,8 +297,7 @@ public class MapDisplayPanel extends JPanel implements MouseListener,
 			BufferedImageOp op = new AffineTransformOp(trans,
 					AffineTransformOp.TYPE_NEAREST_NEIGHBOR);
 			graphics.drawImage(img[v.getVehicleInf().getImageID()], op,
-					(int) transImgX(px.getXAxis()), (int) transImgY(px
-							.getYAxis()));
+					(int) transImgX(xx), (int) transImgY(yy));
 		}
 		r.releaseLock();
 	}

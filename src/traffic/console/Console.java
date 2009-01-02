@@ -4,6 +4,6 @@ import traffic.event.EventListener;
 
 public interface Console extends EventListener {
 
-	public void setInputHandlers(Runnable inputHandler);
+	public void setInputHandler(Runnable inputHandler);
 
 }

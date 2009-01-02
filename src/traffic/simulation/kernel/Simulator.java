@@ -26,7 +26,7 @@ public class Simulator {
 	public Simulator() {
 	}
 
-	public static Simulator getInstance() {
+	public static synchronized Simulator getInstance() {
 		if (instance == null) {
 			instance = new Simulator();
 		}

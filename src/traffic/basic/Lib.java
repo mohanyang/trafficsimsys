@@ -53,18 +53,6 @@ public class Lib {
 				.getWidth());
 	}
 
-	public static void correctImage(BufferedImage img) {
-		int[] argb = new int[img.getWidth() * img.getHeight()];
-		img.getRGB(0, 0, img.getWidth(), img.getHeight(), argb, 0, img
-				.getWidth());
-		for (int i = 0; i < argb.length; i++) {
-			if ((argb[i] & 0xffffff) == 0xFDFDFD)
-				argb[i] &= 0x00000000;
-		}
-		img.setRGB(0, 0, img.getWidth(), img.getHeight(), argb, 0, img
-				.getWidth());
-	}
-
 	/**
 	 * Test if two double are equal
 	 * 

@@ -87,10 +87,8 @@ public class MapDisplayPanel extends JPanel implements MouseListener,
 		}
 		try {
 			img = new BufferedImage[ImageLoader.count];
-			for (int i = 0; i < ImageLoader.count; ++i) {
+			for (int i = 0; i < ImageLoader.count; ++i)
 				img[i] = ImageLoader.loadImage(i);
-				Lib.correctImage(img[i]);
-			}
 			grassBG = ImageIO.read(new File("./image/bg.bmp"));
 		} catch (IOException e) {
 			e.printStackTrace();

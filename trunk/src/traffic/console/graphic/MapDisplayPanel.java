@@ -56,7 +56,7 @@ public class MapDisplayPanel extends JPanel implements MouseListener,
 	private static final BasicStroke borderStroke = new BasicStroke(0.1f);
 	private static final BasicStroke dotLineStroke = new BasicStroke(0.1f,
 			BasicStroke.CAP_ROUND, BasicStroke.JOIN_MITER, 1.0f, new float[] {
-					6.0f, 4.0f}, 0f);
+					6.0f, 4.0f }, 0f);
 
 	private double transImgX(double mapX) {
 		return (mapX - startX) * scale;
@@ -82,10 +82,8 @@ public class MapDisplayPanel extends JPanel implements MouseListener,
 		}
 		try {
 			img = new BufferedImage[4];
-			img[0] = ImageIO.read(new File("./image/1.gif"));
-			img[1] = ImageIO.read(new File("./image/2.gif"));
-			img[2] = ImageIO.read(new File("./image/3.gif"));
-			img[3] = ImageIO.read(new File("./image/4.gif"));
+			for (int i = 0; i < 4; ++i)
+				img[i] = ImageIO.read(new File("./image/" + (i + 1) + ".gif"));
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
@@ -174,11 +172,10 @@ public class MapDisplayPanel extends JPanel implements MouseListener,
 		for (int i = 0; i < r.getLane(); ++i) {
 			g.setStroke(dotLineStroke);
 			g.setColor(dotLineColor);
-			if (r.getDirection(i)==0){
-				t1=p2.clone();
-				t2=p1.clone();
-			}
-			else {
+			if (r.getDirection(i) == 0) {
+				t1 = p2.clone();
+				t2 = p1.clone();
+			} else {
 				t1 = p1.clone();
 				t2 = p2.clone();
 			}
@@ -258,8 +255,9 @@ public class MapDisplayPanel extends JPanel implements MouseListener,
 					/ (e.getXAxis() - s.getXAxis());
 			double theta;
 			Point px = v.getPoint().clone();
-			if (v.getDirection()==1){
-				v.getRoad().moveLine(s.clone(), e.clone(), px, -Road.laneWidth / 2);
+			if (v.getDirection() == 1) {
+				v.getRoad().moveLine(s.clone(), e.clone(), px,
+						-Road.laneWidth / 2);
 				if (tanv == Double.POSITIVE_INFINITY) {
 					theta = 180;
 				} else if (tanv == Double.NEGATIVE_INFINITY) {
@@ -267,9 +265,9 @@ public class MapDisplayPanel extends JPanel implements MouseListener,
 				} else {
 					theta = Math.toDegrees(Math.atan(tanv)) + 90;
 				}
-			}
-			else {
-				v.getRoad().moveLine(s.clone(), e.clone(), px, Road.laneWidth / 2);
+			} else {
+				v.getRoad().moveLine(s.clone(), e.clone(), px,
+						Road.laneWidth / 2);
 				if (tanv == Double.POSITIVE_INFINITY) {
 					theta = 0;
 				} else if (tanv == Double.NEGATIVE_INFINITY) {
@@ -278,14 +276,13 @@ public class MapDisplayPanel extends JPanel implements MouseListener,
 					theta = Math.toDegrees(Math.atan(tanv)) + 270;
 				}
 			}
-			
-			
-////			System.out.println(r + "\n" + theta);
-//			if (v.getDirection()!=0) {
-//				theta += 180;
-//			}
-//			else
-//				v.getRoad().moveLine(s.clone(), px, Road.laneWidth);
+
+			// // System.out.println(r + "\n" + theta);
+			// if (v.getDirection()!=0) {
+			// theta += 180;
+			// }
+			// else
+			// v.getRoad().moveLine(s.clone(), px, Road.laneWidth);
 			trans.setToRotation(Math.toRadians(theta));
 			AffineTransform tmp = new AffineTransform();
 			tmp.setToScale(scale, scale);

@@ -166,7 +166,7 @@ public class MapDisplayPanel extends JPanel implements MouseListener,
 		g.setColor(borderColor);
 		t1 = p1.clone();
 		t2 = p2.clone();
-		r.moveLine(t1, t2, -r.getLane() * Road.laneWidth / 2);
+		r.moveLine(t1, t2, t2, -r.getLane() * Road.laneWidth / 2);
 		g.draw(new Line2D.Double(transImgX(t1.getXAxis()), transImgY(t1
 				.getYAxis()), transImgX(t2.getXAxis()),
 				transImgY(t2.getYAxis())));
@@ -176,7 +176,7 @@ public class MapDisplayPanel extends JPanel implements MouseListener,
 			g.setColor(dotLineColor);
 			t1 = p1.clone();
 			t2 = p2.clone();
-			r.moveLine(t1, t2, r.getLane() * Road.laneWidth / 2 - i
+			r.moveLine(t1, t2, t2, r.getLane() * Road.laneWidth / 2 - i
 					* Road.laneWidth - 13);
 			g.draw(new Line2D.Double(transImgX(t1.getXAxis()), transImgY(t1
 					.getYAxis()), transImgX(t2.getXAxis()), transImgY(t2
@@ -186,7 +186,7 @@ public class MapDisplayPanel extends JPanel implements MouseListener,
 			g.setColor(borderColor);
 			t1 = p1.clone();
 			t2 = p2.clone();
-			r.moveLine(t1, t2, r.getLane() * Road.laneWidth / 2 - i
+			r.moveLine(t1, t2, t2, r.getLane() * Road.laneWidth / 2 - i
 					* Road.laneWidth);
 			g.draw(new Line2D.Double(transImgX(t1.getXAxis()), transImgY(t1
 					.getYAxis()), transImgX(t2.getXAxis()), transImgY(t2
@@ -254,7 +254,7 @@ public class MapDisplayPanel extends JPanel implements MouseListener,
 
 			Point px = new Point(v.getPoint().getXAxis(), v.getPoint()
 					.getYAxis());
-			v.getRoad().moveLine(new Point(s.getXAxis(), s.getYAxis()), px,
+			v.getRoad().moveLine(new Point(s.getXAxis(), s.getYAxis()), px, px,
 					-Road.laneWidth / 2);
 			if (tanv == Double.POSITIVE_INFINITY) {
 				theta = 0;

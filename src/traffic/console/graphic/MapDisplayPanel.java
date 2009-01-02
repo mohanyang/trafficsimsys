@@ -25,6 +25,7 @@ import javax.imageio.ImageIO;
 import javax.swing.JPanel;
 import javax.swing.UIManager;
 
+import traffic.basic.Lib;
 import traffic.map.entity.Map;
 import traffic.map.entity.Point;
 import traffic.map.entity.Road;
@@ -86,8 +87,10 @@ public class MapDisplayPanel extends JPanel implements MouseListener,
 		}
 		try {
 			img = new BufferedImage[ImageLoader.count];
-			for (int i = 0; i < ImageLoader.count; ++i)
+			for (int i = 0; i < ImageLoader.count; ++i) {
 				img[i] = ImageLoader.loadImage(i);
+				Lib.correctImage(img[i]);
+			}
 			grassBG = ImageIO.read(new File("./image/bg.bmp"));
 		} catch (IOException e) {
 			e.printStackTrace();
@@ -95,7 +98,7 @@ public class MapDisplayPanel extends JPanel implements MouseListener,
 		trans = new AffineTransform();
 		this.setSize(imgWidth, imgHeight);
 
-		bg = new BufferedImage(imgWidth, imgHeight, BufferedImage.TYPE_INT_ARGB);
+		bg = new BufferedImage(imgWidth, imgHeight, BufferedImage.TYPE_INT_RGB);
 		addMouseMotionListener(this);
 		addMouseWheelListener(this);
 		addMouseListener(this);

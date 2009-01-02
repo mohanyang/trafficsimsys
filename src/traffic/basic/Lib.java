@@ -40,7 +40,7 @@ public class Lib {
 	 * @param alpha
 	 *            the alpha channel value
 	 */
-	public static void alphaImg(BufferedImage img, int alpha) {
+	public static void alphaImage(BufferedImage img, int alpha) {
 		int[] argb = new int[img.getWidth() * img.getHeight()];
 		img.getRGB(0, 0, img.getWidth(), img.getHeight(), argb, 0, img
 				.getWidth());
@@ -48,6 +48,18 @@ public class Lib {
 		for (int i = 0; i < argb.length; i++) {
 			if ((argb[i] & 0xff000000) != 0)
 				argb[i] &= alpha;
+		}
+		img.setRGB(0, 0, img.getWidth(), img.getHeight(), argb, 0, img
+				.getWidth());
+	}
+
+	public static void correctImage(BufferedImage img) {
+		int[] argb = new int[img.getWidth() * img.getHeight()];
+		img.getRGB(0, 0, img.getWidth(), img.getHeight(), argb, 0, img
+				.getWidth());
+		for (int i = 0; i < argb.length; i++) {
+			if ((argb[i] & 0xffffff) == 0xFDFDFD)
+				argb[i] &= 0x00000000;
 		}
 		img.setRGB(0, 0, img.getWidth(), img.getHeight(), argb, 0, img
 				.getWidth());

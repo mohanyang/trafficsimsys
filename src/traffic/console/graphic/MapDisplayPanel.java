@@ -103,7 +103,7 @@ public class MapDisplayPanel extends JPanel implements MouseListener,
 			e.printStackTrace();
 		}
 		trans = new AffineTransform();
-		this.setSize(imgWidth, imgHeight);
+		setSize(imgWidth, imgHeight);
 
 		bg = new BufferedImage(imgWidth, imgHeight, BufferedImage.TYPE_INT_RGB);
 		zoomPanel = new ZoomPanel(this);

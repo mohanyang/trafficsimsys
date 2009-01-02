@@ -1,11 +1,13 @@
 package traffic.simulation.kernel;
 
 import java.util.Iterator;
+import java.util.TimerTask;
 
 import traffic.basic.Config;
 import traffic.basic.Lib;
 import traffic.basic.Scheduler;
 import traffic.console.Console;
+import traffic.console.graphic.SplashWindow;
 import traffic.event.Event;
 import traffic.log.Log;
 import traffic.map.entity.Map;
@@ -14,13 +16,15 @@ import traffic.map.entity.Road;
 import traffic.map.entity.Vehicle;
 import traffic.map.handler.LoadHandler;
 import traffic.simulation.statistics.IStat;
-import traffic.simulation.vehicle.*;
+import traffic.simulation.vehicle.ConservativeVehicleController;
+import traffic.simulation.vehicle.IVehicleControl;
 
 public class Simulator {
 	private Map map = null;
 	private Console console = null;
 	private Runnable simuTask = null;
 	private IStat stat = null;
+	private SplashWindow sWin = null;
 
 	private static Simulator instance = null;
 
@@ -35,17 +39,23 @@ public class Simulator {
 	}
 
 	public void initialize() {
+		sWin = new SplashWindow();
+		sWin.setRatio(0.2);
 		Config.load("traffic.ini");
 		Lib.seedRandom(Config.getInteger("traffic.randomSeed", (int) System
 				.currentTimeMillis()));
+		sWin.setRatio(0.4);
 		map = new LoadHandler().load();
+		sWin.setRatio(0.6);
 		Log.getInstance().writeln("Vehicle list");
+		sWin.setRatio(0.8);
 		for (Iterator<Point> p = map.getPointList(); p.hasNext();)
 			for (Iterator<Road> r = p.next().getRoadList(); r.hasNext();)
 				for (Iterator<Vehicle> v = r.next().getVehicleList(); v
 						.hasNext();)
 					Log.getInstance().writeln(v.next().toString());
 		Log.getInstance().writeln();
+		sWin.setRatio(1);
 		console = (Console) Lib.constructObject(Config
 				.getString("traffic.console"));
 		Lib.assertTrue(console != null);

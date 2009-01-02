@@ -21,13 +21,10 @@ public class GraphicConsole implements Console {
 			switch (e.getType()) {
 			case Event.CREATE:
 				f.handleCreate((Map) e.getObj());
-				f.setSize(1024, 768);
-				f.pack();
 				f.setVisible(true);
 				break;
 			case Event.MOVE:
 				f.handleMove((Map) e.getObj());
-				f.setSize(1024, 768);
 				break;
 			}
 		}

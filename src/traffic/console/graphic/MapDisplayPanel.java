@@ -2,9 +2,9 @@ package traffic.console.graphic;
 
 import java.awt.BasicStroke;
 import java.awt.Color;
-import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
+import java.awt.Polygon;
 import java.awt.Rectangle;
 import java.awt.TexturePaint;
 import java.awt.event.MouseEvent;
@@ -17,7 +17,6 @@ import java.awt.geom.Line2D;
 import java.awt.image.AffineTransformOp;
 import java.awt.image.BufferedImage;
 import java.awt.image.BufferedImageOp;
-import java.awt.Polygon;
 import java.io.File;
 import java.io.IOException;
 import java.util.Iterator;
@@ -55,7 +54,7 @@ public class MapDisplayPanel extends JPanel implements MouseListener,
 	private static final Color roadColor = Color.decode("#7F7F7F");
 	private static final Color borderColor = Color.BLUE;
 	private static final Color dotLineColor = Color.WHITE;
-	private static final Color textColor = Color.decode("#F87858");
+	// private static final Color textColor = Color.decode("#F87858");
 
 	private static final Color highLightRoadColor = Color.YELLOW;
 	private static final BasicStroke borderStroke = new BasicStroke(0.1f);
@@ -110,22 +109,26 @@ public class MapDisplayPanel extends JPanel implements MouseListener,
 			drawMapOnGraphics((Graphics2D) graphics);
 		}
 	}
-	
+
 	/**
 	 * return a triangle, heading s<-e, with head at s
+	 * 
 	 * @param s
 	 * @param e
 	 * @return
 	 */
-	private Polygon getTriangle(Point s, Point e){
-		Point p2=Point.distanceSegment(e, s, 10);
-		Point p3=Point.distanceSegment(e, s, 10);
+	private Polygon getTriangle(Point s, Point e) {
+		Point p2 = Point.distanceSegment(e, s, 10);
+		Point p3 = Point.distanceSegment(e, s, 10);
 		Road.moveLine(s.clone(), e.clone(), p2, 5);
 		Road.moveLine(s.clone(), e.clone(), p3, -5);
-		Polygon ret=new Polygon();
-		ret.addPoint((int)transImgX(s.getXAxis()), (int)transImgY(s.getYAxis()));
-		ret.addPoint((int)transImgX(p2.getXAxis()), (int)transImgY(p2.getYAxis()));
-		ret.addPoint((int)transImgX(p3.getXAxis()), (int)transImgY(p3.getYAxis()));
+		Polygon ret = new Polygon();
+		ret.addPoint((int) transImgX(s.getXAxis()), (int) transImgY(s
+				.getYAxis()));
+		ret.addPoint((int) transImgX(p2.getXAxis()), (int) transImgY(p2
+				.getYAxis()));
+		ret.addPoint((int) transImgX(p3.getXAxis()), (int) transImgY(p3
+				.getYAxis()));
 		return ret;
 	}
 
@@ -188,7 +191,7 @@ public class MapDisplayPanel extends JPanel implements MouseListener,
 		g.setColor(borderColor);
 		t1 = p1.clone();
 		t2 = p2.clone();
-		r.moveLine(t1, t2, t2, -r.getLane() * Road.laneWidth / 2);
+		Road.moveLine(t1, t2, t2, -r.getLane() * Road.laneWidth / 2);
 		g.draw(new Line2D.Double(transImgX(t1.getXAxis()), transImgY(t1
 				.getYAxis()), transImgX(t2.getXAxis()),
 				transImgY(t2.getYAxis())));
@@ -196,27 +199,26 @@ public class MapDisplayPanel extends JPanel implements MouseListener,
 		for (int i = 0; i < r.getLane(); ++i) {
 			g.setStroke(borderStroke);
 			g.setColor(dotLineColor);
-			t1=r.getPositionOnRoad(r.getLength()/2, i);
-			Polygon tri=getTriangle(t1, r.getPositionOnRoad(0, i));
+			t1 = r.getPositionOnRoad(r.getLength() / 2, i);
+			Polygon tri = getTriangle(t1, r.getPositionOnRoad(0, i));
 			g.drawPolygon(tri);
 			g.fillPolygon(tri);
-			
+
 			g.setStroke(dotLineStroke);
 			g.setColor(dotLineColor);
 			t1 = p1.clone();
 			t2 = p2.clone();
-			r.moveLine(t1, t2, t2, r.getLane() * Road.laneWidth / 2 - i
-					* Road.laneWidth - Road.laneWidth/2);
+			Road.moveLine(t1, t2, t2, r.getLane() * Road.laneWidth / 2 - i
+					* Road.laneWidth - Road.laneWidth / 2);
 			g.draw(new Line2D.Double(transImgX(t1.getXAxis()), transImgY(t1
 					.getYAxis()), transImgX(t2.getXAxis()), transImgY(t2
 					.getYAxis())));
-			
 
 			g.setStroke(borderStroke);
 			g.setColor(borderColor);
 			t1 = p1.clone();
 			t2 = p2.clone();
-			r.moveLine(t1, t2, t2, r.getLane() * Road.laneWidth / 2 - i
+			Road.moveLine(t1, t2, t2, r.getLane() * Road.laneWidth / 2 - i
 					* Road.laneWidth);
 			g.draw(new Line2D.Double(transImgX(t1.getXAxis()), transImgY(t1
 					.getYAxis()), transImgX(t2.getXAxis()), transImgY(t2
@@ -268,7 +270,6 @@ public class MapDisplayPanel extends JPanel implements MouseListener,
 			java.awt.Point pos = getBoxPosition(box.getWidth(), box.getHeight());
 			bf.drawImage(box, null, pos.x, pos.y);
 			box.releaseLock();
-
 		}
 
 		graphics.drawImage(bg, null, 0, 0);
@@ -286,7 +287,7 @@ public class MapDisplayPanel extends JPanel implements MouseListener,
 			double theta = 0;
 			Point px = new Point(v.getPoint().getXAxis(), v.getPoint()
 					.getYAxis());
-			v.getRoad().moveLine(new Point(s.getXAxis(), s.getYAxis()), px, px,
+			Road.moveLine(new Point(s.getXAxis(), s.getYAxis()), px, px,
 					-Road.laneWidth / 2);
 			double xx = px.getXAxis(), yy = px.getYAxis();
 			if (tanv == Double.POSITIVE_INFINITY) {

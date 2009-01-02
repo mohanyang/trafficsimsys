@@ -19,7 +19,7 @@ public class SimpleStatBox extends StatBox {
 	@Override
 	public void prepare(IStat stat, Road road) {
 		graph.setColor(Color.WHITE);
-		graph.fillRect(0, 0, width, height);
+		graph.fill3DRect(0, 0, width, height, true);
 		graph.setColor(Color.RED);
 		graph.drawString(
 				"Vehicles : " + stat.currentVehiclesOnRoad(road) + ".", 1, 10);

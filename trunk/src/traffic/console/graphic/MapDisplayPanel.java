@@ -300,15 +300,21 @@ public class MapDisplayPanel extends JPanel implements MouseListener,
 			}
 
 			System.out.println(r + "\n" + theta);
-			theta += 180;
 
+			// 4 cars
+			theta += 180;
 			if (s.getXAxis() > e.getXAxis()) {
 				theta += 180;
 				yy = yy + Road.laneWidth;
 			}
-			// if(s.getYAxis() > e.getYAxis()){
+
+			// 15 cars
+			// theta += 90;
+			// if ((s.getXAxis() > e.getXAxis() && r.getDirection(v.getLane())
+			// == 0)
+			// || r.getDirection(v.getLane()) == 1) {
 			// theta += 180;
-			// xx = xx + Road.laneWidth;
+			// yy = yy + Road.laneWidth;
 			// }
 
 			trans.setToRotation(Math.toRadians(theta));

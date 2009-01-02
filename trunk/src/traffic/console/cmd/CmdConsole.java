@@ -17,7 +17,7 @@ public class CmdConsole implements Console {
 	}
 
 	@Override
-	public void setInputHandlers(Runnable inputHandler) {
+	public void setInputHandler(Runnable inputHandler) {
 	}
 
 	@Override

@@ -12,7 +12,7 @@ public class GraphicConsole implements Console {
 	}
 
 	@Override
-	public void setInputHandlers(Runnable inputHandler) {
+	public void setInputHandler(Runnable inputHandler) {
 	}
 
 	@Override

@@ -23,7 +23,7 @@ public class LoadHandler {
 			map.newRoad(itr.next());
 
 		int pointnum=map.getPointNum();
-		for(int i=0;i<3;i++){
+		for(int i=0;i<pointnum;i++){
 			MyFactory.getInstance().getVehicleGenerator().getInstance().setbornpoint(i);
 			for(int j=0;j<1;j++){
 				MyFactory.getInstance().getVehicleGenerator().getInstance().setmaxspeed(20);

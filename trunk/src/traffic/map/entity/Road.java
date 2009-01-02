@@ -27,6 +27,8 @@ public class Road {
 	private LinkedList<Vehicle> removeList = new LinkedList<Vehicle>();
 	private LinkedList<Vehicle> insertList = new LinkedList<Vehicle>();
 	private ReentrantLock lock = new ReentrantLock();
+	
+	private LinkedList<Point> intersectionList = new LinkedList<Point>();
 
 	/**
 	 * acquire the lock used to protect concurrent visit.
@@ -352,5 +354,17 @@ public class Road {
 	public double getLamda() {
 		return (endPoint.yAxis - startPoint.yAxis)
 				/ (endPoint.xAxis - startPoint.xAxis);
+	}
+	
+	public RoadInfo getInfoByPoint(Point x){
+		
+	}
+	
+	public LinkedList<Road> getRoadBySegment(){
+		
+	}
+	
+	public void insertIntersection(){
+		
 	}
 }

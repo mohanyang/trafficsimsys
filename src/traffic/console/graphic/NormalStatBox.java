@@ -27,13 +27,7 @@ public class NormalStatBox extends StatBox {
 		// bg = ImageLoader.loadImageByName("infobg.gif");
 		bg = ImageLoader.loadImageByName("infobg.png");
 		Lib.assertTrue(bg != null);
-		int[] argb = new int[bg.getWidth() * bg.getHeight()];
-		bg.getRGB(0, 0, bg.getWidth(), bg.getHeight(), argb, 0, bg.getWidth());
-		for (int i = 0; i < argb.length; i++) {
-			if ((argb[i] & 0xff000000) != 0)
-				argb[i] &= 0x70ffffff;
-		}
-		bg.setRGB(0, 0, bg.getWidth(), bg.getHeight(), argb, 0, bg.getWidth());
+		Lib.alphaImg(bg, 0x70);
 	}
 
 	@Override

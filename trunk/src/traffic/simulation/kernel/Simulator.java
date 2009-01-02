@@ -46,9 +46,8 @@ public class Simulator {
 						.hasNext();)
 					Log.getInstance().writeln(v.next().toString());
 		Log.getInstance().writeln();
-//		console = (Console) Lib.constructObject(Config
-//				.getString("traffic.console"));
-		console = new traffic.console.graphic.GraphicConsole();
+		console = (Console) Lib.constructObject(Config
+				.getString("traffic.console"));
 		Lib.assertTrue(console != null);
 		console.eventOccured(new Event(map, Event.CREATE));
 		stat = (IStat) Lib.constructObject(Config.getString(

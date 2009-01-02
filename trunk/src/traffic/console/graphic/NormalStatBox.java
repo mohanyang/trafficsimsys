@@ -20,7 +20,7 @@ public class NormalStatBox extends StatBox {
 	private static final int height = 75;
 	private Graphics2D graph = null;
 	private BufferedImage bg = null;
-	private static final Color textColor = Color.decode("#F87858");
+	private static final Color textColor = Color.RED;
 
 	public NormalStatBox() {
 		super(width, height);

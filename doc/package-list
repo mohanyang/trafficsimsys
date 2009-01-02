@@ -1,5 +1,10 @@
 traffic.basic
 traffic.console
+traffic.console.cmd
+traffic.console.graphic
+traffic.driver
+traffic.event
+traffic.external.generate
 traffic.external.system.road
 traffic.external.system.road.xml
 traffic.external.system.vehicle
@@ -7,3 +12,5 @@ traffic.external.system.vehicle.xml
 traffic.map.entity
 traffic.map.handler
 traffic.simulation.kernel
+traffic.simulation.statistics
+traffic.simulation.vehicle

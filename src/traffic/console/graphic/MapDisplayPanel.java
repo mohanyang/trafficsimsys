@@ -25,7 +25,6 @@ import javax.imageio.ImageIO;
 import javax.swing.JPanel;
 import javax.swing.UIManager;
 
-import traffic.external.generate.VehicleGenerator;
 import traffic.map.entity.Map;
 import traffic.map.entity.Point;
 import traffic.map.entity.Road;
@@ -86,8 +85,8 @@ public class MapDisplayPanel extends JPanel implements MouseListener,
 		} catch (Exception e) {
 		}
 		try {
-			img = new BufferedImage[VehicleGenerator.typenum];
-			for (int i = 0; i < VehicleGenerator.typenum; ++i)
+			img = new BufferedImage[ImageLoader.count];
+			for (int i = 0; i < ImageLoader.count; ++i)
 				img[i] = ImageLoader.loadImage(i);
 			grassBG = ImageIO.read(new File("./image/bg.bmp"));
 		} catch (IOException e) {
@@ -314,7 +313,9 @@ public class MapDisplayPanel extends JPanel implements MouseListener,
 
 			trans.setToRotation(Math.toRadians(theta));
 			AffineTransform tmp = new AffineTransform();
-			tmp.setToScale(scale, scale);
+			tmp
+					.setToScale(scale * ImageLoader.scale, scale
+							* ImageLoader.scale);
 			trans.concatenate(tmp);
 			BufferedImageOp op = new AffineTransformOp(trans,
 					AffineTransformOp.TYPE_NEAREST_NEIGHBOR);

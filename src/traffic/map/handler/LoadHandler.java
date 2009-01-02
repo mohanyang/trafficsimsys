@@ -2,6 +2,7 @@ package traffic.map.handler;
 
 import traffic.basic.Config;
 import traffic.basic.Lib;
+import traffic.console.graphic.ImageLoader;
 import traffic.external.generate.MyFactory;
 import traffic.external.generate.VehicleGenerator;
 import traffic.external.system.road.RoadInfSystem;
@@ -28,7 +29,7 @@ public class LoadHandler {
 			vg.setbornpoint(i);
 			for (int j = 0; j < 1; j++) {
 				vg.setmaxspeed(20);
-				vg.settype(Lib.random(VehicleGenerator.typenum + 1));
+				vg.settype(Lib.random(ImageLoader.count + 1));
 				vg.setinitspeed(Lib.random(5) + 5);
 				vg.generate();
 			}

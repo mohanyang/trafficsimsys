@@ -4,6 +4,7 @@ import java.util.Iterator;
 import java.util.LinkedList;
 
 import traffic.basic.Lib;
+import traffic.console.graphic.ImageLoader;
 import traffic.map.entity.Map;
 import traffic.map.entity.Point;
 import traffic.map.entity.Road;
@@ -19,6 +20,7 @@ public class VehicleGenerator implements GenerateController {
 	public static synchronized VehicleGenerator getInstance() {
 		if (instance == null) {
 			instance = new VehicleGenerator();
+			typenum = ImageLoader.getInstance().count;
 		}
 		return instance;
 	}
@@ -31,7 +33,7 @@ public class VehicleGenerator implements GenerateController {
 		Vehicle v = Map.getInstance().newVehicle(
 				new VehicleInf(type, maxspeed, initspeed));
 		v.setRoad(r, 0);
-		v.setPosition(v.getLength()/2);
+		v.setPosition(v.getLength() / 2);
 		v.setSpeed(initspeed);
 		r.acquireLock();
 		r.performInsertion();
@@ -170,7 +172,7 @@ public class VehicleGenerator implements GenerateController {
 	private int initspeed = 10;
 	private int type = 0;
 	private int bornpoint = 0;
-	public static int typenum = 4;
+	private static int typenum = 4;
 	private static int pointnum = 40;
 	private static int paranum = 4;
 }

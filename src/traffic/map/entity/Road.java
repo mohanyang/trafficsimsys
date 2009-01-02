@@ -252,7 +252,7 @@ public class Road {
 	public Point getPositionOnRoad(double distance, int lane, boolean moveLine) {
 		Point p1 = startPoint.clone(), p2 = endPoint.clone();
 		if (moveLine)
-			moveLine(p1, p2, laneInfo.length * 26 / 2 - lane * 26 - 13);
+			moveLine(p1, p2, laneInfo.length * laneWidth / 2 - lane * laneWidth - laneWidth / 2);
 		if (laneInfo[lane] == 0) {
 			Point temp = p1;
 			p1 = p2;

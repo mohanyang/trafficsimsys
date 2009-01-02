@@ -39,4 +39,13 @@ public class ImageLoader {
 			return null;
 		}
 	}
+
+	public static BufferedImage loadImageByName(String name) {
+		try {
+			return ImageIO.read(new File("./image/" + name));
+		} catch (IOException e) {
+			e.printStackTrace();
+			return null;
+		}
+	}
 }

@@ -79,7 +79,8 @@ public class Road {
 	public Road(Point s, Point e, byte[] l) {
 		System.out.println("=== lane info ===");
 		for (int i = 0; i < l.length; ++i)
-			System.out.println(" " + l[i]);
+			System.out.print(" " + l[i]);
+		System.out.println();
 		startPoint = s;
 		endPoint = e;
 		laneInfo = new byte[l.length];
@@ -88,8 +89,7 @@ public class Road {
 		for (int i = 0; i < l.length; ++i)
 			laneMove[i] = true;
 		length = Point.distance(s, e);
-		System.out.print(this);
-		System.out.println();
+		System.out.println("constructing " + this);
 	}
 
 	@Override

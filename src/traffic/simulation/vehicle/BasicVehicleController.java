@@ -17,7 +17,7 @@ import traffic.map.entity.Vehicle;
 public class BasicVehicleController extends EventDispatcher implements
 		IVehicleControl {
 
-	private Vehicle assoc;
+	protected Vehicle assoc;
 
 	@Override
 	public void setVehicle(Vehicle v) {

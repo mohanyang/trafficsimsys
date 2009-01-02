@@ -13,8 +13,7 @@ import traffic.map.entity.Road;
 import traffic.map.entity.Vehicle;
 import traffic.map.handler.LoadHandler;
 import traffic.simulation.statistics.IStat;
-import traffic.simulation.vehicle.BasicVehicleController;
-import traffic.simulation.vehicle.IVehicleControl;
+import traffic.simulation.vehicle.*;
 
 public class Simulator {
 	private Map map = null;
@@ -60,7 +59,7 @@ public class Simulator {
 		IVehicleControl controller = v.getController();
 		if (controller == null) {
 			// TODO use something like factory to create controller.
-			controller = new BasicVehicleController();
+			controller = new ConservativeVehicleController();
 			controller.setVehicle(v);
 			v.setController(controller);
 			controller.addEventListener(stat);

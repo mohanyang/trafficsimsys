@@ -29,11 +29,12 @@ public class VehicleGenerator implements GenerateController{
 		if(r==null){
 			return -1;
 		}
-		r.acquireLock();
 		Vehicle v = Map.getInstance().newVehicle(new VehicleInf(type,maxspeed,initspeed));
 		v.setRoad(r,0);
 		v.setPosition(0);
 		v.setSpeed(initspeed);
+		r.acquireLock();
+		r.performInsertion();
 		r.releaseLock();
 		return 0;
 	}

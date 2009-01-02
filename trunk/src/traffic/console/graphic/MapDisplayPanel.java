@@ -56,7 +56,7 @@ public class MapDisplayPanel extends JPanel implements MouseListener,
 	private static final BasicStroke borderStroke = new BasicStroke(0.1f);
 	private static final BasicStroke dotLineStroke = new BasicStroke(0.1f,
 			BasicStroke.CAP_ROUND, BasicStroke.JOIN_MITER, 1.0f, new float[] {
-					8.0f, 4.0f, 4.0f, 3.0f }, 0f);
+					6.0f, 4.0f}, 0f);
 
 	private double transImgX(double mapX) {
 		return (mapX - startX) * scale;
@@ -257,10 +257,8 @@ public class MapDisplayPanel extends JPanel implements MouseListener,
 			double tanv = (e.getYAxis() - s.getYAxis())
 					/ (e.getXAxis() - s.getXAxis());
 			double theta;
-			Point px = new Point(v.getPoint().getXAxis(), v.getPoint()
-					.getYAxis());
-			v.getRoad().moveLine(new Point(s.getXAxis(), s.getYAxis()), px,
-					-Road.laneWidth / 2);
+			Point px = v.getPoint().clone();
+			v.getRoad().moveLine(s.clone(), px, -Road.laneWidth / 2);
 			if (tanv == Double.POSITIVE_INFINITY) {
 				theta = 0;
 			} else if (tanv == Double.NEGATIVE_INFINITY) {

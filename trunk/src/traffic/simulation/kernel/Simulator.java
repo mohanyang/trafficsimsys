@@ -93,7 +93,7 @@ public class Simulator {
 									getController(v).react();
 									System.out.println(v);
 								}
-							r.performRemoval();
+							r.flushQueue();
 							r.releaseLock();
 						}
 					}

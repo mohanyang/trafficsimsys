@@ -44,21 +44,15 @@ public class BasicVehicleController extends EventDispatcher implements
 		if (curr.canMove(v.getLane())) {
 			// check closest distance
 			double temp = curr.closestDistance(v);
-			if (temp < 0){
-				v.removeFromCurrent();
-				stop();
-			}
-				
-			else if (temp < v.getSpeed() || Lib.isEqual(v.getSpeed(), 0))
+			System.out.println("closest distance " + temp);
+			if (temp < v.getSpeed() || Lib.isEqual(v.getSpeed(), 0))
 				v.setSpeed(temp);
 
-			// else
-			// v.setSpeed(v.getSpeed()+1);
 			v.proceed();
 
 			int count;
-			if (Lib.isEqual(v.getPosition(), v.getRoad()
-							.getLength())) {
+			System.out.println("position " + v.getPosition() + " " + v.getRoad().getLength());
+			if (Lib.isEqual(v.getPosition(), v.getRoad()	.getLength())) {
 				LinkedList<RoadEntranceInfo> adj=v.getRoad().getIntersectionList(v.getLane());
 				if (adj.size()==0){
 					System.out.println("+++" + v + " dying");

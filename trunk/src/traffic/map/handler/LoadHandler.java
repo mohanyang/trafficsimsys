@@ -25,7 +25,7 @@ public class LoadHandler {
 		int pointnum = map.getPointNum();
 		MyFactory fact = MyFactory.getInstance();
 		VehicleGenerator vg = fact.getVehicleGenerator().getInstance();
-		for (int i = 0; i < pointnum; i++) {
+/*		for (int i = 0; i < pointnum; i++) {
 			vg.setbornpoint(i);
 			for (int j = 0; j < 1; j++) {
 				vg.setmaxspeed(20);
@@ -33,7 +33,7 @@ public class LoadHandler {
 				vg.setinitspeed(Lib.random(5) + 5);
 				vg.generate();
 			}
-		}
+		}*/
 
 		return map;
 	}

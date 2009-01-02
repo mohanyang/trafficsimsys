@@ -26,18 +26,21 @@ public class VehicleGenerator implements GenerateController {
 	}
 
 	public int generate() {
-		Road r = SearchBornPoint(bornpoint);
-		if (r == null) {
+		if(road==null){
+			road = SearchBornPoint(bornpoint);
+		}
+		if (road == null) {
 			return -1;
 		}
 		Vehicle v = Map.getInstance().newVehicle(
 				new VehicleInf(type, maxspeed, initspeed));
-		v.setRoad(r, 0);
+		v.setRoad(road, 0);
 		v.setPosition(v.getLength() / 2);
 		v.setSpeed(initspeed);
-		r.acquireLock();
-		r.performInsertion();
-		r.releaseLock();
+		road.acquireLock();
+		road.performInsertion();
+		road.releaseLock();
+		road=null;
 		return 0;
 	}
 
@@ -68,6 +71,14 @@ public class VehicleGenerator implements GenerateController {
 		return null;
 	}
 
+	public int setroad(Road r){
+		if(r==null){
+			return -1;
+		}
+		road=r;
+		return 0;
+	}
+	
 	public int setbornpoint(int bpoint) {
 		if (bpoint >= pointnum) {
 			bpoint = pointnum - 1;
@@ -172,6 +183,7 @@ public class VehicleGenerator implements GenerateController {
 	private int initspeed = 10;
 	private int type = 0;
 	private int bornpoint = 0;
+	private Road road=null;
 	private static int typenum = 4;
 	private static int pointnum = 40;
 	private static int paranum = 4;

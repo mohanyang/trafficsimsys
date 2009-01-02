@@ -29,6 +29,7 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.UIManager;
 
+import traffic.external.generate.MyFactory;
 import traffic.log.Log;
 import traffic.map.entity.Map;
 import traffic.map.entity.Point;
@@ -390,6 +391,11 @@ public class MapDisplayPanel extends JPanel implements MouseListener,
 	@Override
 	public void mouseClicked(MouseEvent arg0) {
 		// nothing
+		mouseX = arg0.getX();
+		mouseY = arg0.getY();
+		Road r=map.getRoad(mouseX, mouseY);
+		MyFactory.getInstance().getVehicleGenerator().setroad(r);
+		MyFactory.getInstance().getVehicleGenerator().generate();
 	}
 
 	@Override

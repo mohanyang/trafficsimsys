@@ -14,7 +14,7 @@ public abstract class StatBox extends BufferedImage {
 	private Lock lock = new ReentrantLock();
 
 	protected StatBox(int width, int height) {
-		super(width, height, TYPE_INT_RGB);
+		super(width, height, TYPE_4BYTE_ABGR);
 	}
 
 	public static StatBox getInstance() {

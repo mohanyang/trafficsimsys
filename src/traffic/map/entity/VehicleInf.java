@@ -25,7 +25,7 @@ public class VehicleInf {
 		}
 		if(maxspeed<initspeed){
 			initspeed=maxspeed;
-			System.out.print("initial speed exceeds max speed\n");
+			System.err.print("initial speed exceeds max speed\n");
 		}
 	}
 	

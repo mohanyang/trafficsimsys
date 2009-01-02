@@ -3,6 +3,8 @@ package traffic.map.entity;
 import java.util.HashMap;
 import java.util.Iterator;
 
+import traffic.log.Log;
+
 /**
  * @author Isaac
  * 
@@ -53,12 +55,12 @@ public class Map {
 	}
 
 	public Road newRoad(Road r) {
-		System.out.println("initializing newRoad " + r);
+		Log.getInstance().writeln("initializing newRoad " + r);
 		return newRoad(r.getStartPoint(), r.getEndPoint(), r.laneInfo);
 	}
 
 	public Road newRoad(double x1, double y1, double x2, double y2, int l) {
-		System.out.println("initializing newRoad ");
+		Log.getInstance().writeln("initializing newRoad ");
 		return newRoad(new Point(x1, y1), new Point(x2, y2), new byte[l]);
 	}
 

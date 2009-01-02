@@ -5,6 +5,7 @@ import java.util.LinkedList;
 import traffic.basic.Lib;
 import traffic.event.Event;
 import traffic.event.EventListener;
+import traffic.log.Log;
 import traffic.map.entity.Road;
 import traffic.map.entity.RoadEntranceInfo;
 import traffic.map.entity.Vehicle;
@@ -21,7 +22,7 @@ public class ConservativeVehicleController extends BasicVehicleController
 		if (curr.canMove(v.getLane())) {
 			// check closest distance
 			double temp = curr.closestDistance(v);
-			System.out.println("closest distance " + temp);
+			Log.getInstance().writeln("closest distance " + temp);
 			if (temp-v.getLength() < v.getSpeed()) {
 				if (v.getPosition()+temp<curr.getLength()-1e-3)
 					v.setSpeed(0);
@@ -36,21 +37,21 @@ public class ConservativeVehicleController extends BasicVehicleController
 			v.proceed();
 
 			int count;
-			System.out.println("position " + v.getPosition() + " " + v.getRoad().getLength());
+			Log.getInstance().writeln("position " + v.getPosition() + " " + v.getRoad().getLength());
 			if (Lib.isEqual(v.getPosition(), v.getRoad()	.getLength())) {
 				LinkedList<RoadEntranceInfo> adj=v.getRoad().getIntersectionList(v.getLane());
 				if (adj.size()==0){
-					System.out.println("+++" + v + " dying");
+					Log.getInstance().writeln("+++" + v + " dying");
 					v.removeFromCurrent();
 					stop();
 				}
 				else {
 					int abc=adj.size();
-					System.out.println("adj list size=" + adj.size());
+					Log.getInstance().writeln("adj list size=" + adj.size());
 					count = Lib.random(adj.size());
-					System.out.println("count=" + count);
+					Log.getInstance().writeln("count=" + count);
 					RoadEntranceInfo target=adj.get(count);
-					System.out.println("+++" + v + " changing road to " + target.getRoad() 
+					Log.getInstance().writeln("+++" + v + " changing road to " + target.getRoad() 
 							+ " lane " + target.getLane());
 					Lib.assertTrue(target.getRoad()!=v.getRoad() || target.getLane()!=v.getLane());
 					dispatchEvent(new Event(this, Event.LEAVE_ROAD, v.getRoad()));
@@ -60,7 +61,7 @@ public class ConservativeVehicleController extends BasicVehicleController
 				}
 			}
 		} else {
-			System.out.println("+++" + v + " dying");
+			Log.getInstance().writeln("+++" + v + " dying");
 			v.removeFromCurrent();
 			stop();
 		}

@@ -5,6 +5,7 @@ import java.util.LinkedList;
 import java.util.concurrent.locks.ReentrantLock;
 
 import traffic.basic.Lib;
+import traffic.log.Log;
 
 /**
  * @author Isaac
@@ -78,10 +79,10 @@ public class Road {
 	 *            a byte array representing lane direction
 	 */
 	public Road(Point s, Point e, byte[] l) {
-		System.out.println("=== lane info ===");
+		Log.getInstance().writeln("=== lane info ===");
 		for (int i = 0; i < l.length; ++i)
-			System.out.print(" " + l[i]);
-		System.out.println();
+			Log.getInstance().write(" " + l[i]);
+		Log.getInstance().writeln();
 		startPoint = s;
 		endPoint = e;
 		laneInfo = new byte[l.length];
@@ -90,7 +91,7 @@ public class Road {
 		for (int i = 0; i < l.length; ++i)
 			laneMove[i] = true;
 		length = Point.distance(s, e);
-		System.out.println("constructing " + this);
+		Log.getInstance().writeln("constructing " + this);
 	}
 
 	@Override
@@ -138,7 +139,7 @@ public class Road {
 	 */
 	protected int removeVehicle(Vehicle v) {
 		Lib.assertTrue(lock.isHeldByCurrentThread());
-		System.out.println("removing vehicle: " + v);
+		Log.getInstance().writeln("removing vehicle: " + v);
 		if (v.getRoad().equals(this) && vehicleList.contains(v)) {
 			removeList.add(v);
 		}
@@ -154,30 +155,30 @@ public class Road {
 	public void performRemoval() {
 		Lib.assertTrue(lock.isHeldByCurrentThread());
 		if (!removeList.isEmpty())
-			System.out.println("removing the following vehicles:");
+			Log.getInstance().writeln("removing the following vehicles:");
 		else
 			return;
 		while (!removeList.isEmpty()) {
 			Vehicle v = removeList.pollFirst();
 			vehicleList.remove(v);
-			System.out.println(v);
+			Log.getInstance().writeln(v.toString());
 		}
-		System.out.println("remove finished");
+		Log.getInstance().writeln("remove finished");
 		removeList.clear();
 	}
 	
 	public void performInsertion(){
 		Lib.assertTrue(lock.isHeldByCurrentThread());
 		if (!insertList.isEmpty())
-			System.out.println("performing insertion:");
+			Log.getInstance().writeln("performing insertion:");
 		else
 			return;
 		while (!insertList.isEmpty()){
 			Vehicle v=insertList.pollFirst();
 			vehicleList.add(v);
-			System.out.println(v);
+			Log.getInstance().writeln(v.toString());
 		}
-		System.out.println("insertion finished.");
+		Log.getInstance().writeln("insertion finished.");
 	}
 	
 	public void flushQueue(){

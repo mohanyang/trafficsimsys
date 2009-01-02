@@ -125,17 +125,17 @@ public class VehicleGenerator implements GenerateController {
 			}
 			break;
 		default:
-			System.out.print("error parameter\n");
+			System.err.print("error parameter\n");
 			return -1;
 		}
-		System.out.print("error parameter type\n");
+		System.err.print("error parameter type\n");
 		return -1;
 	}
 
 	public int setallparameter(LinkedList list) {
 		int size = list.size();
 		if (size != paranum) {
-			System.out.print("wrong parameter number\n");
+			System.err.print("wrong parameter number\n");
 			return -1;
 		}
 		for (int i = 0; i < size; i++) {
@@ -157,7 +157,7 @@ public class VehicleGenerator implements GenerateController {
 		case 3:
 			return bornpoint;
 		default:
-			System.out.print("error parameter\n");
+			System.err.print("error parameter\n");
 			return -1;
 		}
 	}

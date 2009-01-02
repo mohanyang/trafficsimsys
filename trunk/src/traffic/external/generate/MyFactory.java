@@ -23,7 +23,7 @@ public class MyFactory {
 				vehiclegen = (VehicleGenerator) Lib
 						.constructObject("VehicleGenerator");
 			} catch (Exception e) {
-				System.out.print("VehicleGenerator construct error\n");
+				System.err.print("VehicleGenerator construct error\n");
 			}
 		}
 		return vehiclegen;
@@ -35,7 +35,7 @@ public class MyFactory {
 				barriergen = (BarrierGenerator) Lib
 						.constructObject("BarrierGenerator");
 			} catch (Exception e) {
-				System.out.print("BarrierGenerator construct error\n");
+				System.err.print("BarrierGenerator construct error\n");
 			}
 		}
 		return barriergen;

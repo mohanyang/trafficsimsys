@@ -15,6 +15,7 @@ import javax.swing.JMenuItem;
 import javax.swing.JToolBar;
 import javax.swing.UIManager;
 
+import traffic.log.Log;
 import traffic.map.entity.Map;
 
 public class MapFrame extends JFrame implements ActionListener {
@@ -120,7 +121,7 @@ public class MapFrame extends JFrame implements ActionListener {
 
 	public void actionPerformed(ActionEvent arg0) {
 		String cmd = arg0.getActionCommand();
-		System.out.println(cmd.toString());
+		Log.getInstance().writeln(cmd.toString());
 		if (cmd.toString().equals("Set")) {
 			generatedialog.setVisible(true);
 		}

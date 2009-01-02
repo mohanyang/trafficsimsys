@@ -67,7 +67,6 @@ public class XMLRoadIterator extends RoadIterator {
 	
 	private void analysisDirection(Node node){
 		laneInfo[lane++] = (byte) Integer.parseInt(node.getTextContent());
-		System.out.println(laneInfo[lane-1]);
 	}
 
 	private void analysisPoint(Node node) {

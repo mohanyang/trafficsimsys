@@ -25,6 +25,7 @@ import javax.imageio.ImageIO;
 import javax.swing.JPanel;
 import javax.swing.UIManager;
 
+import traffic.log.Log;
 import traffic.map.entity.Map;
 import traffic.map.entity.Point;
 import traffic.map.entity.Road;
@@ -299,7 +300,7 @@ public class MapDisplayPanel extends JPanel implements MouseListener,
 				theta = Math.toDegrees(Math.atan(tanv)) + 270;
 			}
 
-			System.out.println(r + "\n" + theta);
+			Log.getInstance().writeln(r + "\n" + theta);
 
 			// 4 cars
 			theta += 180;

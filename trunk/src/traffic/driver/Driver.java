@@ -13,7 +13,7 @@ public class Driver {
 			simulator.initialize();
 			simulator.start();
 		} catch (Exception e) {
-			System.out.println("Error in simulator");
+			System.err.println("Error in simulator");
 		}
 	}
 }

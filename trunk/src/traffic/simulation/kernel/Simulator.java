@@ -7,6 +7,7 @@ import traffic.basic.Lib;
 import traffic.basic.Scheduler;
 import traffic.console.Console;
 import traffic.event.Event;
+import traffic.log.Log;
 import traffic.map.entity.Map;
 import traffic.map.entity.Point;
 import traffic.map.entity.Road;
@@ -38,13 +39,13 @@ public class Simulator {
 		Lib.seedRandom(Config.getInteger("traffic.randomSeed", (int) System
 				.currentTimeMillis()));
 		map = new LoadHandler().load();
-		System.out.println("Vehicle list");
+		Log.getInstance().writeln("Vehicle list");
 		for (Iterator<Point> p = map.getPointList(); p.hasNext();)
 			for (Iterator<Road> r = p.next().getRoadList(); r.hasNext();)
 				for (Iterator<Vehicle> v = r.next().getVehicleList(); v
 						.hasNext();)
-					System.out.println(v.next());
-		System.out.println();
+					Log.getInstance().writeln(v.next().toString());
+		Log.getInstance().writeln();
 		console = (Console) Lib.constructObject(Config
 				.getString("traffic.console"));
 		Lib.assertTrue(console != null);
@@ -78,7 +79,7 @@ public class Simulator {
 		simuTask = new Runnable() {
 			public void run() {
 				synchronized (lock) {
-					System.out.println("+++starting+++");
+					Log.getInstance().writeln("+++starting+++");
 					for (Iterator<Point> pp = map.getPointList(); pp.hasNext();) {
 						Point p = pp.next();
 						for (Iterator<Road> rr = p.getRoadList(); rr.hasNext();) {
@@ -88,9 +89,9 @@ public class Simulator {
 								for (Iterator<Vehicle> itr = r.getVehicleList(); itr
 										.hasNext();) {
 									Vehicle v = itr.next();
-									System.out.println(v);
+									Log.getInstance().writeln(v.toString());
 									getController(v).react();
-									System.out.println(v);
+									Log.getInstance().writeln(v.toString());
 								}
 							r.flushQueue();
 							r.releaseLock();
@@ -103,7 +104,7 @@ public class Simulator {
 						// simulation finished
 						stop();
 					}
-					System.out.println("===finished===");
+					Log.getInstance().writeln("===finished===");
 				}
 			}
 		};

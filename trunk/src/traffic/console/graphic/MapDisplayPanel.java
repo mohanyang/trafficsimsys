@@ -180,7 +180,7 @@ public class MapDisplayPanel extends JPanel implements MouseListener,
 			t1 = p1.clone();
 			t2 = p2.clone();
 			r.moveLine(t1, t2, t2, r.getLane() * Road.laneWidth / 2 - i
-					* Road.laneWidth - 13);
+					* Road.laneWidth - Road.laneWidth/2);
 			g.draw(new Line2D.Double(transImgX(t1.getXAxis()), transImgY(t1
 					.getYAxis()), transImgX(t2.getXAxis()), transImgY(t2
 					.getYAxis())));

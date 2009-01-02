@@ -2,14 +2,11 @@ package traffic.console.graphic;
 
 import java.awt.BasicStroke;
 import java.awt.Color;
-import java.awt.Cursor;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Polygon;
 import java.awt.Rectangle;
 import java.awt.TexturePaint;
-import java.awt.event.KeyEvent;
-import java.awt.event.KeyListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
@@ -48,8 +45,8 @@ public class MapDisplayPanel extends JPanel implements MouseListener,
 		MouseMotionListener, MouseWheelListener {
 	public static final long serialVersionUID = 2L;
 	public static final int MAXWIDTH = 5000, MAXHEIGHT = 5000;
-	private int imgWidth = 800, imgHeight = 750;
-	private int moveThreshold = 50, moveStep = 50;
+	private int imgWidth = 760, imgHeight = 650;
+	private int moveThreshold = 15, moveStep = 50;
 	private Map map = null;
 	BufferedImage[] img = null;
 	BufferedImage bg = null;
@@ -57,18 +54,17 @@ public class MapDisplayPanel extends JPanel implements MouseListener,
 	AffineTransform trans = null;
 	double scale = 1.0;
 
+	ZoomPanel zoomPanel = null;
+
 	private int mouseX, mouseY;
 	private boolean mouseInPanel = false;
 	private JLabel statusLabel = null;
-	private Cursor oldCursor = null;
 	private String oldStatus = null;
 
 	private int startX = 0, startY = 0;
-	// private static final Color bgColor = Color.decode("#5BDB57");
 	private static final Color roadColor = Color.decode("#7F7F7F");
 	private static final Color borderColor = Color.BLUE;
 	private static final Color dotLineColor = Color.WHITE;
-	// private static final Color textColor = Color.decode("#F87858");
 
 	private static final Color highLightRoadColor = Color.YELLOW;
 	private static final BasicStroke borderStroke = new BasicStroke(0.1f);
@@ -110,6 +106,7 @@ public class MapDisplayPanel extends JPanel implements MouseListener,
 		this.setSize(imgWidth, imgHeight);
 
 		bg = new BufferedImage(imgWidth, imgHeight, BufferedImage.TYPE_INT_RGB);
+		zoomPanel = new ZoomPanel(this);
 		addMouseMotionListener(this);
 		addMouseWheelListener(this);
 		addMouseListener(this);
@@ -290,6 +287,8 @@ public class MapDisplayPanel extends JPanel implements MouseListener,
 			box.releaseLock();
 		}
 
+		bf.drawImage(zoomPanel, null, ZoomPanel.anchorX, ZoomPanel.anchorY);
+
 		graphics.drawImage(bg, null, 0, 0);
 	}
 
@@ -351,17 +350,33 @@ public class MapDisplayPanel extends JPanel implements MouseListener,
 
 	private void moveScreen() {
 		if (mouseInPanel && mouseX - moveThreshold < 0) {
-			startX = Math.max(0, startX - moveStep);
+			moveLeft();
 		}
 		if (mouseInPanel && imgWidth < mouseX + moveThreshold) {
-			startX = Math.min(MAXWIDTH - imgWidth, startX + moveStep);
+			moveRight();
 		}
 		if (mouseInPanel && mouseY - moveThreshold < 0) {
-			startY = Math.max(0, startY - moveStep);
+			moveUp();
 		}
 		if (mouseInPanel && mouseY + moveThreshold > imgHeight) {
-			startY = Math.min(MAXHEIGHT - imgHeight, startY + moveStep);
+			moveDown();
 		}
+	}
+
+	protected void moveLeft() {
+		startX = Math.max(0, startX - moveStep);
+	}
+
+	protected void moveRight() {
+		startX = Math.min(MAXWIDTH - imgWidth, startX + moveStep);
+	}
+
+	protected void moveUp() {
+		startY = Math.max(0, startY - moveStep);
+	}
+
+	protected void moveDown() {
+		startY = Math.min(MAXHEIGHT - imgHeight, startY + moveStep);
 	}
 
 	private java.awt.Point getBoxPosition(int width, int height) {
@@ -377,6 +392,7 @@ public class MapDisplayPanel extends JPanel implements MouseListener,
 	public void mouseMoved(MouseEvent e) {
 		mouseX = e.getX();
 		mouseY = e.getY();
+		zoomPanel.mouseMoved(e);
 		statusLabel.setText("current point on the map system of coordinates ("
 				+ (int) transMapX(mouseX) + ", " + (int) transMapY(mouseY)
 				+ ")");
@@ -384,14 +400,17 @@ public class MapDisplayPanel extends JPanel implements MouseListener,
 
 	@Override
 	public void mouseWheelMoved(MouseWheelEvent e) {
-		int num = -e.getWheelRotation();
-		scale *= Math.pow(1.05, num);
+		zoomPanel.newCursor(-e.getWheelRotation());
+	}
+
+	protected void scaleResize(double num) {
+		scale *= Math.pow(1.2, num);
 		statusLabel.setText("map scale magnitude resized to " + scale);
 	}
 
 	@Override
 	public void mouseClicked(MouseEvent arg0) {
-		// nothing
+		zoomPanel.mouseClicked(arg0);
 		mouseX = arg0.getX();
 		mouseY = arg0.getY();
 		Road r=map.getRoad(mouseX, mouseY);
@@ -406,15 +425,12 @@ public class MapDisplayPanel extends JPanel implements MouseListener,
 	@Override
 	public void mouseEntered(MouseEvent arg0) {
 		mouseInPanel = true;
-		oldCursor = this.getCursor();
 		oldStatus = statusLabel.getText();
-		this.setCursor(new Cursor(Cursor.HAND_CURSOR));
 	}
 
 	@Override
 	public void mouseExited(MouseEvent arg0) {
 		mouseInPanel = false;
-		this.setCursor(oldCursor);
 		statusLabel.setText(oldStatus);
 	}
 

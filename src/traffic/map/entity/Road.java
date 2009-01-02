@@ -29,7 +29,7 @@ public class Road {
 	private LinkedList<Vehicle> removeList = new LinkedList<Vehicle>();
 	private LinkedList<Vehicle> insertList = new LinkedList<Vehicle>();
 	private ReentrantLock lock = new ReentrantLock();
-	
+
 	private TreeSet<Double> intersectionList = new TreeSet<Double>();
 
 	/**
@@ -121,12 +121,12 @@ public class Road {
 
 	protected void addVehicle(Vehicle v, int lane) {
 		Lib.assertTrue(lock.isHeldByCurrentThread());
-//		if (v.getRoad() == null && !vehicleList.contains(v)) {
-//			Lib.assertTrue(vehicleList.add(v));
-//		} else if (!v.getRoad().equals(this) && !vehicleList.contains(v)) {
-//			Lib.assertTrue(vehicleList.add(v));
-//		}
-//		System.out.println("inserting vehicle: " + v);
+		// if (v.getRoad() == null && !vehicleList.contains(v)) {
+		// Lib.assertTrue(vehicleList.add(v));
+		// } else if (!v.getRoad().equals(this) && !vehicleList.contains(v)) {
+		// Lib.assertTrue(vehicleList.add(v));
+		// }
+		// System.out.println("inserting vehicle: " + v);
 		insertList.add(v);
 	}
 
@@ -170,22 +170,22 @@ public class Road {
 		Log.getInstance().writeln("remove finished");
 		removeList.clear();
 	}
-	
-	public void performInsertion(){
+
+	public void performInsertion() {
 		Lib.assertTrue(lock.isHeldByCurrentThread());
 		if (!insertList.isEmpty())
 			Log.getInstance().writeln("performing insertion:");
 		else
 			return;
-		while (!insertList.isEmpty()){
-			Vehicle v=insertList.pollFirst();
+		while (!insertList.isEmpty()) {
+			Vehicle v = insertList.pollFirst();
 			vehicleList.add(v);
 			Log.getInstance().writeln(v.toString());
 		}
 		Log.getInstance().writeln("insertion finished.");
 	}
-	
-	public void flushQueue(){
+
+	public void flushQueue() {
 		performRemoval();
 		performInsertion();
 	}
@@ -222,8 +222,7 @@ public class Road {
 		end.yAxis += d * Math.sin(theta);
 	}
 
-	
-	public static void moveLine(Point start, Point end, Point m, double d){
+	public static void moveLine(Point start, Point end, Point m, double d) {
 		if (start.equals(m))
 			moveLine(m, end, d);
 		else
@@ -258,7 +257,8 @@ public class Road {
 	public Point getPositionOnRoad(double distance, int lane, boolean moveLine) {
 		Point p1 = startPoint.clone(), p2 = endPoint.clone();
 		if (moveLine)
-			moveLine(p1, p2, laneInfo.length * laneWidth / 2 - lane * laneWidth - laneWidth / 2);
+			moveLine(p1, p2, laneInfo.length * laneWidth / 2 - lane * laneWidth
+					- laneWidth / 2);
 		if (laneInfo[lane] == 0) {
 			Point temp = p1;
 			p1 = p2;
@@ -357,36 +357,37 @@ public class Road {
 		return (endPoint.yAxis - startPoint.yAxis)
 				/ (endPoint.xAxis - startPoint.xAxis);
 	}
-	
-	public RoadInfo getInfoByPoint(Point x){
-		Point sp=Point.diff(x, startPoint);
-		Point se=Point.diff(endPoint, startPoint);
-		double distance=Point.dotProduct(sp, se)/length;
-		double delta=Point.crossProduct(se, sp)/length;
-		delta+=Road.laneWidth*laneInfo.length*0.5;
-		return new RoadInfo(this, (int)Math.floor(delta/Road.laneWidth), distance);
+
+	public RoadInfo getInfoByPoint(Point x) {
+		Point sp = Point.diff(x, startPoint);
+		Point se = Point.diff(endPoint, startPoint);
+		double distance = Point.dotProduct(sp, se) / length;
+		double delta = Point.crossProduct(se, sp) / length;
+		delta += Road.laneWidth * laneInfo.length * 0.5;
+		return new RoadInfo(this, (int) Math.floor(delta / Road.laneWidth),
+				distance);
 	}
-	
-	public LinkedList<Road> getRoadBySegment(){
-		LinkedList<Road> ret=new LinkedList<Road>();
-		Point former=startPoint;
-		for (Double dc: intersectionList){
-			Point current=getPositionOnRoad(dc, 0, false);
-			byte[] temp=new byte[laneInfo.length];
+
+	public LinkedList<Road> getRoadBySegment() {
+		LinkedList<Road> ret = new LinkedList<Road>();
+		Point former = startPoint;
+		for (Double dc : intersectionList) {
+			Point current = getPositionOnRoad(dc, 0, false);
+			byte[] temp = new byte[laneInfo.length];
 			System.arraycopy(laneInfo, 0, temp, 0, laneInfo.length);
 			ret.add(new Road(former, current, temp));
-			former=current;
+			former = current;
 		}
 		return ret;
 	}
-	
-	public void insertIntersection(double d){
-		Double fl=intersectionList.floor(d);
+
+	public void insertIntersection(double d) {
+		Double fl = intersectionList.floor(d);
 		if (Lib.isEqual(d, fl))
 			return;
-		fl=intersectionList.ceiling(d);
+		fl = intersectionList.ceiling(d);
 		if (Lib.isEqual(d, fl))
 			return;
-		intersectionList.add(d);	
+		intersectionList.add(d);
 	}
 }

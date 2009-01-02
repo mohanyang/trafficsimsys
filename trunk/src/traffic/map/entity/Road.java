@@ -206,7 +206,7 @@ public class Road {
 	 * @param d
 	 *            the distance to be moved
 	 */
-	public void moveLine(Point start, Point end, double d) {
+	private void moveLine(Point start, Point end, double d) {
 		double distance = Point.distance(start, end);
 		double theta = Math
 				.asin((end.getYAxis() - start.getYAxis()) / distance)
@@ -215,6 +215,13 @@ public class Road {
 		start.yAxis += d * Math.sin(theta);
 		end.xAxis += d * Math.cos(theta);
 		end.yAxis += d * Math.sin(theta);
+	}
+	
+	public void moveLine(Point start, Point end, Point m, double d){
+		if (start.equals(m))
+			moveLine(m, end, d);
+		else
+			moveLine(start, m, d);
 	}
 
 	/**
@@ -243,8 +250,7 @@ public class Road {
 	 * @return the point of the corresponding position
 	 */
 	public Point getPositionOnRoad(double distance, int lane, boolean moveLine) {
-		Point p1 = new Point(startPoint.xAxis, startPoint.yAxis), p2 = new Point(
-				endPoint.xAxis, endPoint.yAxis);
+		Point p1 = startPoint.clone(), p2 = endPoint.clone();
 		if (moveLine)
 			moveLine(p1, p2, laneInfo.length * 26 / 2 - lane * 26 - 13);
 		if (laneInfo[lane] == 0) {

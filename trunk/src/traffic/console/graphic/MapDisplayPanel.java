@@ -166,7 +166,7 @@ public class MapDisplayPanel extends JPanel implements MouseListener,
 		g.setColor(borderColor);
 		t1 = p1.clone();
 		t2 = p2.clone();
-		r.moveLine(t1, t2, -r.getLane() * Road.laneWidth / 2);
+		r.moveLine(t1, t2, t2, -r.getLane() * Road.laneWidth / 2);
 		g.draw(new Line2D.Double(transImgX(t1.getXAxis()), transImgY(t1
 				.getYAxis()), transImgX(t2.getXAxis()),
 				transImgY(t2.getYAxis())));
@@ -182,7 +182,7 @@ public class MapDisplayPanel extends JPanel implements MouseListener,
 				t1 = p1.clone();
 				t2 = p2.clone();
 			}
-			r.moveLine(t1, t2, r.getLane() * Road.laneWidth / 2 - i
+			r.moveLine(t1, t2, t2, r.getLane() * Road.laneWidth / 2 - i
 					* Road.laneWidth - 13);
 			g.draw(new Line2D.Double(transImgX(t1.getXAxis()), transImgY(t1
 					.getYAxis()), transImgX(t2.getXAxis()), transImgY(t2
@@ -192,7 +192,7 @@ public class MapDisplayPanel extends JPanel implements MouseListener,
 			g.setColor(borderColor);
 			t1 = p1.clone();
 			t2 = p2.clone();
-			r.moveLine(t1, t2, r.getLane() * Road.laneWidth / 2 - i
+			r.moveLine(t1, t2, t2, r.getLane() * Road.laneWidth / 2 - i
 					* Road.laneWidth);
 			g.draw(new Line2D.Double(transImgX(t1.getXAxis()), transImgY(t1
 					.getYAxis()), transImgX(t2.getXAxis()), transImgY(t2
@@ -259,7 +259,7 @@ public class MapDisplayPanel extends JPanel implements MouseListener,
 			double theta;
 			Point px = v.getPoint().clone();
 			if (v.getDirection()==1){
-				v.getRoad().moveLine(s.clone(), px, -Road.laneWidth / 2);
+				v.getRoad().moveLine(s.clone(), e.clone(), px, -Road.laneWidth / 2);
 				if (tanv == Double.POSITIVE_INFINITY) {
 					theta = 180;
 				} else if (tanv == Double.NEGATIVE_INFINITY) {
@@ -269,7 +269,7 @@ public class MapDisplayPanel extends JPanel implements MouseListener,
 				}
 			}
 			else {
-				v.getRoad().moveLine(s.clone(), px, Road.laneWidth / 2);
+				v.getRoad().moveLine(s.clone(), e.clone(), px, Road.laneWidth / 2);
 				if (tanv == Double.POSITIVE_INFINITY) {
 					theta = 0;
 				} else if (tanv == Double.NEGATIVE_INFINITY) {

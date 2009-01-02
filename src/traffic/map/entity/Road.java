@@ -24,6 +24,7 @@ public class Road {
 
 	private LinkedList<Vehicle> vehicleList = new LinkedList<Vehicle>();
 	private LinkedList<Vehicle> removeList = new LinkedList<Vehicle>();
+	private LinkedList<Vehicle> insertList = new LinkedList<Vehicle>();
 	private ReentrantLock lock = new ReentrantLock();
 
 	/**
@@ -115,11 +116,13 @@ public class Road {
 
 	protected void addVehicle(Vehicle v, int lane) {
 		Lib.assertTrue(lock.isHeldByCurrentThread());
-		if (v.getRoad() == null && !vehicleList.contains(v)) {
-			Lib.assertTrue(vehicleList.add(v));
-		} else if (!v.getRoad().equals(this) && !vehicleList.contains(v)) {
-			Lib.assertTrue(vehicleList.add(v));
-		}
+//		if (v.getRoad() == null && !vehicleList.contains(v)) {
+//			Lib.assertTrue(vehicleList.add(v));
+//		} else if (!v.getRoad().equals(this) && !vehicleList.contains(v)) {
+//			Lib.assertTrue(vehicleList.add(v));
+//		}
+//		System.out.println("inserting vehicle: " + v);
+		insertList.add(v);
 	}
 
 	/**
@@ -135,10 +138,11 @@ public class Road {
 	 */
 	protected int removeVehicle(Vehicle v) {
 		Lib.assertTrue(lock.isHeldByCurrentThread());
+		System.out.println("removing vehicle: " + v);
 		if (v.getRoad().equals(this) && vehicleList.contains(v)) {
 			removeList.add(v);
 		}
-		return vehicleList.size() - removeList.size();
+		return vehicleList.size() - removeList.size() + insertList.size();
 	}
 
 	/**
@@ -149,11 +153,36 @@ public class Road {
 	 */
 	public void performRemoval() {
 		Lib.assertTrue(lock.isHeldByCurrentThread());
+		if (!removeList.isEmpty())
+			System.out.println("removing the following vehicles:");
+		else
+			return;
 		while (!removeList.isEmpty()) {
 			Vehicle v = removeList.pollFirst();
 			vehicleList.remove(v);
+			System.out.println(v);
 		}
+		System.out.println("remove finished");
 		removeList.clear();
+	}
+	
+	public void performInsertion(){
+		Lib.assertTrue(lock.isHeldByCurrentThread());
+		if (!insertList.isEmpty())
+			System.out.println("performing insertion:");
+		else
+			return;
+		while (!insertList.isEmpty()){
+			Vehicle v=insertList.pollFirst();
+			vehicleList.add(v);
+			System.out.println(v);
+		}
+		System.out.println("insertion finished.");
+	}
+	
+	public void flushQueue(){
+		performRemoval();
+		performInsertion();
 	}
 
 	public Point getStartPoint() {

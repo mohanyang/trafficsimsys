@@ -10,27 +10,27 @@ import traffic.map.entity.Road;
 import traffic.map.entity.Vehicle;
 import traffic.map.entity.VehicleInf;
 
- 
 // @author liangda li
- 
-public class VehicleGenerator implements GenerateController{
-	public VehicleGenerator(){
+
+public class VehicleGenerator implements GenerateController {
+	public VehicleGenerator() {
 	}
-	
-	public static synchronized VehicleGenerator getInstance(){
-		if(instance==null){
-			instance=new VehicleGenerator();
+
+	public static synchronized VehicleGenerator getInstance() {
+		if (instance == null) {
+			instance = new VehicleGenerator();
 		}
 		return instance;
 	}
-	
-	public int generate(){
-		Road r=SearchBornPoint(bornpoint);
-		if(r==null){
+
+	public int generate() {
+		Road r = SearchBornPoint(bornpoint);
+		if (r == null) {
 			return -1;
 		}
-		Vehicle v = Map.getInstance().newVehicle(new VehicleInf(type,maxspeed,initspeed));
-		v.setRoad(r,0);
+		Vehicle v = Map.getInstance().newVehicle(
+				new VehicleInf(type, maxspeed, initspeed));
+		v.setRoad(r, 0);
 		v.setPosition(0);
 		v.setSpeed(initspeed);
 		r.acquireLock();
@@ -38,87 +38,88 @@ public class VehicleGenerator implements GenerateController{
 		r.releaseLock();
 		return 0;
 	}
-	
-	private Road SearchBornPoint(int index){
-		int i=0;
-		Point p=null;
-		for (Iterator<Point> itr =Map.getInstance().getPointList(); itr.hasNext();) {
+
+	private Road SearchBornPoint(int index) {
+		int i = 0;
+		Point p = null;
+		for (Iterator<Point> itr = Map.getInstance().getPointList(); itr
+				.hasNext();) {
 			p = itr.next();
-			if(i==index){
+			if (i == index) {
 				break;
 			}
 			i++;
 		}
-		if(p==null){
+		if (p == null) {
 			return null;
 		}
-		i=0;
-		int degree=Map.getInstance().getPoint(p).getDegree();
-		int tmpindex=Randomnum(0,degree);
-		for (Iterator<Road> itrr = p.getRoadList(); itrr.hasNext();){
+		i = 0;
+		int degree = Map.getInstance().getPoint(p).getDegree();
+		int tmpindex = Randomnum(0, degree);
+		for (Iterator<Road> itrr = p.getRoadList(); itrr.hasNext();) {
 			Road r = itrr.next();
-			if(i==tmpindex){
+			if (i == tmpindex) {
 				return r;
 			}
 			i++;
 		}
 		return null;
 	}
-	
-	public int setbornpoint(int bpoint){
-		if(bpoint>=pointnum){
-			bpoint=pointnum-1;
+
+	public int setbornpoint(int bpoint) {
+		if (bpoint >= pointnum) {
+			bpoint = pointnum - 1;
 			return -1;
 		}
-		bornpoint=bpoint;
+		bornpoint = bpoint;
 		return 0;
 	}
-	
-	public int setinitspeed(int ispeed){
-		if(ispeed>defaultmaxspeed){
+
+	public int setinitspeed(int ispeed) {
+		if (ispeed > defaultmaxspeed) {
 			return -1;
 		}
-		initspeed=ispeed;
+		initspeed = ispeed;
 		return 0;
 	}
-	
-	public int setmaxspeed(int mspeed){
-		if(mspeed>defaultmaxspeed){
+
+	public int setmaxspeed(int mspeed) {
+		if (mspeed > defaultmaxspeed) {
 			return -1;
 		}
-		maxspeed=mspeed;
+		maxspeed = mspeed;
 		return 0;
 	}
-	
-	public int settype(int t){
-		if(t>=typenum){
-			type=typenum-1;
+
+	public int settype(int t) {
+		if (t >= typenum) {
+			type = typenum - 1;
 			return -1;
 		}
-		type=t;
+		type = t;
 		return 0;
 	}
-	
-	public int setparameter(Object o, int index){
-		switch(index){
+
+	public int setparameter(Object o, int index) {
+		switch (index) {
 		case 0:
-			if(o instanceof Integer){
-				return setmaxspeed((Integer)o);
+			if (o instanceof Integer) {
+				return setmaxspeed((Integer) o);
 			}
 			break;
 		case 1:
-			if(o instanceof Integer){
-				return setinitspeed((Integer)o);
+			if (o instanceof Integer) {
+				return setinitspeed((Integer) o);
 			}
 			break;
 		case 2:
-			if(o instanceof Integer){
-				return settype((Integer)o);
+			if (o instanceof Integer) {
+				return settype((Integer) o);
 			}
 			break;
 		case 3:
-			if(o instanceof Integer){
-				return setbornpoint((Integer)o);
+			if (o instanceof Integer) {
+				return setbornpoint((Integer) o);
 			}
 			break;
 		default:
@@ -128,23 +129,23 @@ public class VehicleGenerator implements GenerateController{
 		System.out.print("error parameter type\n");
 		return -1;
 	}
-	
-	public int setallparameter(LinkedList list){
-		int size=list.size();
-		if(size!=paranum){
+
+	public int setallparameter(LinkedList list) {
+		int size = list.size();
+		if (size != paranum) {
 			System.out.print("wrong parameter number\n");
 			return -1;
 		}
-		for(int i=0;i<size;i++){
-			if(setparameter(list.removeFirst(),i)<0){
+		for (int i = 0; i < size; i++) {
+			if (setparameter(list.removeFirst(), i) < 0) {
 				return -1;
 			}
-		}		
+		}
 		return 0;
 	}
-	
-	public Object getparameter(int index){
-		switch(index){
+
+	public Object getparameter(int index) {
+		switch (index) {
 		case 0:
 			return maxspeed;
 		case 1:
@@ -158,18 +159,18 @@ public class VehicleGenerator implements GenerateController{
 			return -1;
 		}
 	}
-	
-	public int Randomnum(int low, int high){
-		return (int)(low+(high-low)*Lib.random());
+
+	public int Randomnum(int low, int high) {
+		return (int) (low + (high - low) * Lib.random());
 	}
-	 
-	private static VehicleGenerator instance=null;
-	private static int defaultmaxspeed=100;
-	private int maxspeed=10;
-	private int initspeed=10;
-	private int type=0;
-	private int bornpoint=0;
-	private static int typenum=4;
-	private static int pointnum=40;
-	private static int paranum=4;
+
+	private static VehicleGenerator instance = null;
+	private static int defaultmaxspeed = 100;
+	private int maxspeed = 10;
+	private int initspeed = 10;
+	private int type = 0;
+	private int bornpoint = 0;
+	private static int typenum = 4;
+	private static int pointnum = 40;
+	private static int paranum = 4;
 }

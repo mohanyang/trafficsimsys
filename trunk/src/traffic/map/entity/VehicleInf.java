@@ -1,5 +1,7 @@
 package traffic.map.entity;
 
+import traffic.console.graphic.ImageLoader;
+
 /**
  * @author Isaac
  * 
@@ -8,15 +10,27 @@ public class VehicleInf {
 	int imageID;
 	int maxspeed;
 	int initspeed;
+	
+	int length;
 
-	public VehicleInf(int imageID, int maxspeed, int initspeed) {
+	public VehicleInf(int imageID, int maxspeed, int initspeed){
 		this.imageID = imageID;
 		this.maxspeed=maxspeed;
 		this.initspeed=initspeed;
+		try {
+			this.length = ImageLoader.loadImage(imageID).getHeight();
+		}
+		catch (Exception e){
+			this.length = 40;
+		}
 		if(maxspeed<initspeed){
 			initspeed=maxspeed;
 			System.out.print("initial speed exceeds max speed\n");
 		}
+	}
+	
+	public int getLength() {
+		return length;
 	}
 
 	public int getImageID() {

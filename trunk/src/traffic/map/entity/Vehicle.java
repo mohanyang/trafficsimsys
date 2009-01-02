@@ -58,6 +58,10 @@ public class Vehicle {
 		return rInfo.getCurrentRoad().getDirection(rInfo.getCurrentLane());
 	}
 	
+	public int getLength(){
+		return inf.getLength();
+	}
+	
 	public void setRoad(Road r, int lane) {
 		if (rInfo.getCurrentRoad() != null) {
 			Lib.assertTrue(rInfo.getCurrentRoad().isHeldByCurrentThread());

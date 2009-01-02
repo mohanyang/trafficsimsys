@@ -82,10 +82,8 @@ public class MapDisplayPanel extends JPanel implements MouseListener,
 		}
 		try {
 			img = new BufferedImage[4];
-			img[0] = ImageIO.read(new File("./image/1.gif"));
-			img[1] = ImageIO.read(new File("./image/2.gif"));
-			img[2] = ImageIO.read(new File("./image/3.gif"));
-			img[3] = ImageIO.read(new File("./image/4.gif"));
+			for (int i=0; i<4; ++i)
+				img[i]=ImageLoader.loadImage(i);
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
@@ -251,7 +249,6 @@ public class MapDisplayPanel extends JPanel implements MouseListener,
 			double tanv = (e.getYAxis() - s.getYAxis())
 					/ (e.getXAxis() - s.getXAxis());
 			double theta = 0;
-
 			Point px = new Point(v.getPoint().getXAxis(), v.getPoint()
 					.getYAxis());
 			v.getRoad().moveLine(new Point(s.getXAxis(), s.getYAxis()), px, px,

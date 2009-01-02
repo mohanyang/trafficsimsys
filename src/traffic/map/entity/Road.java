@@ -4,6 +4,8 @@ import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.concurrent.locks.ReentrantLock;
 
+import java.util.TreeSet;
+
 import traffic.basic.Lib;
 import traffic.log.Log;
 
@@ -28,7 +30,7 @@ public class Road {
 	private LinkedList<Vehicle> insertList = new LinkedList<Vehicle>();
 	private ReentrantLock lock = new ReentrantLock();
 	
-	private LinkedList<Point> intersectionList = new LinkedList<Point>();
+	private TreeSet<Double> intersectionList = new TreeSet<Double>();
 
 	/**
 	 * acquire the lock used to protect concurrent visit.
@@ -357,14 +359,34 @@ public class Road {
 	}
 	
 	public RoadInfo getInfoByPoint(Point x){
-		
+		Point sp=Point.diff(x, startPoint);
+		Point se=Point.diff(endPoint, startPoint);
+		double distance=Point.dotProduct(sp, se)/length;
+		double delta=Point.crossProduct(se, sp)/length;
+		delta+=Road.laneWidth*laneInfo.length*0.5;
+		return new RoadInfo(this, (int)Math.floor(delta/Road.laneWidth), distance);
 	}
 	
 	public LinkedList<Road> getRoadBySegment(){
-		
+		LinkedList<Road> ret=new LinkedList<Road>();
+		Point former=startPoint;
+		for (Double dc: intersectionList){
+			Point current=getPositionOnRoad(dc, 0, false);
+			byte[] temp=new byte[laneInfo.length];
+			System.arraycopy(laneInfo, 0, temp, 0, laneInfo.length);
+			ret.add(new Road(former, current, temp));
+			former=current;
+		}
+		return ret;
 	}
 	
-	public void insertIntersection(){
-		
+	public void insertIntersection(double d){
+		Double fl=intersectionList.floor(d);
+		if (Lib.isEqual(d, fl))
+			return;
+		fl=intersectionList.ceiling(d);
+		if (Lib.isEqual(d, fl))
+			return;
+		intersectionList.add(d);	
 	}
 }

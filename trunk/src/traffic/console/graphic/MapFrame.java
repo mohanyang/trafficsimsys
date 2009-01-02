@@ -1,8 +1,10 @@
 package traffic.console.graphic;
 
 import java.awt.BorderLayout;
+import java.awt.Dimension;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
+import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
@@ -22,6 +24,7 @@ import traffic.map.entity.Map;
 
 public class MapFrame extends JFrame implements ActionListener {
 	static public final long serialVersionUID = 1L;
+	private static final int defaultWidth = 1024, defaultHeight = 768;
 
 	JLabel statusLabel;
 	JMenuItem openMenu, saveMenu, setMenu;
@@ -139,10 +142,20 @@ public class MapFrame extends JFrame implements ActionListener {
 		addKeyListener(new MapKeyListener(mapDisplay));
 		pack();
 
+		setSize(defaultWidth, defaultHeight);
+		centerize();
 		// vehiclegendialog = new VehicleGenPanel();
 		// vehiclegendialog.pack();
 		// barriergendialog = new BarrierGenPanel();
 		// barriergendialog.pack();
+	}
+
+	private void centerize() {
+		Toolkit kit = Toolkit.getDefaultToolkit();
+		Dimension screenSize = kit.getScreenSize();
+		int screenWidth = screenSize.width / 2;
+		int width = getWidth();
+		setLocation(screenWidth - width / 2, 0);
 	}
 
 	public void actionPerformed(ActionEvent arg0) {

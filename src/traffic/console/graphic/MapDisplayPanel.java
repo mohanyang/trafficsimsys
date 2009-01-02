@@ -268,7 +268,7 @@ public class MapDisplayPanel extends JPanel implements MouseListener,
 			} else {
 				theta = Math.toDegrees(Math.atan(tanv)) + 270;
 			}
-			System.out.println(r + "\n" + theta);
+//			System.out.println(r + "\n" + theta);
 			if (v.getDirection()!=0) {
 				theta += 180;
 			}

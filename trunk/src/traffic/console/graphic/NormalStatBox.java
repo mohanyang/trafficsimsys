@@ -24,10 +24,9 @@ public class NormalStatBox extends StatBox {
 	public NormalStatBox() {
 		super(width, height);
 		graph = createGraphics();
-		// bg = ImageLoader.loadImageByName("infobg.gif");
 		bg = ImageLoader.loadImageByName("infobg.png");
 		Lib.assertTrue(bg != null);
-		Lib.alphaImg(bg, 0x70);
+		Lib.alphaImage(bg, 0x70);
 	}
 
 	@Override
@@ -48,7 +47,6 @@ public class NormalStatBox extends StatBox {
 		graph.setComposite(AlphaComposite.getInstance(AlphaComposite.DST_OVER,
 				1.0f));
 		AffineTransform trans = new AffineTransform();
-		// trans.setToScale(0.25, 0.25);
 		trans.setToScale(0.35, 0.35);
 		BufferedImageOp op = new AffineTransformOp(trans,
 				AffineTransformOp.TYPE_NEAREST_NEIGHBOR);

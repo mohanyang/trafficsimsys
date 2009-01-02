@@ -55,13 +55,11 @@ public class NormalStatBox extends StatBox {
 		graph.drawImage(bg, op, 0, 0);
 		graph.setFont(new Font(Font.MONOSPACED, Font.PLAIN, 10));
 		graph.setColor(Color.BLACK);
-		graph.drawString("Vehicles  : " + stat.currentVehiclesOnRoad(road)
-				+ ".", 15, 20);
-		graph.drawString(
-				"Average   : "
-						+ String.format("%.2f", stat
-								.averageVehiclesOnRoad(road)) + ".", 15, 32);
-		graph.drawString("Accidents : " + stat.accidentsOnRoad(road) + ".", 15,
-				44);
+		graph.drawString("Vehicles  : " + stat.currentVehiclesOnRoad(road), 12,
+				20);
+		graph.drawString("Average   : "
+				+ String.format("%.2f", stat.averageVehiclesOnRoad(road)), 12,
+				35);
+		graph.drawString("Accidents : " + stat.accidentsOnRoad(road), 12, 50);
 	}
 }

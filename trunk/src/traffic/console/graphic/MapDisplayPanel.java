@@ -347,7 +347,7 @@ public class MapDisplayPanel extends JPanel implements MouseListener,
 	}
 
 	private java.awt.Point getBoxPosition(int width, int height) {
-		return new java.awt.Point(mouseX, mouseY - height);
+		return new java.awt.Point(mouseX + 5, mouseY - height);
 	}
 
 	@Override

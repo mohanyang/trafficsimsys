@@ -17,7 +17,7 @@ public abstract class StatBox extends BufferedImage {
 		super(width, height, TYPE_4BYTE_ABGR);
 	}
 
-	public static StatBox getInstance() {
+	public static synchronized StatBox getInstance() {
 		if (instance == null) {
 			instance = (StatBox) Lib.constructObject(Config.getString(
 					"traffic.statistics.StatBox",

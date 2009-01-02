@@ -258,20 +258,34 @@ public class MapDisplayPanel extends JPanel implements MouseListener,
 					/ (e.getXAxis() - s.getXAxis());
 			double theta;
 			Point px = v.getPoint().clone();
-			v.getRoad().moveLine(s.clone(), px, -Road.laneWidth / 2);
-			if (tanv == Double.POSITIVE_INFINITY) {
-				theta = 0;
-			} else if (tanv == Double.NEGATIVE_INFINITY) {
-				theta = 180;
-			} else {
-				theta = Math.toDegrees(Math.atan(tanv)) + 270;
+			if (v.getDirection()==1){
+				v.getRoad().moveLine(s.clone(), px, -Road.laneWidth / 2);
+				if (tanv == Double.POSITIVE_INFINITY) {
+					theta = 180;
+				} else if (tanv == Double.NEGATIVE_INFINITY) {
+					theta = 0;
+				} else {
+					theta = Math.toDegrees(Math.atan(tanv)) + 90;
+				}
 			}
-//			System.out.println(r + "\n" + theta);
-			if (v.getDirection()!=0) {
-				theta += 180;
+			else {
+				v.getRoad().moveLine(s.clone(), px, Road.laneWidth / 2);
+				if (tanv == Double.POSITIVE_INFINITY) {
+					theta = 0;
+				} else if (tanv == Double.NEGATIVE_INFINITY) {
+					theta = 180;
+				} else {
+					theta = Math.toDegrees(Math.atan(tanv)) + 270;
+				}
 			}
-			else
-				v.getRoad().moveLine(s.clone(), px, Road.laneWidth);
+			
+			
+////			System.out.println(r + "\n" + theta);
+//			if (v.getDirection()!=0) {
+//				theta += 180;
+//			}
+//			else
+//				v.getRoad().moveLine(s.clone(), px, Road.laneWidth);
 			trans.setToRotation(Math.toRadians(theta));
 			AffineTransform tmp = new AffineTransform();
 			tmp.setToScale(scale, scale);

@@ -86,8 +86,8 @@ public class MapDisplayPanel extends JPanel implements MouseListener,
 		}
 		try {
 			img = new BufferedImage[4];
-			for (int i=0; i<4; ++i)
-				img[i]=ImageLoader.loadImage(i);
+			for (int i = 0; i < 4; ++i)
+				img[i] = ImageLoader.loadImage(i);
 			grassBG = ImageIO.read(new File("./image/bg.bmp"));
 		} catch (IOException e) {
 			e.printStackTrace();
@@ -273,15 +273,15 @@ public class MapDisplayPanel extends JPanel implements MouseListener,
 
 			System.out.println(r + "\n" + theta);
 			theta += 180;
-			
+
 			if (s.getXAxis() > e.getXAxis()) {
 				theta += 180;
-				yy = yy + 26;
+				yy = yy + Road.laneWidth;
 			}
-//			if(s.getYAxis() > e.getYAxis()){
-//				theta += 180;
-//				xx = xx + 26;
-//			}
+			// if(s.getYAxis() > e.getYAxis()){
+			// theta += 180;
+			// xx = xx + Road.laneWidth;
+			// }
 
 			trans.setToRotation(Math.toRadians(theta));
 			AffineTransform tmp = new AffineTransform();

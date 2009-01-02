@@ -2,6 +2,7 @@ package traffic.console.graphic;
 
 import java.awt.BasicStroke;
 import java.awt.Color;
+import java.awt.Cursor;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Polygon;
@@ -22,6 +23,7 @@ import java.io.IOException;
 import java.util.Iterator;
 
 import javax.imageio.ImageIO;
+import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.UIManager;
 
@@ -38,7 +40,7 @@ public class MapDisplayPanel extends JPanel implements MouseListener,
 		MouseMotionListener, MouseWheelListener {
 	public static final long serialVersionUID = 2L;
 	public static final int MAXWIDTH = 5000, MAXHEIGHT = 5000;
-	private int imgWidth = 800, imgHeight = 600;
+	private int imgWidth = 800, imgHeight = 750;
 	private int moveThreshold = 50, moveStep = 50;
 	private Map map = null;
 	BufferedImage[] img = null;
@@ -49,6 +51,9 @@ public class MapDisplayPanel extends JPanel implements MouseListener,
 
 	private int mouseX, mouseY;
 	private boolean mouseInPanel = false;
+	private JLabel statusLabel = null;
+	private Cursor oldCursor = null;
+	private String oldStatus = null;
 
 	private int startX = 0, startY = 0;
 	// private static final Color bgColor = Color.decode("#5BDB57");
@@ -100,6 +105,10 @@ public class MapDisplayPanel extends JPanel implements MouseListener,
 		addMouseMotionListener(this);
 		addMouseWheelListener(this);
 		addMouseListener(this);
+	}
+
+	public void setStatusLabel(JLabel status) {
+		statusLabel = status;
 	}
 
 	public void paint(Map map) {
@@ -360,12 +369,16 @@ public class MapDisplayPanel extends JPanel implements MouseListener,
 	public void mouseMoved(MouseEvent e) {
 		mouseX = e.getX();
 		mouseY = e.getY();
+		statusLabel.setText("current point on the map system of coordinates ("
+				+ (int) transMapX(mouseX) + ", " + (int) transMapY(mouseY)
+				+ ")");
 	}
 
 	@Override
 	public void mouseWheelMoved(MouseWheelEvent e) {
 		int num = -e.getWheelRotation();
 		scale *= Math.pow(1.05, num);
+		statusLabel.setText("map scale magnitude resized to " + scale);
 	}
 
 	@Override
@@ -376,11 +389,16 @@ public class MapDisplayPanel extends JPanel implements MouseListener,
 	@Override
 	public void mouseEntered(MouseEvent arg0) {
 		mouseInPanel = true;
+		oldCursor = this.getCursor();
+		oldStatus = statusLabel.getText();
+		this.setCursor(new Cursor(Cursor.HAND_CURSOR));
 	}
 
 	@Override
 	public void mouseExited(MouseEvent arg0) {
 		mouseInPanel = false;
+		this.setCursor(oldCursor);
+		statusLabel.setText(oldStatus);
 	}
 
 	@Override
@@ -392,5 +410,4 @@ public class MapDisplayPanel extends JPanel implements MouseListener,
 	public void mouseReleased(MouseEvent e) {
 		// nothing
 	}
-
 }

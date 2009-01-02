@@ -21,7 +21,7 @@ public class MyFactory {
 		if (vehiclegen == null) {
 			try {
 				vehiclegen = (VehicleGenerator) Lib
-						.constructObject("VehicleGenerator");
+						.constructObject("traffic.external.generate.VehicleGenerator");
 			} catch (Exception e) {
 				System.err.print("VehicleGenerator construct error\n");
 			}
@@ -33,7 +33,7 @@ public class MyFactory {
 		if (barriergen == null) {
 			try {
 				barriergen = (BarrierGenerator) Lib
-						.constructObject("BarrierGenerator");
+						.constructObject("traffic.external.generate.BarrierGenerator");
 			} catch (Exception e) {
 				System.err.print("BarrierGenerator construct error\n");
 			}

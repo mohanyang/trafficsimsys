@@ -30,7 +30,8 @@ public class NormalStatBox extends StatBox {
 		int[] argb = new int[bg.getWidth() * bg.getHeight()];
 		bg.getRGB(0, 0, bg.getWidth(), bg.getHeight(), argb, 0, bg.getWidth());
 		for (int i = 0; i < argb.length; i++) {
-			argb[i] &= 0x70ffffff;
+			if ((argb[i] & 0xff000000) != 0)
+				argb[i] &= 0x70ffffff;
 		}
 		bg.setRGB(0, 0, bg.getWidth(), bg.getHeight(), argb, 0, bg.getWidth());
 	}

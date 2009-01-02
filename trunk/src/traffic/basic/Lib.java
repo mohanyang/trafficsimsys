@@ -1,5 +1,6 @@
 package traffic.basic;
 
+import java.awt.image.BufferedImage;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
@@ -30,7 +31,28 @@ public class Lib {
 
 	private static final double epsilon = 1e-2;
 	private static final double amplitude = 1 / epsilon;
-	
+
+	/**
+	 * make an image into a transparent one
+	 * 
+	 * @param img
+	 *            the image to be processed
+	 * @param alpha
+	 *            the alpha channel value
+	 */
+	public static void alphaImg(BufferedImage img, int alpha) {
+		int[] argb = new int[img.getWidth() * img.getHeight()];
+		img.getRGB(0, 0, img.getWidth(), img.getHeight(), argb, 0, img
+				.getWidth());
+		alpha = alpha << 24 | 0xffffff;
+		for (int i = 0; i < argb.length; i++) {
+			if ((argb[i] & 0xff000000) != 0)
+				argb[i] &= alpha;
+		}
+		img.setRGB(0, 0, img.getWidth(), img.getHeight(), argb, 0, img
+				.getWidth());
+	}
+
 	/**
 	 * Test if two double are equal
 	 * 

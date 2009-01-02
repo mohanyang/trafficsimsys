@@ -61,6 +61,7 @@ public class BasicVehicleController extends EventDispatcher implements
 							.getLength())) {
 				LinkedList<RoadEntranceInfo> adj=v.getRoad().getIntersectionList(v.getLane());
 				if (adj.size()==0){
+					System.out.println("+++" + v + " dying");
 					v.removeFromCurrent();
 					stop();
 				}
@@ -76,7 +77,7 @@ public class BasicVehicleController extends EventDispatcher implements
 					dispatchEvent(new Event(this, Event.LEAVE_ROAD, v.getRoad()));
 					dispatchEvent(new Event(this, Event.ENTER_ROAD, target.getRoad()));
 					v.setRoad(target.getRoad(), target.getLane());
-					v.setSpeed(Lib.random(5) + 5);
+					v.setSpeed(Lib.random(15) + 5);
 				}
 			}
 		} else {

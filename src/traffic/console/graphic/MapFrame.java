@@ -29,7 +29,8 @@ public class MapFrame extends JFrame implements ActionListener {
 	MapDisplayPanel mapDisplay;
 	ControlPanel controlPanel;
 	String baseDirectory = "./";
-	GenerateConsole generatedialog;
+	VehicleGenPanel vehiclegendialog;
+	BarrierGenPanel barriergendialog;
 
 	public MapFrame() {
 		try {
@@ -87,14 +88,14 @@ public class MapFrame extends JFrame implements ActionListener {
 		toolbar.setFloatable(false);
 		openButton = new JButton(
 				getImageIcon(baseDirectory + "/image/open.gif"));
-		openButton.setActionCommand("Set");
+		openButton.setActionCommand("SetVehicle");
 		openButton.addActionListener(this);
 		toolbar.add(openButton);
 		saveButton = new JButton(
 				getImageIcon(baseDirectory + "/image/save.gif"));
-		saveButton.setActionCommand("Save");
+		saveButton.setActionCommand("SetBarrier");
 		saveButton.addActionListener(this);
-		saveButton.setEnabled(false);
+//		saveButton.setEnabled(false);
 		toolbar.add(saveButton);
 		/*
 		 * setButton = new JButton( getImageIcon(baseDirectory +
@@ -134,15 +135,20 @@ public class MapFrame extends JFrame implements ActionListener {
 		pack();
 
 		mapDisplay.setStatusLabel(statusLabel);
-		generatedialog = new GenerateConsole();
-		generatedialog.pack();
+		vehiclegendialog = new VehicleGenPanel();
+		vehiclegendialog.pack();
+		barriergendialog = new BarrierGenPanel();
+		barriergendialog.pack();
 	}
 
 	public void actionPerformed(ActionEvent arg0) {
 		String cmd = arg0.getActionCommand();
 		Log.getInstance().writeln(cmd.toString());
-		if (cmd.toString().equals("Set")) {
-			generatedialog.setVisible(true);
+		if (cmd.toString().equals("SetVehicle")) {
+			vehiclegendialog.setVisible(true);
+		}
+		if (cmd.toString().equals("SetBarrier")) {
+			barriergendialog.setVisible(true);
 		}
 		if (cmd.toString().equals("Exit")) {
 			System.exit(0);

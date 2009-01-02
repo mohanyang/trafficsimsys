@@ -25,7 +25,6 @@ import javax.imageio.ImageIO;
 import javax.swing.JPanel;
 import javax.swing.UIManager;
 
-import traffic.basic.Lib;
 import traffic.map.entity.Map;
 import traffic.map.entity.Point;
 import traffic.map.entity.Road;

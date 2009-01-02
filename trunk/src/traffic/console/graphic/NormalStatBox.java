@@ -20,6 +20,7 @@ public class NormalStatBox extends StatBox {
 	private static final int height = 75;
 	private Graphics2D graph = null;
 	private BufferedImage bg = null;
+	private static final Color textColor = Color.decode("#F87858");
 
 	public NormalStatBox() {
 		super(width, height);
@@ -51,8 +52,8 @@ public class NormalStatBox extends StatBox {
 		BufferedImageOp op = new AffineTransformOp(trans,
 				AffineTransformOp.TYPE_NEAREST_NEIGHBOR);
 		graph.drawImage(bg, op, 0, 0);
-		graph.setFont(new Font(Font.MONOSPACED, Font.PLAIN, 10));
-		graph.setColor(Color.BLACK);
+		graph.setFont(new Font(Font.SANS_SERIF, Font.BOLD, 12));
+		graph.setColor(textColor);
 		graph.drawString("Vehicles  : " + stat.currentVehiclesOnRoad(road), 12,
 				20);
 		graph.drawString("Average   : "

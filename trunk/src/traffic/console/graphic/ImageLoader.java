@@ -28,6 +28,10 @@ public class ImageLoader {
 
 	public static BufferedImage loadImage(int index) throws IOException {
 		try {
+			if(index==4){
+				return ImageIO
+				.read(new File("./image/bar.png"));
+			}
 			if (index >= 0 && index < count) {
 				return ImageIO
 						.read(new File("./image/" + (index + 1) + ".gif"));

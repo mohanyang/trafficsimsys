@@ -34,6 +34,7 @@ import traffic.log.Log;
 import traffic.map.entity.Map;
 import traffic.map.entity.Point;
 import traffic.map.entity.Road;
+import traffic.map.entity.RoadInfo;
 import traffic.map.entity.Vehicle;
 import traffic.simulation.kernel.Simulator;
 import traffic.simulation.statistics.IStat;
@@ -394,7 +395,11 @@ public class MapDisplayPanel extends JPanel implements MouseListener,
 		mouseX = arg0.getX();
 		mouseY = arg0.getY();
 		Road r=map.getRoad(mouseX, mouseY);
-		MyFactory.getInstance().getVehicleGenerator().setroad(r);
+		if(r==null){
+			return;
+		}
+		RoadInfo info=r.getInfoByPoint(new Point(mouseX, mouseY));
+		MyFactory.getInstance().getVehicleGenerator().setroad(r,info);
 		MyFactory.getInstance().getVehicleGenerator().generate();
 	}
 

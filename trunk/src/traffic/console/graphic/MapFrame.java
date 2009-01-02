@@ -111,12 +111,13 @@ public class MapFrame extends JFrame implements ActionListener {
 		getContentPane().setLayout(new BorderLayout());
 		getContentPane().add(MainDisplayPanel, BorderLayout.CENTER);
 		getContentPane().add(statusLabel, BorderLayout.SOUTH);
+		getContentPane().add(new ControlPanel(), BorderLayout.EAST);
 
 		getContentPane().add(toolbar, BorderLayout.NORTH);
 
+		mapDisplay.setStatusLabel(statusLabel);
 		generatedialog = new GenerateConsole();
 		generatedialog.pack();
-
 	}
 
 	public void actionPerformed(ActionEvent arg0) {

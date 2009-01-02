@@ -23,15 +23,15 @@ public class ConservativeVehicleController extends BasicVehicleController
 			double temp = curr.closestDistance(v);
 			System.out.println("closest distance " + temp);
 			if (temp-v.getLength() < v.getSpeed()) {
-				if (v.getPosition()+temp<curr.getLength()-1e-3)
+				if (v.getPosition()+temp+v.getLength()/2<curr.getLength()-1e-3)
 					v.setSpeed(0);
 				else
-					v.setSpeed(2);
+					v.setSpeed(5);
 			}
 			else if (Lib.isEqual(v.getSpeed(), 0))
-				v.setSpeed(1);
+				v.setSpeed(temp/2);
 			else
-				v.setSpeed(5);
+				v.setSpeed(10+Lib.random(10));
 
 			v.proceed();
 

@@ -95,7 +95,7 @@ public class MapDisplayPanel extends JPanel implements MouseListener,
 		trans = new AffineTransform();
 		this.setSize(imgWidth, imgHeight);
 
-		bg = new BufferedImage(imgWidth, imgHeight, BufferedImage.TYPE_INT_RGB);
+		bg = new BufferedImage(imgWidth, imgHeight, BufferedImage.TYPE_INT_ARGB);
 		addMouseMotionListener(this);
 		addMouseWheelListener(this);
 		addMouseListener(this);

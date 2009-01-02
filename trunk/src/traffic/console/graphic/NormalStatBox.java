@@ -24,8 +24,15 @@ public class NormalStatBox extends StatBox {
 	public NormalStatBox() {
 		super(width, height);
 		graph = createGraphics();
-		bg = ImageLoader.loadImageByName("infobg.gif");
+		// bg = ImageLoader.loadImageByName("infobg.gif");
+		bg = ImageLoader.loadImageByName("infobg.png");
 		Lib.assertTrue(bg != null);
+		int[] argb = new int[bg.getWidth() * bg.getHeight()];
+		bg.getRGB(0, 0, bg.getWidth(), bg.getHeight(), argb, 0, bg.getWidth());
+		for (int i = 0; i < argb.length; i++) {
+			argb[i] &= 0x70ffffff;
+		}
+		bg.setRGB(0, 0, bg.getWidth(), bg.getHeight(), argb, 0, bg.getWidth());
 	}
 
 	@Override
@@ -46,19 +53,20 @@ public class NormalStatBox extends StatBox {
 		graph.setComposite(AlphaComposite.getInstance(AlphaComposite.DST_OVER,
 				1.0f));
 		AffineTransform trans = new AffineTransform();
-		trans.setToScale(0.25, 0.25);
+		// trans.setToScale(0.25, 0.25);
+		trans.setToScale(0.35, 0.35);
 		BufferedImageOp op = new AffineTransformOp(trans,
 				AffineTransformOp.TYPE_NEAREST_NEIGHBOR);
 		graph.drawImage(bg, op, 0, 0);
 		graph.setFont(new Font(Font.MONOSPACED, Font.PLAIN, 10));
 		graph.setColor(Color.BLACK);
 		graph.drawString("Vehicles  : " + stat.currentVehiclesOnRoad(road)
-				+ ".", 30, 40);
+				+ ".", 15, 20);
 		graph.drawString(
 				"Average   : "
 						+ String.format("%.2f", stat
-								.averageVehiclesOnRoad(road)) + ".", 30, 52);
-		graph.drawString("Accidents : " + stat.accidentsOnRoad(road) + ".", 30,
-				64);
+								.averageVehiclesOnRoad(road)) + ".", 15, 32);
+		graph.drawString("Accidents : " + stat.accidentsOnRoad(road) + ".", 15,
+				44);
 	}
 }

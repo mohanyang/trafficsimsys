@@ -1,0 +1,7 @@
+<map>
+  <road>
+    <start_point x-axis="10" y-axis="20" />
+    <end_point x-axis="100" y-axis="200" />
+    <lane>2</lane>
+  </road>
+</map>

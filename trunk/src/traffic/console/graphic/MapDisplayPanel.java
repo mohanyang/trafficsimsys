@@ -59,6 +59,7 @@ public class MapDisplayPanel extends JPanel implements MouseListener,
 	double scale = 1.0;
 
 	ZoomPanel zoomPanel = null;
+	VehicleDisplayPanel vPanel = null;
 
 	private int mouseX, mouseY;
 	private boolean mouseInPanel = false;
@@ -120,9 +121,14 @@ public class MapDisplayPanel extends JPanel implements MouseListener,
 
 		bg = new BufferedImage(imgWidth, imgHeight, BufferedImage.TYPE_INT_RGB);
 		zoomPanel = new ZoomPanel(this);
+		vPanel = new VehicleDisplayPanel();
 		addMouseMotionListener(this);
 		addMouseWheelListener(this);
 		addMouseListener(this);
+	}
+	
+	public VehicleDisplayPanel getVehicleDisplayPanel() {
+		return vPanel;
 	}
 
 	public void setStatusLabel(JLabel status) {

@@ -421,7 +421,7 @@ public class Road {
 		double distance = Point.dotProduct(sp, se) / length;
 		double delta = Point.crossProduct(se, sp) / length;
 		delta += Road.laneWidth * laneInfo.length * 0.5;
-		int lane = (int) Math.floor(delta / Road.laneWidth);
+		int lane = getLane() - 1 - (int) Math.floor(delta / Road.laneWidth);
 		if (laneInfo[lane] == 0)
 			distance = length - distance;
 		if (distance < 0)

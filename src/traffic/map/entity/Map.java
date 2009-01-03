@@ -51,6 +51,19 @@ public class Map {
 		Road road = new Road(s, e, l);
 		s.addRoad(road);
 		e.addRoad(road);
+		for (Iterator<Point> pIter = getPointList(); pIter.hasNext();) {
+			Point point = pIter.next();
+			for (Iterator<Road> rIter = point.getRoadList(); rIter.hasNext();){
+				Road curr = rIter.next();
+				if (curr.startPoint.equals(point)){
+					Point ip=Road.intersect(road, curr);
+					if (ip!=null){
+						curr.insertIntersection(curr.getInfoByPoint(ip).getCurrentPosition());
+						road.insertIntersection(road.getInfoByPoint(ip).getCurrentPosition());
+					}
+				}
+			}
+		}
 		return road;
 	}
 

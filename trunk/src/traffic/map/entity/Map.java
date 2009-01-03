@@ -4,6 +4,7 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.LinkedList;
 
+import traffic.console.graphic.ImageLoader;
 import traffic.log.Log;
 
 /**
@@ -134,8 +135,9 @@ public class Map {
 		Point p = new Point(x, y);
 		for (Iterator<Vehicle> vIter = r.getVehicleList(); vIter.hasNext();) {
 			Vehicle v = vIter.next();
-			Point tmp = r.getPositionOnRoad(v.getPosition(), v.getLane());
-			if (Point.distance(p, tmp) < v.getLength() / 2)
+			double d = v.getLength() * ImageLoader.scale / 2;
+			Point tmp = r.getPositionOnRoad(v.getPosition() - d, v.getLane());
+			if (Point.distance(p, tmp) < d)
 				return v;
 		}
 		return null;

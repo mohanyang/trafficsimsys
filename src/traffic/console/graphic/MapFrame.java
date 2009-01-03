@@ -24,6 +24,7 @@ import traffic.event.EventDispatcher;
 import traffic.event.EventListener;
 import traffic.log.Log;
 import traffic.map.entity.Map;
+import traffic.simulation.kernel.Simulator;
 
 public class MapFrame extends JFrame implements ActionListener, EventListener {
 	static public final long serialVersionUID = 1L;
@@ -32,7 +33,7 @@ public class MapFrame extends JFrame implements ActionListener, EventListener {
 	JLabel statusLabel;
 	JButton openButton, saveButton, setButton;
 	JPanel buttonPanel;
-	JButton pauseButton, startButton, resetButton, stopButton;
+	JButton pauseButton, resumeButton, startButton, resetButton, stopButton;
 	MapDisplayPanel mapDisplay;
 	ControlPanel controlPanel;
 	VehicleDisplayPanel vPanel;
@@ -96,7 +97,7 @@ public class MapFrame extends JFrame implements ActionListener, EventListener {
 		buttonPanel.setBorder(BorderFactory.createCompoundBorder(BorderFactory
 				.createTitledBorder("System Button"), BorderFactory
 				.createEmptyBorder(5, 5, 5, 5)));
-		buttonPanel.setLayout(new GridLayout(4, 1));
+		buttonPanel.setLayout(new GridLayout(5, 1));
 
 		pauseButton = new JButton(getImageIcon("open.gif"));
 		pauseButton.setText("pause simulation");
@@ -104,6 +105,13 @@ public class MapFrame extends JFrame implements ActionListener, EventListener {
 		pauseButton.addActionListener(this);
 		pauseButton.setToolTipText("pause");
 		buttonPanel.add(pauseButton);
+
+		resumeButton = new JButton(getImageIcon("open.gif"));
+		resumeButton.setText("resume simulation");
+		resumeButton.setActionCommand("resume");
+		resumeButton.addActionListener(this);
+		resumeButton.setToolTipText("resume");
+		buttonPanel.add(resumeButton);
 
 		startButton = new JButton(getImageIcon("open.gif"));
 		startButton.setText("start simulation");
@@ -191,15 +199,22 @@ public class MapFrame extends JFrame implements ActionListener, EventListener {
 		// }
 		if (cmd.toString().equals("Exit")) {
 			statusLabel.setText("system exit");
-			System.exit(0);
+			Simulator.getInstance().exit();
 		} else if (cmd.toString().equals("pause")) {
 			statusLabel.setText("simulation pasued");
+			Simulator.getInstance().pause();
+		} else if (cmd.toCharArray().equals("resume")) {
+			statusLabel.setText("simulation resumed");
+			Simulator.getInstance().resume();
 		} else if (cmd.toString().equals("start")) {
 			statusLabel.setText("simulation stared");
+			Simulator.getInstance().start();
 		} else if (cmd.toString().equals("stop")) {
 			statusLabel.setText("simulation stopped");
+			Simulator.getInstance().stop();
 		} else if (cmd.toString().equals("reset")) {
 			statusLabel.setText("simulation resetted");
+			Simulator.getInstance().reset();
 		}
 	}
 

@@ -46,6 +46,8 @@ public class Simulator {
 			if (e.getType() == Event.MOUSE_INPUT) {
 				MouseInput mi = (MouseInput) e.getObj();
 				System.out.println(mi.getX() + " " + mi.getY());
+				System.out.println(mi.getMouseEvent().getClickCount());
+				System.out.println(mi.getMouseEvent().getButton());
 			}
 			// TODO Auto-generated method stub
 		}

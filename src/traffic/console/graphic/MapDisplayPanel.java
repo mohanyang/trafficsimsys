@@ -112,7 +112,7 @@ public class MapDisplayPanel extends JPanel implements MouseListener,
 			grassBG = ImageLoader.loadImageByName("bg.bmp");
 			carBG = ImageLoader.loadImageByName("infobg.png");
 			Lib.assertTrue(carBG != null);
-			Lib.alphaImage(carBG, 0xA0);
+			Lib.alphaImage(carBG, 0xC0);
 		} catch (IOException e) {
 			e.printStackTrace();
 		}

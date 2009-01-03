@@ -145,11 +145,7 @@ public class Point {
 		for (RoadInfo itr: passRoadList){
 			Road curr=itr.getCurrentRoad();
 			for (int i=0; i<curr.getLane(); ++i){
-				if ((curr.endPoint.equals(this) && curr.laneInfo[i]==0)
-						|| (curr.startPoint.equals(this) && curr.laneInfo[i]==1)
-						|| !direction){
-					ret.add(new RoadEntranceInfo(curr, i, itr.getCurrentPosition()));
-				}
+				ret.add(new RoadEntranceInfo(curr, i, itr.getCurrentPosition()));
 			}
 		}
 		return ret;

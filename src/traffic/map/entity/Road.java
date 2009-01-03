@@ -368,7 +368,7 @@ public class Road {
 		return ret;
 	}
 
-	public Vehicle closestVehicle(double position, int lane, Vehicle pv) {
+	public Vehicle getClosestVehicle(double position, int lane, Vehicle pv) {
 		Lib.assertTrue(lock.isHeldByCurrentThread());
 		double ret = Double.MAX_VALUE;
 		Vehicle retV = null;
@@ -389,9 +389,9 @@ public class Road {
 
 	public double closestIntersection(double position, int lane) {
 		if (laneInfo[lane] == 0) {
-			return intersectionList.floor(position);
+			return intersectionList.floor(position)-(length-position);
 		} else {
-			return intersectionList.ceiling(position);
+			return intersectionList.ceiling(position)-position;
 		}
 	}
 
@@ -408,6 +408,10 @@ public class Road {
 			return startPoint.getIntersectionList();
 		else
 			return endPoint.getIntersectionList();
+	}
+	
+	public LinkedList<RoadEntranceInfo> getIntersectionList(double position, int lane) {
+		return getPositionOnRoad(position, lane).getIntersectionList();
 	}
 
 	public double getLamda() {

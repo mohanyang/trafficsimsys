@@ -479,12 +479,6 @@ public class MapDisplayPanel extends JPanel implements MouseListener,
 		if (v != null) {
 			selectedVehicle = v;
 			clicked = true;
-		} else {
-			if (arg0.getClickCount() == 2) {
-				RoadInfo info = r.getInfoByPoint(new Point(xx, yy));
-				MyFactory.getInstance().getVehicleGenerator().setroad(r, info);
-				MyFactory.getInstance().getVehicleGenerator().generate();
-			}
 		}
 	}
 

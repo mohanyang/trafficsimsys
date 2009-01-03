@@ -9,10 +9,12 @@ import traffic.console.Console;
 import traffic.console.graphic.SplashWindow;
 import traffic.event.Event;
 import traffic.event.MouseInput;
+import traffic.external.generate.MyFactory;
 import traffic.log.Log;
 import traffic.map.entity.Map;
 import traffic.map.entity.Point;
 import traffic.map.entity.Road;
+import traffic.map.entity.RoadInfo;
 import traffic.map.entity.Vehicle;
 import traffic.map.handler.LoadHandler;
 import traffic.simulation.statistics.IStat;
@@ -45,11 +47,20 @@ public class Simulator {
 			Event e = console.read();
 			if (e.getType() == Event.MOUSE_INPUT) {
 				MouseInput mi = (MouseInput) e.getObj();
-//				System.out.println(mi.getX() + " " + mi.getY());
-//				System.out.println(mi.getMouseEvent().getClickCount());
-//				System.out.println(mi.getMouseEvent().getButton());
+
+				if (mi.getMouseEvent().getClickCount() == 2) {
+					Road r = map.getRoad(mi.getX(), mi.getY());
+					if (r != null) {
+						RoadInfo info = r.getInfoByPoint(new Point(mi.getX(),
+								mi.getY()));
+						MyFactory.getInstance().getVehicleGenerator().setroad(
+								r, info);
+						MyFactory.getInstance().getVehicleGenerator()
+								.generate();
+					}
+				}
+
 			}
-			// TODO Auto-generated method stub
 		}
 	};
 

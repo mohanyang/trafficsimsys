@@ -419,7 +419,7 @@ public class Road {
 		Point sp = Point.diff(x, startPoint);
 		Point se = Point.diff(endPoint, startPoint);
 		double distance = Point.dotProduct(sp, se) / length;
-		double delta = -Point.crossProduct(se, sp) / length;
+		double delta = -Point.crossProduct(sp, se) / length;
 		delta += Road.laneWidth * laneInfo.length * 0.5;
 		int lane = getLane() - 1 - (int) Math.floor(delta / Road.laneWidth);
 		if (laneInfo[lane] == 0)

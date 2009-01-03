@@ -121,14 +121,9 @@ public class MapDisplayPanel extends JPanel implements MouseListener,
 
 		bg = new BufferedImage(imgWidth, imgHeight, BufferedImage.TYPE_INT_RGB);
 		zoomPanel = new ZoomPanel(this);
-		vPanel = new VehicleDisplayPanel();
 		addMouseMotionListener(this);
 		addMouseWheelListener(this);
 		addMouseListener(this);
-	}
-	
-	public VehicleDisplayPanel getVehicleDisplayPanel() {
-		return vPanel;
 	}
 
 	public void setStatusLabel(JLabel status) {
@@ -322,6 +317,9 @@ public class MapDisplayPanel extends JPanel implements MouseListener,
 				bf.drawImage(box, null, pos.x, pos.y);
 				box.releaseLock();
 			}
+		} else if (vPanel != null) {
+			vPanel.setVehicle(selectedVehicle);
+			vPanel.paint();
 		}
 
 		if (clicked == false)
@@ -462,8 +460,10 @@ public class MapDisplayPanel extends JPanel implements MouseListener,
 		dispatchEvent(new Event(this, Event.MOUSE_INPUT, new MouseInput(arg0,
 				(int) transMapX(arg0.getX()), (int) transMapY(arg0.getY()))));
 
-		if (arg0.getButton() == MouseEvent.BUTTON3)
+		if (arg0.getButton() == MouseEvent.BUTTON3) {
+			clicked = false;
 			selectedVehicle = null;
+		}
 
 		zoomPanel.mouseClicked(arg0);
 		mouseX = arg0.getX();
@@ -513,5 +513,9 @@ public class MapDisplayPanel extends JPanel implements MouseListener,
 
 	public void dispatchEvent(Event e) {
 		eventDispatcher.dispatchEvent(e);
+	}
+
+	public void setVehicleDisplayPanel(VehicleDisplayPanel panel) {
+		vPanel = panel;
 	}
 }

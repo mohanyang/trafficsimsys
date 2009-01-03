@@ -41,8 +41,8 @@ public class MapFrame extends JFrame implements ActionListener, EventListener {
 
 	EventDispatcher eventDispatcher = new EventDispatcher();
 
-	// VehicleGenPanel vehiclegendialog;
-	// BarrierGenPanel barriergendialog;
+	VehicleGenPanel vehiclegendialog;
+	BarrierGenPanel barriergendialog;
 
 	public MapFrame() {
 		try {
@@ -174,10 +174,10 @@ public class MapFrame extends JFrame implements ActionListener, EventListener {
 		setSize(defaultWidth, defaultHeight);
 		centerize();
 
-		// vehiclegendialog = new VehicleGenPanel();
-		// vehiclegendialog.pack();
-		// barriergendialog = new BarrierGenPanel();
-		// barriergendialog.pack();
+		vehiclegendialog = new VehicleGenPanel();
+		vehiclegendialog.pack();
+		barriergendialog = new BarrierGenPanel();
+		barriergendialog.pack();
 
 		mapDisplay.addEventListener(this);
 	}
@@ -193,12 +193,12 @@ public class MapFrame extends JFrame implements ActionListener, EventListener {
 	public void actionPerformed(ActionEvent arg0) {
 		String cmd = arg0.getActionCommand();
 		Log.getInstance().writeln(cmd.toString());
-		// if (cmd.toString().equals("SetVehicle")) {
-		// vehiclegendialog.setVisible(true);
-		// }
-		// if (cmd.toString().equals("SetBarrier")) {
-		// barriergendialog.setVisible(true);
-		// }
+		if (cmd.toString().equals("SetVehicle")) {
+			vehiclegendialog.setVisible(true);
+		}
+		if (cmd.toString().equals("SetBarrier")) {
+			barriergendialog.setVisible(true);
+		}
 		if (cmd.toString().equals("exit")) {
 			statusLabel.setText("system exit");
 			Simulator.getInstance().exit();

@@ -19,10 +19,13 @@ import javax.swing.JPanel;
 import javax.swing.JToolBar;
 import javax.swing.UIManager;
 
+import traffic.event.Event;
+import traffic.event.EventDispatcher;
+import traffic.event.EventListener;
 import traffic.log.Log;
 import traffic.map.entity.Map;
 
-public class MapFrame extends JFrame implements ActionListener {
+public class MapFrame extends JFrame implements ActionListener, EventListener {
 	static public final long serialVersionUID = 1L;
 	private static final int defaultWidth = 1024, defaultHeight = 768;
 
@@ -31,6 +34,8 @@ public class MapFrame extends JFrame implements ActionListener {
 	JButton openButton, saveButton, setButton;
 	MapDisplayPanel mapDisplay;
 	ControlPanel controlPanel;
+
+	EventDispatcher eventDispatcher = new EventDispatcher();
 
 	// VehicleGenPanel vehiclegendialog;
 	// BarrierGenPanel barriergendialog;
@@ -145,6 +150,8 @@ public class MapFrame extends JFrame implements ActionListener {
 		// vehiclegendialog.pack();
 		// barriergendialog = new BarrierGenPanel();
 		// barriergendialog.pack();
+
+		mapDisplay.addEventListener(this);
 	}
 
 	private void centerize() {
@@ -179,5 +186,14 @@ public class MapFrame extends JFrame implements ActionListener {
 
 	protected void handleMove(Map map) {
 		mapDisplay.paint(map);
+	}
+
+	public void addEventListener(EventListener listener) {
+		eventDispatcher.addEventListener(listener);
+	}
+
+	@Override
+	public void eventOccured(Event event) {
+		eventDispatcher.dispatchEvent(event);
 	}
 }

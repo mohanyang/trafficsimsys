@@ -40,5 +40,5 @@ public class Event extends EventObject {
 	}
 
 	public static final int CREATE = 0, MOVE = 1, ENTER_ROAD = 2,
-			LEAVE_ROAD = 3;
+			LEAVE_ROAD = 3, MOUSE_INPUT = 4;
 }

@@ -28,6 +28,7 @@ import traffic.basic.Lib;
 import traffic.event.Event;
 import traffic.event.EventDispatcher;
 import traffic.event.EventListener;
+import traffic.event.MouseInput;
 import traffic.external.generate.MyFactory;
 import traffic.log.Log;
 import traffic.map.entity.Map;
@@ -63,6 +64,7 @@ public class MapDisplayPanel extends JPanel implements MouseListener,
 	private boolean mouseInPanel = false;
 	private JLabel statusLabel = null;
 	private String oldStatus = null;
+
 	private Road selectedRoad = null;
 	private Vehicle selectedVehicle = null;
 
@@ -443,6 +445,9 @@ public class MapDisplayPanel extends JPanel implements MouseListener,
 
 	@Override
 	public void mouseClicked(MouseEvent arg0) {
+		dispatchEvent(new Event(this, Event.MOUSE_INPUT, new MouseInput(arg0,
+				(int) transMapX(arg0.getX()), (int) transMapY(arg0.getY()))));
+
 		zoomPanel.mouseClicked(arg0);
 		mouseX = arg0.getX();
 		mouseY = arg0.getY();

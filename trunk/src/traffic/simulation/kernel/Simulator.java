@@ -9,6 +9,7 @@ import traffic.basic.Scheduler;
 import traffic.console.Console;
 import traffic.console.graphic.SplashWindow;
 import traffic.event.Event;
+import traffic.event.MouseInput;
 import traffic.log.Log;
 import traffic.map.entity.Map;
 import traffic.map.entity.Point;
@@ -38,6 +39,18 @@ public class Simulator {
 		return instance;
 	}
 
+	Runnable inputHandler = new Runnable() {
+		@Override
+		public void run() {
+			Event e = console.read();
+			if (e.getType() == Event.MOUSE_INPUT) {
+				MouseInput mi = (MouseInput) e.getObj();
+				System.out.println(mi.getX() + " " + mi.getY());
+			}
+			// TODO Auto-generated method stub
+		}
+	};
+
 	public void initialize() {
 		sWin = new SplashWindow();
 		sWin.setRatio(0.2);
@@ -63,6 +76,7 @@ public class Simulator {
 				.getString("traffic.console"));
 		Lib.assertTrue(console != null);
 		console.eventOccured(new Event(map, Event.CREATE));
+		console.setInputHandler(inputHandler);
 		stat = (IStat) Lib.constructObject(Config.getString(
 				"traffic.statistics", "traffic.simulation.statistics.Stat"));
 		Lib.assertTrue(stat != null);

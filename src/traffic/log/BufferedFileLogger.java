@@ -43,4 +43,13 @@ public class BufferedFileLogger extends Log {
 		}
 	}
 
+	@Override
+	public void close() {
+		try {
+			writer.close();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
+
 }

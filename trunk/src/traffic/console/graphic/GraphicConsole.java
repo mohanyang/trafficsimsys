@@ -6,6 +6,7 @@ import traffic.map.entity.Map;
 
 public class GraphicConsole implements Console {
 	MapFrame f = null;
+	Runnable inputHandler = null;
 
 	public GraphicConsole() {
 		f = new MapFrame();
@@ -13,6 +14,7 @@ public class GraphicConsole implements Console {
 
 	@Override
 	public void setInputHandler(Runnable inputHandler) {
+		this.inputHandler = inputHandler; 
 	}
 
 	@Override

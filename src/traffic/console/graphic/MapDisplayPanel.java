@@ -26,6 +26,9 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.UIManager;
 
+import traffic.event.Event;
+import traffic.event.EventDispatcher;
+import traffic.event.EventListener;
 import traffic.external.generate.MyFactory;
 import traffic.log.Log;
 import traffic.map.entity.Map;
@@ -60,6 +63,8 @@ public class MapDisplayPanel extends JPanel implements MouseListener,
 	private boolean mouseInPanel = false;
 	private JLabel statusLabel = null;
 	private String oldStatus = null;
+	
+	private EventDispatcher eventDispatcher = new EventDispatcher();
 
 	private int startX = 0, startY = 0;
 	private static final Color roadColor = Color.decode("#7F7F7F");
@@ -444,5 +449,13 @@ public class MapDisplayPanel extends JPanel implements MouseListener,
 	@Override
 	public void mouseReleased(MouseEvent e) {
 		// nothing
+	}
+	
+	public void addEventListener(EventListener listener) {
+		eventDispatcher.addEventListener(listener);
+	}
+	
+	public void dispatchEvent(Event e) {
+		eventDispatcher.dispatchEvent(e);
 	}
 }

@@ -18,23 +18,18 @@ public class NewBasicVehicleController extends BasicVehicleController {
 		Vehicle v = assoc;
 		Road curr = v.getRoad();
 		if (curr.canMove(v.getLane())) {
-			Vehicle closestV=curr.closestVehicle(v.getPosition(), v.getLane(), v);
+			double newSpeed=v.getSpeed();
+			Vehicle closestV=curr.getClosestVehicle(v.getPosition(), v.getLane(), v);
+			if (closestV!=null)
+				newSpeed=closestV.getPosition()-v.getPosition();
 			
-			
-			double temp = curr.closestDistance(v);
-			Log.getInstance().writeln("closest distance " + temp);
-			if (temp < v.getSpeed() || Lib.isEqual(v.getSpeed(), 0))
-				v.setSpeed(temp);
-
+			double temp = curr.closestIntersection(v.getPosition(), v.getLane());
+			if (temp<newSpeed)
+				newSpeed=temp;
 			v.proceed();
 
-			int count;
-			Log.getInstance().writeln(
-					"position " + v.getPosition() + " "
-							+ v.getRoad().getLength());
-			if (Lib.isEqual(v.getPosition(), v.getRoad().getLength())) {
-				LinkedList<RoadEntranceInfo> adj = v.getRoad()
-						.getIntersectionList(v.getLane());
+			if (Lib.isEqual(temp, 0)) {
+				LinkedList<RoadEntranceInfo> adj = v.getRoad().getIntersectionList(v.getPosition(), v.getLane());
 				if (adj.size() == 0) {
 					Log.getInstance().writeln("+++" + v + " dying");
 					v.removeFromCurrent();
@@ -42,7 +37,7 @@ public class NewBasicVehicleController extends BasicVehicleController {
 				} else {
 					int abc = adj.size();
 					Log.getInstance().writeln("adj list size=" + adj.size());
-					count = Lib.random(adj.size());
+					int count = Lib.random(adj.size());
 					Log.getInstance().writeln("count=" + count);
 					RoadEntranceInfo target = adj.get(count);
 					Log.getInstance().writeln(

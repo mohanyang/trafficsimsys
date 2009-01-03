@@ -41,4 +41,8 @@ public class CmdConsole implements Console {
 	private Runnable receiveInterrupt;
 	private ArrayBlockingQueue<Event> receiveQueue = new ArrayBlockingQueue<Event>(
 			10);
+	@Override
+	public Event read() {
+		return null;
+	}
 }

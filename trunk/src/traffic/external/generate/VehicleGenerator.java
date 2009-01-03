@@ -27,7 +27,7 @@ public class VehicleGenerator implements GenerateController {
 	}
 
 	public int generate() {
-		if(road==null){
+		if (road == null) {
 			road = SearchBornPoint(bornpoint);
 			info.setLane(0);
 			info.setPosition(0);
@@ -43,7 +43,7 @@ public class VehicleGenerator implements GenerateController {
 		road.acquireLock();
 		road.performInsertion();
 		road.releaseLock();
-		road=null;
+		road = null;
 		return 0;
 	}
 
@@ -74,15 +74,15 @@ public class VehicleGenerator implements GenerateController {
 		return null;
 	}
 
-	public int setroad(Road r, RoadInfo info){
-		if(r==null){
+	public int setroad(Road r, RoadInfo info) {
+		if (r == null) {
 			return -1;
 		}
-		road=r;
-		this.info=info;
+		road = r;
+		this.info = info;
 		return 0;
 	}
-	
+
 	public int setbornpoint(int bpoint) {
 		if (bpoint >= pointnum) {
 			bpoint = pointnum - 1;
@@ -187,8 +187,8 @@ public class VehicleGenerator implements GenerateController {
 	private int initspeed = 10;
 	private int type = 0;
 	private int bornpoint = 0;
-	private RoadInfo info=null;
-	private Road road=null;
+	private RoadInfo info = null;
+	private Road road = null;
 	private static int typenum = 4;
 	private static int pointnum = 40;
 	private static int paranum = 4;

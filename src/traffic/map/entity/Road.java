@@ -389,9 +389,15 @@ public class Road {
 
 	public double closestIntersection(double position, int lane) {
 		if (laneInfo[lane] == 0) {
-			return intersectionList.floor(position)-(length-position);
+			if (position<0)
+				return 0;
+			else
+				return length-intersectionList.floor(position)-(position);
 		} else {
-			return intersectionList.ceiling(position)-position;
+			if (position>length)
+				return 0;
+			else
+				return intersectionList.ceiling(position)-position;
 		}
 	}
 
@@ -411,7 +417,7 @@ public class Road {
 	}
 	
 	public LinkedList<RoadEntranceInfo> getIntersectionList(double position, int lane) {
-		return getPositionOnRoad(position, lane).getIntersectionList();
+		return getPositionOnRoad(position, lane, false).getIntersectionList();
 	}
 
 	public double getLamda() {

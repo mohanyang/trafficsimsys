@@ -46,7 +46,7 @@ public class SplashWindow extends JWindow {
 	public void setRatio(double r) {
 		bar.setValue((int) (r * 100));
 		try {
-			Thread.sleep(1000);
+			Thread.sleep(300);
 		} catch (InterruptedException e) {
 			e.printStackTrace();
 		}

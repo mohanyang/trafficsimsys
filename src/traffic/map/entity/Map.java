@@ -52,32 +52,34 @@ public class Map {
 		Road road = new Road(s, e, l);
 		s.addRoad(road);
 		e.addRoad(road);
-		
-		LinkedList<Point> newPoints=new LinkedList<Point>();
+
+		LinkedList<Point> newPoints = new LinkedList<Point>();
 		for (Iterator<Point> pIter = getPointList(); pIter.hasNext();) {
 			Point point = pIter.next();
-			for (Iterator<Road> rIter = point.getRoadList(); rIter.hasNext();){
+			for (Iterator<Road> rIter = point.getRoadList(); rIter.hasNext();) {
 				Road curr = rIter.next();
-				if (curr.startPoint.equals(point)){
-					Point ip=Road.intersect(road, curr);
-					if (ip!=null)
+				if (curr.startPoint.equals(point)) {
+					Point ip = Road.intersect(road, curr);
+					if (ip != null)
 						newPoints.add(ip);
 				}
 			}
 		}
-		for (Point curr: newPoints)
+		for (Point curr : newPoints)
 			newPoint(curr);
-		
+
 		for (Iterator<Point> pIter = getPointList(); pIter.hasNext();) {
 			Point point = pIter.next();
-			for (Iterator<Road> rIter = point.getRoadList(); rIter.hasNext();){
+			for (Iterator<Road> rIter = point.getRoadList(); rIter.hasNext();) {
 				Road curr = rIter.next();
-				if (curr.startPoint.equals(point)){
-					Point ip=Road.intersect(road, curr);
-					if (ip!=null){
-						ip=getPoint(ip);
-						curr.insertIntersection(curr.getInfoByPoint(ip).getCurrentPosition());
-						road.insertIntersection(road.getInfoByPoint(ip).getCurrentPosition());
+				if (curr.startPoint.equals(point)) {
+					Point ip = Road.intersect(road, curr);
+					if (ip != null) {
+						ip = getPoint(ip);
+						curr.insertIntersection(curr.getInfoByPoint(ip)
+								.getCurrentPosition());
+						road.insertIntersection(road.getInfoByPoint(ip)
+								.getCurrentPosition());
 					}
 				}
 			}
@@ -128,6 +130,17 @@ public class Map {
 		return null;
 	}
 
+	public Vehicle getVehicle(Road r, double x, double y) {
+		Point p = new Point(x, y);
+		for (Iterator<Vehicle> vIter = r.getVehicleList(); vIter.hasNext();) {
+			Vehicle v = vIter.next();
+			Point tmp = r.getPositionOnRoad(v.getPosition(), v.getLane());
+			if (Point.distance(p, tmp) < v.getLength() / 2)
+				return v;
+		}
+		return null;
+	}
+
 	public String toString() {
 		StringBuffer buf = new StringBuffer();
 		buf.append("map\n");
@@ -139,13 +152,13 @@ public class Map {
 		}
 		return buf.toString();
 	}
-	
-	public int getPointNum(){
-//		int tmp=0;
-//		for (Iterator<Point> pIter = getPointList(); pIter.hasNext();) {
-//			Point p = pIter.next();
-//			tmp++;
-//		}
+
+	public int getPointNum() {
+		// int tmp=0;
+		// for (Iterator<Point> pIter = getPointList(); pIter.hasNext();) {
+		// Point p = pIter.next();
+		// tmp++;
+		// }
 		return pointMap.size();
 	}
 }

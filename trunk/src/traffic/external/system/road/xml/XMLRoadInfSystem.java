@@ -18,7 +18,8 @@ public class XMLRoadInfSystem implements RoadInfSystem {
 
 	@Override
 	public void init() {
-		String filename = Config.getString("traffic.external.system.road.xmlFileName");
+		String filename = Config.getString("traffic.external.system.road.xmlFileName", 
+				"road.xml");
 		parser = new XMLRoadParser(filename);
 	}
 }

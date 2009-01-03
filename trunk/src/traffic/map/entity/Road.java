@@ -42,13 +42,13 @@ public class Road {
 		double s2p=Point.crossProduct(Point.diff(r1.endPoint, r1.startPoint),
 				Point.diff(r2.startPoint, r1.startPoint));
 		if (Math.abs(s1+s2)>Math.abs(s1p+s2p)){
-			if (Math.abs(s1+s2)<1e-4 && s1/(s1+s2)>0)
+			if (Math.abs(s1+s2)<1e-4 || s1/(s1+s2)<=0)
 				return null;
 			else
 				return Point.ratioSegment(r1.startPoint, r1.endPoint, s1/(s1+s2));
 		}
 		else {
-			if (Math.abs(s1p+s2p)<1e-4 && s2p/(s1p+s2p)>0)
+			if (Math.abs(s1p+s2p)<1e-4 || s2p/(s1p+s2p)<=0)
 				return null;
 			else
 				return Point.ratioSegment(r2.startPoint, r2.endPoint, s2p/(s1p+s2p));

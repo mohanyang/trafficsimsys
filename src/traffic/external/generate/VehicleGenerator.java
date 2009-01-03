@@ -29,8 +29,7 @@ public class VehicleGenerator implements GenerateController {
 	public int generate() {
 		if (road == null) {
 			road = SearchBornPoint(bornpoint);
-			info.setLane(0);
-			info.setPosition(0);
+			info=new RoadInfo(road, 0, 0);
 		}
 		if (road == null) {
 			return -1;

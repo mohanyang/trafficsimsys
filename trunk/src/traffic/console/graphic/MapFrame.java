@@ -203,7 +203,7 @@ public class MapFrame extends JFrame implements ActionListener, EventListener {
 		} else if (cmd.toString().equals("pause")) {
 			statusLabel.setText("simulation pasued");
 			Simulator.getInstance().pause();
-		} else if (cmd.toCharArray().equals("resume")) {
+		} else if (cmd.toString().equals("resume")) {
 			statusLabel.setText("simulation resumed");
 			Simulator.getInstance().resume();
 		} else if (cmd.toString().equals("start")) {

@@ -30,7 +30,6 @@ public class MapFrame extends JFrame implements ActionListener, EventListener {
 	private static final int defaultWidth = 1024, defaultHeight = 768;
 
 	JLabel statusLabel;
-	JMenuItem openMenu, saveMenu, setMenu;
 	JButton openButton, saveButton, setButton;
 	MapDisplayPanel mapDisplay;
 	ControlPanel controlPanel;
@@ -49,47 +48,6 @@ public class MapFrame extends JFrame implements ActionListener, EventListener {
 		setTitle("Traffic Simulating System");
 		setResizable(false);
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-
-		// Create Menu
-		JMenuBar menuBar = new JMenuBar();
-		setJMenuBar(menuBar);
-
-		// System Menu
-		JMenu menu = new JMenu("System");
-		menuBar.add(menu);
-		JMenuItem item = new JMenuItem("New Window");
-		item.setActionCommand("NewWin");
-		item.addActionListener(this);
-		menu.add(item);
-		item = new JMenuItem("Exit");
-		item.setActionCommand("Exit");
-		item.addActionListener(this);
-		menu.add(item);
-
-		// File Menu
-		menu = new JMenu("File");
-		menuBar.add(menu);
-		openMenu = new JMenuItem("Open");
-		openMenu.setIcon(getImageIcon("open.gif"));
-		openMenu.setActionCommand("Open");
-		openMenu.addActionListener(this);
-		menu.add(openMenu);
-		saveMenu = new JMenuItem("Save");
-		saveMenu.setIcon(getImageIcon("save.gif"));
-		saveMenu.setActionCommand("Save");
-		saveMenu.addActionListener(this);
-		saveMenu.setEnabled(false);
-		menu.add(saveMenu);
-		/*
-		 * setMenu = new JMenuItem("Set");
-		 * setMenu.setIcon(getImageIcon(baseDirectory + "/image/sset.gif"));
-		 * setMenu.setActionCommand("Set"); setMenu.addActionListener(this);
-		 * setMenu.setEnabled(false); menu.add(setMenu);
-		 */
-
-		// View menu
-		menu = new JMenu("View");
-		menuBar.add(menu);
 
 		// Create Toolbar
 		JToolBar toolbar = new JToolBar();

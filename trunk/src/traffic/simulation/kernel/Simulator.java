@@ -1,7 +1,6 @@
 package traffic.simulation.kernel;
 
 import java.util.Iterator;
-import java.util.TimerTask;
 
 import traffic.basic.Config;
 import traffic.basic.Lib;
@@ -26,6 +25,7 @@ public class Simulator {
 	private Runnable simuTask = null;
 	private IStat stat = null;
 	private SplashWindow sWin = null;
+	private boolean paused = false;
 
 	private static Simulator instance = null;
 
@@ -105,36 +105,42 @@ public class Simulator {
 	public void start() {
 		if (simuTask != null)
 			return;
+		paused = false;
 		simuTask = new Runnable() {
 			public void run() {
-				synchronized (lock) {
-					Log.getInstance().writeln("+++starting+++");
-					for (Iterator<Point> pp = map.getPointList(); pp.hasNext();) {
-						Point p = pp.next();
-						for (Iterator<Road> rr = p.getRoadList(); rr.hasNext();) {
-							Road r = rr.next();
-							r.acquireLock();
-							if (r.getStartPoint().equals(p))
-								for (Iterator<Vehicle> itr = r.getVehicleList(); itr
-										.hasNext();) {
-									Vehicle v = itr.next();
-									Log.getInstance().writeln(v.toString());
-									getController(v).react();
-									Log.getInstance().writeln(v.toString());
-								}
-							r.flushQueue();
-							r.releaseLock();
+				if (!paused) {
+					synchronized (lock) {
+						Log.getInstance().writeln("+++starting+++");
+						for (Iterator<Point> pp = map.getPointList(); pp
+								.hasNext();) {
+							Point p = pp.next();
+							for (Iterator<Road> rr = p.getRoadList(); rr
+									.hasNext();) {
+								Road r = rr.next();
+								r.acquireLock();
+								if (r.getStartPoint().equals(p))
+									for (Iterator<Vehicle> itr = r
+											.getVehicleList(); itr.hasNext();) {
+										Vehicle v = itr.next();
+										Log.getInstance().writeln(v.toString());
+										getController(v).react();
+										Log.getInstance().writeln(v.toString());
+									}
+								r.flushQueue();
+								r.releaseLock();
+							}
 						}
+						console.eventOccured(new Event(map, Event.MOVE));
 					}
-					console.eventOccured(new Event(map, Event.MOVE));
-					if (simuTask != null) {
-						Scheduler.getInstance().schedule(simuTask, 100);
-					} else {
-						// simulation finished
-						stop();
-					}
-					Log.getInstance().writeln("===finished===");
 				}
+
+				if (simuTask != null) {
+					Scheduler.getInstance().schedule(simuTask, 100);
+				} else {
+					// simulation finished
+					stop();
+				}
+				Log.getInstance().writeln("===finished===");
 			}
 		};
 		simuTask.run();
@@ -145,5 +151,21 @@ public class Simulator {
 	public void stop() {
 		simuTask = null;
 		stat.stop();
+	}
+
+	public void pause() {
+		paused = true;
+	}
+
+	public void resume() {
+		paused = false;
+	}
+
+	public void reset() {
+		map.clear();
+	}
+
+	public void exit() {
+		System.exit(0);
 	}
 }

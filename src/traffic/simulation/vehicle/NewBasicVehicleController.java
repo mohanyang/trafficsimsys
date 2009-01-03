@@ -1,5 +1,6 @@
 package traffic.simulation.vehicle;
 
+import java.util.Iterator;
 import java.util.LinkedList;
 
 import traffic.basic.Lib;
@@ -26,10 +27,16 @@ public class NewBasicVehicleController extends BasicVehicleController {
 			double temp = curr.closestIntersection(v.getPosition(), v.getLane());
 			if (temp<newSpeed)
 				newSpeed=temp;
+			v.setSpeed(newSpeed);
 			v.proceed();
 
 			if (Lib.isEqual(temp, 0)) {
 				LinkedList<RoadEntranceInfo> adj = v.getRoad().getIntersectionList(v.getPosition(), v.getLane());
+				for (Iterator<RoadEntranceInfo> itr=adj.iterator(); itr.hasNext();){
+					RoadEntranceInfo ri=itr.next();
+					if (ri.getRoad()==curr && ri.getLane()==v.getLane())
+						itr.remove();
+				}
 				if (adj.size() == 0) {
 					Log.getInstance().writeln("+++" + v + " dying");
 					v.removeFromCurrent();
@@ -48,7 +55,7 @@ public class NewBasicVehicleController extends BasicVehicleController {
 					dispatchEvent(new Event(this, Event.LEAVE_ROAD, v.getRoad()));
 					dispatchEvent(new Event(this, Event.ENTER_ROAD, target
 							.getRoad()));
-					v.setRoad(target.getRoad(), target.getLane());
+					v.setRoad(target.getRoad(), target.getLane(), target.getPosition());
 					v.setSpeed(Lib.random(15) + 5);
 				}
 			}

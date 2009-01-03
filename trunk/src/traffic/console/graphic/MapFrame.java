@@ -2,6 +2,7 @@ package traffic.console.graphic;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
+import java.awt.Cursor;
 import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.GridBagConstraints;
@@ -32,7 +33,7 @@ public class MapFrame extends JFrame implements ActionListener, EventListener {
 	private static final int defaultWidth = 1024, defaultHeight = 768;
 
 	JLabel statusLabel;
-	JButton openButton, saveButton, setButton;
+	JButton addButton, setButton, exitButton;
 	JPanel buttonPanel;
 	JButton pauseButton, resumeButton, resetButton;
 	MapDisplayPanel mapDisplay;
@@ -56,22 +57,27 @@ public class MapFrame extends JFrame implements ActionListener, EventListener {
 
 		// Create Toolbar
 		JToolBar toolbar = new JToolBar();
+		toolbar.setBorder(BorderFactory.createLineBorder(Color
+				.decode("#B8CFE5")));
 		toolbar.setFloatable(false);
-		openButton = new JButton(getImageIcon("open.gif"));
-		openButton.setActionCommand("SetVehicle");
-		openButton.addActionListener(this);
-		toolbar.add(openButton);
-		saveButton = new JButton(getImageIcon("save.gif"));
-		saveButton.setActionCommand("SetBarrier");
-		saveButton.addActionListener(this);
-		// saveButton.setEnabled(false);
-		toolbar.add(saveButton);
-		/*
-		 * setButton = new JButton( getImageIcon(baseDirectory +
-		 * "/image/sset.gif")); setButton.setActionCommand("Set");
-		 * setButton.addActionListener(this); setButton.setEnabled(false);
-		 * toolbar.add(setButton); toolbar.addSeparator();
-		 */
+		addButton = new JButton(getImageIcon("img_add.png"));
+		addButton.setBorder(BorderFactory.createLineBorder(Color
+				.decode("#B8CFE5")));
+		addButton.setActionCommand("SetVehicle");
+		addButton.addActionListener(this);
+		toolbar.add(addButton);
+		setButton = new JButton(getImageIcon("img_set.png"));
+		setButton.setBorder(BorderFactory.createLineBorder(Color
+				.decode("#B8CFE5")));
+		setButton.setActionCommand("SetBarrier");
+		setButton.addActionListener(this);
+		toolbar.add(setButton);
+		exitButton = new JButton(getImageIcon("img_exit.png"));
+		exitButton.setBorder(BorderFactory.createLineBorder(Color
+				.decode("#B8CFE5")));
+		exitButton.setActionCommand("exit");
+		exitButton.addActionListener(this);
+		toolbar.add(exitButton);
 
 		statusLabel = new JLabel("Traffic simulating system started.");
 		statusLabel.setBorder(BorderFactory.createLineBorder(Color
@@ -95,35 +101,45 @@ public class MapFrame extends JFrame implements ActionListener, EventListener {
 		controlPanel.add(vPanel);
 
 		buttonPanel = new JPanel();
+		buttonPanel.setCursor(new Cursor(Cursor.HAND_CURSOR));
 		buttonPanel.setBorder(BorderFactory.createCompoundBorder(BorderFactory
 				.createTitledBorder("System Button"), BorderFactory
 				.createEmptyBorder(5, 5, 5, 5)));
 		buttonPanel.setLayout(new GridLayout(3, 1));
 
 		pauseButton = new JButton(getImageIcon("img_pause.png"));
-		pauseButton.setText("pause simulation");
+		pauseButton
+				.setText("<html>&nbsp;&nbsp;pause&nbsp;&nbsp;&nbsp;simulation<br></html>");
 		pauseButton.setActionCommand("pause");
 		pauseButton.addActionListener(this);
 		pauseButton.setToolTipText("pause");
+		pauseButton.setBorder(BorderFactory.createLineBorder(Color
+				.decode("#B8CFE5")));
 		buttonPanel.add(pauseButton);
 
 		resumeButton = new JButton(getImageIcon("img_resume.png"));
-		resumeButton.setText("resume simulation");
+		resumeButton
+				.setText("<html>&nbsp;&nbsp;resume&nbsp;simulation<br></html>");
 		resumeButton.setActionCommand("resume");
 		resumeButton.addActionListener(this);
 		resumeButton.setToolTipText("resume");
+		resumeButton.setBorder(BorderFactory.createLineBorder(Color
+				.decode("#B8CFE5")));
 		buttonPanel.add(resumeButton);
 
 		resetButton = new JButton(getImageIcon("img_reset.png"));
-		resetButton.setText("<html>reset simulation<html>");
+		resetButton
+				.setText("<html>&nbsp;&nbsp;reset&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;simulation<br></html>");
 		resetButton.setActionCommand("reset");
 		resetButton.addActionListener(this);
-		pauseButton.setToolTipText("reset");
+		resetButton.setToolTipText("reset");
+		resetButton.setBorder(BorderFactory.createLineBorder(Color
+				.decode("#B8CFE5")));
 		buttonPanel.add(resetButton);
 
 		c0.gridy = 1;
 		c0.weightx = 1.0;
-		c0.weighty = 2.0;
+		c0.weighty = 1.0;
 		gridbag0.setConstraints(buttonPanel, c0);
 		controlPanel.add(buttonPanel);
 		controlPanel.validate();
@@ -184,7 +200,7 @@ public class MapFrame extends JFrame implements ActionListener, EventListener {
 		// if (cmd.toString().equals("SetBarrier")) {
 		// barriergendialog.setVisible(true);
 		// }
-		if (cmd.toString().equals("Exit")) {
+		if (cmd.toString().equals("exit")) {
 			statusLabel.setText("system exit");
 			Simulator.getInstance().exit();
 		} else if (cmd.toString().equals("pause")) {

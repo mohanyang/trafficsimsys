@@ -67,6 +67,7 @@ public class MapDisplayPanel extends JPanel implements MouseListener,
 
 	private Road selectedRoad = null;
 	private Vehicle selectedVehicle = null;
+	private boolean clicked = false;
 
 	private EventDispatcher eventDispatcher = new EventDispatcher();
 
@@ -110,7 +111,7 @@ public class MapDisplayPanel extends JPanel implements MouseListener,
 			grassBG = ImageLoader.loadImageByName("bg.bmp");
 			carBG = ImageLoader.loadImageByName("infobg.png");
 			Lib.assertTrue(carBG != null);
-			Lib.alphaImage(carBG, 0x70);
+			Lib.alphaImage(carBG, 0xA0);
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
@@ -261,13 +262,11 @@ public class MapDisplayPanel extends JPanel implements MouseListener,
 
 	private void drawMapOnGraphics(Graphics2D graphics) {
 		Graphics2D bf = (Graphics2D) bg.getGraphics();
-		// bf.setColor(bgColor);
 		Rectangle rect = new Rectangle(0, 0, grassBG.getWidth(), grassBG
 				.getHeight());
 		TexturePaint texture = new TexturePaint(grassBG, rect);
 		bf.setPaint(texture);
 		bf.fillRect(0, 0, imgWidth, imgHeight);
-		// bf.fillRect(0, 0, MAXWIDTH, MAXHEIGHT);
 		for (Iterator<Point> PointItr = map.getPointList(); PointItr.hasNext();) {
 			Point p = PointItr.next();
 			for (Iterator<Road> RoadItr = p.getRoadList(); RoadItr.hasNext();) {
@@ -280,10 +279,15 @@ public class MapDisplayPanel extends JPanel implements MouseListener,
 
 		// draw the selected road / vehicle
 		selectedRoad = map.getRoad(transMapX(mouseX), transMapY(mouseY));
-		selectedVehicle = null;
 		if (mouseInPanel && selectedRoad != null) {
-			selectedVehicle = map.getVehicle(selectedRoad, transMapX(mouseX),
+			Vehicle v = map.getVehicle(selectedRoad, transMapX(mouseX),
 					transMapY(mouseY));
+			if (v != null) {
+				if (selectedVehicle != v) {
+					selectedVehicle = v;
+					clicked = false;
+				}
+			}
 			if (selectedVehicle == null) {
 				drawRoad(bf, selectedRoad, highLightRoadColor);
 			}
@@ -314,6 +318,8 @@ public class MapDisplayPanel extends JPanel implements MouseListener,
 			}
 		}
 
+		if (clicked == false)
+			selectedVehicle = null;
 		bf.drawImage(zoomPanel, null, ZoomPanel.anchorX, ZoomPanel.anchorY);
 
 		graphics.drawImage(bg, null, 0, 0);
@@ -450,16 +456,27 @@ public class MapDisplayPanel extends JPanel implements MouseListener,
 		dispatchEvent(new Event(this, Event.MOUSE_INPUT, new MouseInput(arg0,
 				(int) transMapX(arg0.getX()), (int) transMapY(arg0.getY()))));
 
+		if (arg0.getButton() == MouseEvent.BUTTON3)
+			selectedVehicle = null;
+
 		zoomPanel.mouseClicked(arg0);
 		mouseX = arg0.getX();
 		mouseY = arg0.getY();
-		Road r = map.getRoad(mouseX, mouseY);
-		if (r == null) {
+		double xx = transMapX(mouseX), yy = transMapY(mouseY);
+		Road r = map.getRoad(xx, yy);
+		if (r == null)
 			return;
+		Vehicle v = map.getVehicle(r, xx, yy);
+		if (v != null) {
+			selectedVehicle = v;
+			clicked = true;
+		} else {
+			if (arg0.getClickCount() == 2) {
+				RoadInfo info = r.getInfoByPoint(new Point(xx, yy));
+				MyFactory.getInstance().getVehicleGenerator().setroad(r, info);
+				MyFactory.getInstance().getVehicleGenerator().generate();
+			}
 		}
-		RoadInfo info = r.getInfoByPoint(new Point(mouseX, mouseY));
-		MyFactory.getInstance().getVehicleGenerator().setroad(r, info);
-		MyFactory.getInstance().getVehicleGenerator().generate();
 	}
 
 	@Override

@@ -364,6 +364,33 @@ public class Road {
 		// TODO vehicle length
 		return ret;
 	}
+	
+	public Vehicle closestVehicle(double position, int lane, Vehicle pv){
+		Lib.assertTrue(lock.isHeldByCurrentThread());
+		double ret=Double.MAX_VALUE;
+		Vehicle retV=null;
+		int dir=(laneInfo[lane]==0)?-1:1;
+		Vehicle curr=vehicleList.iterator().next();
+		for (Iterator<Vehicle> itr = vehicleList.iterator(); itr.hasNext(); curr = itr.next()) {
+			if (curr != pv && curr.getLane() == lane
+					&& curr.getPosition() * dir >= position * dir) {
+				if (ret > (dir * (curr.getPosition() - position))){
+					ret=(dir * (curr.getPosition() - position));
+					retV=curr;
+				}
+			}
+		}
+		return retV;
+	}
+	
+	public double closestIntersection(double position, int lane){
+		if (laneInfo[lane]==0){
+			return intersectionList.floor(position);
+		}
+		else {
+			return intersectionList.ceiling(position);			
+		}
+	}
 
 	public int getLane() {
 		return laneInfo.length;

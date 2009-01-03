@@ -14,6 +14,7 @@ public class Point {
 	protected double yAxis = 0;
 	private long hashCode = 0;
 	private LinkedList<Road> roadList = new LinkedList<Road>();
+	private LinkedList<RoadInfo> passRoadList = new LinkedList<RoadInfo>();
 
 	public static double distance(Point p1, Point p2) {
 		return Math.sqrt((p1.xAxis - p2.xAxis) * (p1.xAxis - p2.xAxis)
@@ -98,6 +99,17 @@ public class Point {
 		}
 		return roadList.size();
 	}
+	
+	public void addPassRoad(Road road, double position){
+		passRoadList.add(new RoadInfo(road, 0, position));
+	}
+	
+	public int removePassRoad(Road road){
+		for (RoadInfo r: passRoadList)
+			if (r.getCurrentRoad()==road)
+				passRoadList.remove(r);
+		return passRoadList.size();
+	}
 
 	public double getXAxis() {
 		return xAxis;
@@ -108,7 +120,7 @@ public class Point {
 	}
 
 	public int getDegree() {
-		return roadList.size();
+		return roadList.size()+passRoadList.size();
 	}
 
 	public Iterator<Road> getRoadList() {
@@ -129,6 +141,11 @@ public class Point {
 						|| !direction) {
 					ret.add(new RoadEntranceInfo(curr, i));
 				}
+		}
+		for (RoadInfo itr: passRoadList){
+			for (int i=0; i<itr.getCurrentRoad().getLane(); ++i){
+				
+			}
 		}
 		return ret;
 	}

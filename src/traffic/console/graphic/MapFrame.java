@@ -97,7 +97,7 @@ public class MapFrame extends JFrame implements ActionListener, EventListener {
 		buttonPanel.setBorder(BorderFactory.createCompoundBorder(BorderFactory
 				.createTitledBorder("System Button"), BorderFactory
 				.createEmptyBorder(5, 5, 5, 5)));
-		buttonPanel.setLayout(new GridLayout(5, 1));
+		buttonPanel.setLayout(new GridLayout(3, 1));
 
 		pauseButton = new JButton(getImageIcon("open.gif"));
 		pauseButton.setText("pause simulation");
@@ -113,19 +113,19 @@ public class MapFrame extends JFrame implements ActionListener, EventListener {
 		resumeButton.setToolTipText("resume");
 		buttonPanel.add(resumeButton);
 
-		startButton = new JButton(getImageIcon("open.gif"));
-		startButton.setText("start simulation");
-		startButton.setActionCommand("start");
-		startButton.addActionListener(this);
-		startButton.setToolTipText("start");
-		buttonPanel.add(startButton);
-
-		stopButton = new JButton(getImageIcon("open.gif"));
-		stopButton.setText("stop  simulation");
-		stopButton.setActionCommand("stop");
-		stopButton.addActionListener(this);
-		stopButton.setToolTipText("stop");
-		buttonPanel.add(stopButton);
+//		startButton = new JButton(getImageIcon("open.gif"));
+//		startButton.setText("start simulation");
+//		startButton.setActionCommand("start");
+//		startButton.addActionListener(this);
+//		startButton.setToolTipText("start");
+//		buttonPanel.add(startButton);
+//
+//		stopButton = new JButton(getImageIcon("open.gif"));
+//		stopButton.setText("stop  simulation");
+//		stopButton.setActionCommand("stop");
+//		stopButton.addActionListener(this);
+//		stopButton.setToolTipText("stop");
+//		buttonPanel.add(stopButton);
 
 		resetButton = new JButton(getImageIcon("open.gif"));
 		resetButton.setText("reset simulation");

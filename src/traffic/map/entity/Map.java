@@ -165,6 +165,11 @@ public class Map {
 	}
 
 	public void clear() {
-		pointMap.clear();
+		for (Iterator<Point> pIter = getPointList(); pIter.hasNext();) {
+			for (Iterator<Road> rIter = pIter.next().getRoadList(); rIter
+					.hasNext();) {
+				rIter.next().clearVehicle();
+			}
+		}
 	}
 }

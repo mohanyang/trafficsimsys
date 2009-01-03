@@ -370,11 +370,13 @@ public class MapDisplayPanel extends JPanel implements MouseListener,
 			trans.setToRotation(Math.toRadians(theta));
 			tmp.setToScale(scale
 					* ImageLoader.scale
-					* (carBG.getHeight() / img[v.getVehicleInf().getImageID()]
-							.getHeight()), scale
+					* 0.25
+					* ((double) carBG.getHeight() / (double) img[v
+							.getVehicleInf().getImageID()].getHeight()), scale
 					* ImageLoader.scale
-					* (carBG.getWidth() / img[v.getVehicleInf().getImageID()]
-							.getWidth()));
+					* 0.25
+					* ((double) carBG.getWidth() / (double) img[v
+							.getVehicleInf().getImageID()].getWidth()));
 			trans.concatenate(tmp);
 			op = new AffineTransformOp(trans,
 					AffineTransformOp.TYPE_NEAREST_NEIGHBOR);

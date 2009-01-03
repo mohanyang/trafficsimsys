@@ -3,6 +3,7 @@ package traffic.console.graphic;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
+import java.awt.Font;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.GridLayout;
@@ -33,7 +34,7 @@ public class MapFrame extends JFrame implements ActionListener, EventListener {
 	JLabel statusLabel;
 	JButton openButton, saveButton, setButton;
 	JPanel buttonPanel;
-	JButton pauseButton, resumeButton, startButton, resetButton, stopButton;
+	JButton pauseButton, resumeButton, resetButton;
 	MapDisplayPanel mapDisplay;
 	ControlPanel controlPanel;
 	VehicleDisplayPanel vPanel;
@@ -99,36 +100,22 @@ public class MapFrame extends JFrame implements ActionListener, EventListener {
 				.createEmptyBorder(5, 5, 5, 5)));
 		buttonPanel.setLayout(new GridLayout(3, 1));
 
-		pauseButton = new JButton(getImageIcon("open.gif"));
+		pauseButton = new JButton(getImageIcon("img_pause.png"));
 		pauseButton.setText("pause simulation");
 		pauseButton.setActionCommand("pause");
 		pauseButton.addActionListener(this);
 		pauseButton.setToolTipText("pause");
 		buttonPanel.add(pauseButton);
 
-		resumeButton = new JButton(getImageIcon("open.gif"));
+		resumeButton = new JButton(getImageIcon("img_resume.png"));
 		resumeButton.setText("resume simulation");
 		resumeButton.setActionCommand("resume");
 		resumeButton.addActionListener(this);
 		resumeButton.setToolTipText("resume");
 		buttonPanel.add(resumeButton);
 
-//		startButton = new JButton(getImageIcon("open.gif"));
-//		startButton.setText("start simulation");
-//		startButton.setActionCommand("start");
-//		startButton.addActionListener(this);
-//		startButton.setToolTipText("start");
-//		buttonPanel.add(startButton);
-//
-//		stopButton = new JButton(getImageIcon("open.gif"));
-//		stopButton.setText("stop  simulation");
-//		stopButton.setActionCommand("stop");
-//		stopButton.addActionListener(this);
-//		stopButton.setToolTipText("stop");
-//		buttonPanel.add(stopButton);
-
-		resetButton = new JButton(getImageIcon("open.gif"));
-		resetButton.setText("reset simulation");
+		resetButton = new JButton(getImageIcon("img_reset.png"));
+		resetButton.setText("<html>reset simulation<html>");
 		resetButton.setActionCommand("reset");
 		resetButton.addActionListener(this);
 		pauseButton.setToolTipText("reset");
@@ -206,12 +193,6 @@ public class MapFrame extends JFrame implements ActionListener, EventListener {
 		} else if (cmd.toString().equals("resume")) {
 			statusLabel.setText("simulation resumed");
 			Simulator.getInstance().resume();
-		} else if (cmd.toString().equals("start")) {
-			statusLabel.setText("simulation stared");
-			Simulator.getInstance().start();
-		} else if (cmd.toString().equals("stop")) {
-			statusLabel.setText("simulation stopped");
-			Simulator.getInstance().stop();
 		} else if (cmd.toString().equals("reset")) {
 			statusLabel.setText("simulation resetted");
 			Simulator.getInstance().reset();

@@ -56,12 +56,10 @@
   </road>
   <road>
     <start_point x-axis="50.00" y-axis="250.00" />
-    <end_point x-axis="350.00" y-axis="250.00" />
-    <lane>1</lane>
-  </road>
-  <road>
-    <start_point x-axis="350.00" y-axis="250.00" />
     <end_point x-axis="750.00" y-axis="250.00" />
     <lane>1</lane>
+    <lanedescr>
+    	<descr>1</descr>
+    </lanedescr>
   </road>
 </map>

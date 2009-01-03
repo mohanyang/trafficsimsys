@@ -58,6 +58,7 @@ public class Map {
 				if (curr.startPoint.equals(point)){
 					Point ip=Road.intersect(road, curr);
 					if (ip!=null){
+						ip=newPoint(ip);
 						curr.insertIntersection(curr.getInfoByPoint(ip).getCurrentPosition());
 						road.insertIntersection(road.getInfoByPoint(ip).getCurrentPosition());
 					}

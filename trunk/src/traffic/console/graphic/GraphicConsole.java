@@ -16,6 +16,11 @@ public class GraphicConsole implements Console {
 	}
 
 	@Override
+	public Event read() {
+		return null;
+	}
+
+	@Override
 	public void eventOccured(Event e) {
 		if (e.getObj() instanceof Map) {
 			switch (e.getType()) {

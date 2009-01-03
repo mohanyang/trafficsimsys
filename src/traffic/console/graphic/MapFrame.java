@@ -31,7 +31,6 @@ public class MapFrame extends JFrame implements ActionListener {
 	JButton openButton, saveButton, setButton;
 	MapDisplayPanel mapDisplay;
 	ControlPanel controlPanel;
-	String baseDirectory = "./";
 
 	// VehicleGenPanel vehiclegendialog;
 	// BarrierGenPanel barriergendialog;
@@ -66,12 +65,12 @@ public class MapFrame extends JFrame implements ActionListener {
 		menu = new JMenu("File");
 		menuBar.add(menu);
 		openMenu = new JMenuItem("Open");
-		openMenu.setIcon(getImageIcon(baseDirectory + "/image/open.gif"));
+		openMenu.setIcon(getImageIcon("open.gif"));
 		openMenu.setActionCommand("Open");
 		openMenu.addActionListener(this);
 		menu.add(openMenu);
 		saveMenu = new JMenuItem("Save");
-		saveMenu.setIcon(getImageIcon(baseDirectory + "/image/save.gif"));
+		saveMenu.setIcon(getImageIcon("save.gif"));
 		saveMenu.setActionCommand("Save");
 		saveMenu.addActionListener(this);
 		saveMenu.setEnabled(false);
@@ -90,13 +89,11 @@ public class MapFrame extends JFrame implements ActionListener {
 		// Create Toolbar
 		JToolBar toolbar = new JToolBar();
 		toolbar.setFloatable(false);
-		openButton = new JButton(
-				getImageIcon(baseDirectory + "/image/open.gif"));
+		openButton = new JButton(getImageIcon("open.gif"));
 		openButton.setActionCommand("SetVehicle");
 		openButton.addActionListener(this);
 		toolbar.add(openButton);
-		saveButton = new JButton(
-				getImageIcon(baseDirectory + "/image/save.gif"));
+		saveButton = new JButton(getImageIcon("save.gif"));
 		saveButton.setActionCommand("SetBarrier");
 		saveButton.addActionListener(this);
 		// saveButton.setEnabled(false);
@@ -172,8 +169,8 @@ public class MapFrame extends JFrame implements ActionListener {
 		}
 	}
 
-	private ImageIcon getImageIcon(String path) {
-		return new ImageIcon(this.getClass().getResource(path));
+	private ImageIcon getImageIcon(String name) {
+		return new ImageIcon(ImageLoader.loadImageByName(name));
 	}
 
 	protected void handleCreate(Map map) {

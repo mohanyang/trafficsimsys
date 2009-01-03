@@ -77,10 +77,18 @@ public class Map {
 					Point ip = Road.intersect(road, curr);
 					if (ip != null) {
 						ip = getPoint(ip);
-						curr.insertIntersection(curr.getInfoByPoint(ip)
-								.getCurrentPosition());
-						road.insertIntersection(road.getInfoByPoint(ip)
-								.getCurrentPosition());
+						if (!ip.equals(road.startPoint) && !ip.equals(road.endPoint)){
+							road.insertIntersection(road.getInfoByPoint(ip)
+									.getCurrentPosition());
+							// TODO
+							ip.addPassRoad(road, 0);
+						}
+						if (!ip.equals(curr.startPoint) && !ip.equals(curr.endPoint)){
+							curr.insertIntersection(curr.getInfoByPoint(ip)
+									.getCurrentPosition());
+							// TODO
+							ip.addPassRoad(curr, 0);
+						}
 					}
 				}
 			}

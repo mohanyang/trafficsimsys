@@ -15,10 +15,16 @@ public class RoadEntranceInfo {
 	
 	private Road assoc;
 	private int lane;
+	private double position;
 	
 	public RoadEntranceInfo(Road r, int l){
+		this(r, l, 0);
+	}
+	
+	public RoadEntranceInfo(Road r, int l, double p){
 		assoc=r;
 		lane=l;
+		position=p;
 	}
 	
 	public Road getRoad(){

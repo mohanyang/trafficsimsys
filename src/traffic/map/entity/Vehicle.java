@@ -67,6 +67,10 @@ public class Vehicle {
 	}
 	
 	public void setRoad(Road r, int lane) {
+		setRoad(r, lane, 0);
+	}
+	
+	public void setRoad(Road r, int lane, double position){
 		if (rInfo.getCurrentRoad() != null) {
 			Lib.assertTrue(rInfo.getCurrentRoad().isHeldByCurrentThread());
 			rInfo.getCurrentRoad().removeVehicle(this);
@@ -74,7 +78,7 @@ public class Vehicle {
 		r.acquireLock();
 		r.addVehicle(this, lane);
 		rInfo.setRoad(r);
-		rInfo.setPosition(inf.getLength()/2);
+		rInfo.setPosition(inf.getLength()/2+position);
 		rInfo.setLane(lane);
 		r.releaseLock();
 	}

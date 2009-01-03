@@ -1,20 +1,20 @@
 package traffic.console.graphic;
 
 import java.awt.BorderLayout;
+import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
+import java.awt.GridLayout;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
+import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
-import javax.swing.JMenu;
-import javax.swing.JMenuBar;
-import javax.swing.JMenuItem;
 import javax.swing.JPanel;
 import javax.swing.JToolBar;
 import javax.swing.UIManager;
@@ -31,6 +31,8 @@ public class MapFrame extends JFrame implements ActionListener, EventListener {
 
 	JLabel statusLabel;
 	JButton openButton, saveButton, setButton;
+	JPanel buttonPanel;
+	JButton pauseButton, startButton, resetButton, stopButton;
 	MapDisplayPanel mapDisplay;
 	ControlPanel controlPanel;
 	VehicleDisplayPanel vPanel;
@@ -70,28 +72,80 @@ public class MapFrame extends JFrame implements ActionListener, EventListener {
 		 */
 
 		statusLabel = new JLabel("Traffic simulating system started.");
+		statusLabel.setBorder(BorderFactory.createLineBorder(Color
+				.decode("#B8CFE5")));
+		statusLabel.setToolTipText("current status");
 
 		JPanel MainDisplayPanel = new JPanel();
 		mapDisplay = new MapDisplayPanel();
 		controlPanel = new ControlPanel();
 		vPanel = new VehicleDisplayPanel();
-		
-		mapDisplay.setVehicleDisplayPanel(vPanel);
+
+		GridBagLayout gridbag0 = new GridBagLayout();
+		GridBagConstraints c0 = new GridBagConstraints();
+		controlPanel.setLayout(gridbag0);
+		c0.fill = GridBagConstraints.BOTH;
+		c0.gridx = 0;
+		c0.gridy = 0;
+		c0.weightx = 1.0;
+		c0.weighty = 6.0;
+		gridbag0.setConstraints(vPanel, c0);
+		controlPanel.add(vPanel);
+
+		buttonPanel = new JPanel();
+		buttonPanel.setBorder(BorderFactory.createCompoundBorder(BorderFactory
+				.createTitledBorder("System Button"), BorderFactory
+				.createEmptyBorder(5, 5, 5, 5)));
+		buttonPanel.setLayout(new GridLayout(4, 1));
+
+		pauseButton = new JButton(getImageIcon("open.gif"));
+		pauseButton.setText("pause simulation");
+		pauseButton.setActionCommand("pause");
+		pauseButton.addActionListener(this);
+		pauseButton.setToolTipText("pause");
+		buttonPanel.add(pauseButton);
+
+		startButton = new JButton(getImageIcon("open.gif"));
+		startButton.setText("start simulation");
+		startButton.setActionCommand("start");
+		startButton.addActionListener(this);
+		startButton.setToolTipText("start");
+		buttonPanel.add(startButton);
+
+		stopButton = new JButton(getImageIcon("open.gif"));
+		stopButton.setText("stop  simulation");
+		stopButton.setActionCommand("stop");
+		stopButton.addActionListener(this);
+		stopButton.setToolTipText("stop");
+		buttonPanel.add(stopButton);
+
+		resetButton = new JButton(getImageIcon("open.gif"));
+		resetButton.setText("reset simulation");
+		resetButton.setActionCommand("reset");
+		resetButton.addActionListener(this);
+		pauseButton.setToolTipText("reset");
+		buttonPanel.add(resetButton);
+
+		c0.gridy = 1;
+		c0.weightx = 1.0;
+		c0.weighty = 2.0;
+		gridbag0.setConstraints(buttonPanel, c0);
+		controlPanel.add(buttonPanel);
+		controlPanel.validate();
 
 		GridBagLayout gridbag = new GridBagLayout();
 		GridBagConstraints c = new GridBagConstraints();
 		MainDisplayPanel.setLayout(gridbag);
-
 		c.fill = GridBagConstraints.BOTH;
 		c.gridx = 0;
 		c.gridy = 0;
-		c.weightx = 6.0;
+		c.weightx = 8.0;
 		c.weighty = 1.0;
 		gridbag.setConstraints(mapDisplay, c);
 		MainDisplayPanel.add(mapDisplay);
 		c.gridx = 1;
 		c.gridy = 0;
-		c.weightx = 2.0;
+		c.weightx = 1.8;
 		c.weighty = 1.0;
 		gridbag.setConstraints(controlPanel, c);
 		MainDisplayPanel.add(controlPanel);
@@ -101,6 +155,7 @@ public class MapFrame extends JFrame implements ActionListener, EventListener {
 		getContentPane().add(statusLabel, BorderLayout.SOUTH);
 		getContentPane().add(toolbar, BorderLayout.NORTH);
 
+		mapDisplay.setVehicleDisplayPanel(vPanel);
 		mapDisplay.setStatusLabel(statusLabel);
 		setFocusable(true);
 		addKeyListener(new MapKeyListener(mapDisplay));
@@ -108,6 +163,7 @@ public class MapFrame extends JFrame implements ActionListener, EventListener {
 
 		setSize(defaultWidth, defaultHeight);
 		centerize();
+
 		// vehiclegendialog = new VehicleGenPanel();
 		// vehiclegendialog.pack();
 		// barriergendialog = new BarrierGenPanel();
@@ -134,7 +190,16 @@ public class MapFrame extends JFrame implements ActionListener, EventListener {
 		// barriergendialog.setVisible(true);
 		// }
 		if (cmd.toString().equals("Exit")) {
+			statusLabel.setText("system exit");
 			System.exit(0);
+		} else if (cmd.toString().equals("pause")) {
+			statusLabel.setText("simulation pasued");
+		} else if (cmd.toString().equals("start")) {
+			statusLabel.setText("simulation stared");
+		} else if (cmd.toString().equals("stop")) {
+			statusLabel.setText("simulation stopped");
+		} else if (cmd.toString().equals("reset")) {
+			statusLabel.setText("simulation resetted");
 		}
 	}
 

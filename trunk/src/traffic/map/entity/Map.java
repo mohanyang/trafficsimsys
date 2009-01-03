@@ -81,13 +81,13 @@ public class Map {
 							road.insertIntersection(road.getInfoByPoint(ip)
 									.getCurrentPosition());
 							// TODO
-							ip.addPassRoad(road, 0);
+							ip.addPassRoad(road, road.getInfoByPoint(ip).getCurrentPosition());
 						}
 						if (!ip.equals(curr.startPoint) && !ip.equals(curr.endPoint)){
 							curr.insertIntersection(curr.getInfoByPoint(ip)
 									.getCurrentPosition());
 							// TODO
-							ip.addPassRoad(curr, 0);
+							ip.addPassRoad(curr, curr.getInfoByPoint(ip).getCurrentPosition());
 						}
 					}
 				}

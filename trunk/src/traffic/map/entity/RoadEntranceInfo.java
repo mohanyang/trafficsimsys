@@ -35,6 +35,10 @@ public class RoadEntranceInfo {
 		return lane;
 	}
 	
+	public double getPosition(){
+		return position;
+	}
+	
 	public double getClosestDistance(){
 		return assoc.closestDistance(0, lane, null);
 	}

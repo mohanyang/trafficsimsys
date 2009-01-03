@@ -41,14 +41,16 @@ public class Road {
 				Point.diff(r1.endPoint, r1.startPoint));
 		double s2p=Point.crossProduct(Point.diff(r1.endPoint, r1.startPoint),
 				Point.diff(r2.startPoint, r1.startPoint));
+		if (s1*s2<0 || s1p*s2p<0)
+			return null;
 		if (Math.abs(s1+s2)>Math.abs(s1p+s2p)){
-			if (Math.abs(s1+s2)<1e-4 || s1/(s1+s2)<=0)
+			if (Math.abs(s1+s2)<1e-4 || s1/(s1+s2)<0 || s1/(s1+s2)>1)
 				return null;
 			else
 				return Point.ratioSegment(r1.startPoint, r1.endPoint, s1/(s1+s2));
 		}
 		else {
-			if (Math.abs(s1p+s2p)<1e-4 || s2p/(s1p+s2p)<=0)
+			if (Math.abs(s1p+s2p)<1e-4 || s2p/(s1p+s2p)<0 || s2p/(s1p+s2p)>1)
 				return null;
 			else
 				return Point.ratioSegment(r2.startPoint, r2.endPoint, s2p/(s1p+s2p));
@@ -118,6 +120,8 @@ public class Road {
 		for (int i = 0; i < l.length; ++i)
 			laneMove[i] = true;
 		length = Point.distance(s, e);
+		intersectionList.add(new Double(0));
+		intersectionList.add(new Double(length));
 		Log.getInstance().writeln("constructing " + this);
 	}
 
@@ -389,6 +393,8 @@ public class Road {
 		delta += Road.laneWidth * laneInfo.length * 0.5;
 		int lane=(int) Math.floor(delta / Road.laneWidth);
 		if (laneInfo[lane]==0) distance=length-distance;
+		if (distance<0)
+			Log.getInstance().writeln(toString() + " " + x.toString() + " " + distance);
 		return new RoadInfo(this, lane, distance);
 	}
 

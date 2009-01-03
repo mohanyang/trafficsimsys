@@ -2,6 +2,7 @@ package traffic.map.entity;
 
 import java.util.HashMap;
 import java.util.Iterator;
+import java.util.LinkedList;
 
 import traffic.log.Log;
 
@@ -51,6 +52,22 @@ public class Map {
 		Road road = new Road(s, e, l);
 		s.addRoad(road);
 		e.addRoad(road);
+		
+		LinkedList<Point> newPoints=new LinkedList<Point>();
+		for (Iterator<Point> pIter = getPointList(); pIter.hasNext();) {
+			Point point = pIter.next();
+			for (Iterator<Road> rIter = point.getRoadList(); rIter.hasNext();){
+				Road curr = rIter.next();
+				if (curr.startPoint.equals(point)){
+					Point ip=Road.intersect(road, curr);
+					if (ip!=null)
+						newPoints.add(ip);
+				}
+			}
+		}
+		for (Point curr: newPoints)
+			newPoint(curr);
+		
 		for (Iterator<Point> pIter = getPointList(); pIter.hasNext();) {
 			Point point = pIter.next();
 			for (Iterator<Road> rIter = point.getRoadList(); rIter.hasNext();){
@@ -58,7 +75,7 @@ public class Map {
 				if (curr.startPoint.equals(point)){
 					Point ip=Road.intersect(road, curr);
 					if (ip!=null){
-						ip=newPoint(ip);
+						ip=getPoint(ip);
 						curr.insertIntersection(curr.getInfoByPoint(ip).getCurrentPosition());
 						road.insertIntersection(road.getInfoByPoint(ip).getCurrentPosition());
 					}

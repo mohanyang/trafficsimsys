@@ -1,57 +1,45 @@
 package traffic.console.graphic;
 
-import java.awt.Graphics;
-import java.awt.Graphics2D;
-import java.awt.geom.AffineTransform;
-import java.awt.image.AffineTransformOp;
-import java.awt.image.BufferedImage;
-import java.awt.image.BufferedImageOp;
-import java.io.File;
-import java.io.IOException;
-import java.util.Timer;
-import java.util.TimerTask;
+import java.awt.GridLayout;
 
-import javax.imageio.ImageIO;
+import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.JTextField;
+
+import traffic.map.entity.Vehicle;
 
 public class VehicleDisplayPanel extends JPanel {
-	static public final long serialVersionUID = 3L;
-	BufferedImage img = null;
-	AffineTransform trans = null;
-	Timer timer;
-	private int n = 0;
+	public static final long serialVersionUID = 3L;
+
+	public static final int items = 3;
+	private static final String[] text = { "position:", "speed:", "lane:" };
+	private static final int position = 0, speed = 1, lane = 2;
+
+	private Vehicle vehicle = null;
+
+	private JTextField[] fields = new JTextField[items];
 
 	public VehicleDisplayPanel() {
-		this.setOpaque(false);
-		try {
-			img = ImageIO.read(new File("./image/1.gif"));
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-		trans = new AffineTransform();
-		timer = new Timer();
-		timer.schedule(new RemindTask(), 0, 100);
-		this.setSize(800, 600);
-	}
-
-	class RemindTask extends TimerTask {
-		public void run() {
-			repaint();
-			n = n + 10;
-			if (n > 600) {
-				timer.cancel();
-			}
+		setLayout(new GridLayout(1, items * 2));
+		for (int i = 0; i < items; ++i) {
+			add(new JLabel(text[i]));
+			add(fields[i] = new JTextField());
 		}
 	}
 
-	public void repaint() {
-		Graphics graphics = getGraphics();
-		if (graphics != null) {
-			graphics.clearRect(0, 0, 800, 600);
-			trans.setToRotation(-1, 1, 0, 0);
-			BufferedImageOp op = new AffineTransformOp(trans,
-					AffineTransformOp.TYPE_BICUBIC);
-			((Graphics2D) graphics).drawImage(img, op, n, n - 16);
+	public void setVehicle(Vehicle v) {
+		vehicle = v;
+	}
+
+	public void paint() {
+		if (vehicle == null) {
+			for (int i = 0; i < items; ++i)
+				fields[i].setText("N/A");
+		} else {
+			fields[position].setText((int) vehicle.getPoint().getXAxis() + " "
+					+ (int) vehicle.getPoint().getYAxis());
+			fields[speed].setText(String.format("%.2f", vehicle.getSpeed()));
+			fields[lane].setText("" + vehicle.getLane());
 		}
 	}
 }

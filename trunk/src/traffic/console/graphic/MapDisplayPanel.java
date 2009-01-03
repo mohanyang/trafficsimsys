@@ -20,6 +20,7 @@ import java.awt.image.BufferedImageOp;
 import java.io.IOException;
 import java.util.Iterator;
 
+import javax.swing.BorderFactory;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.UIManager;
@@ -48,7 +49,7 @@ public class MapDisplayPanel extends JPanel implements MouseListener,
 		MouseMotionListener, MouseWheelListener {
 	public static final long serialVersionUID = 2L;
 	public static final int MAXWIDTH = 5000, MAXHEIGHT = 5000;
-	private int imgWidth = 760, imgHeight = 650;
+	private int imgWidth = 675, imgHeight = 675;
 	private int moveThreshold = 15, moveStep = 50;
 	private Map map = null;
 	BufferedImage[] img = null;
@@ -117,6 +118,7 @@ public class MapDisplayPanel extends JPanel implements MouseListener,
 			e.printStackTrace();
 		}
 		trans = new AffineTransform();
+		setBorder(BorderFactory.createLineBorder(Color.decode("#B8CFE5")));
 		setSize(imgWidth, imgHeight);
 
 		bg = new BufferedImage(imgWidth, imgHeight, BufferedImage.TYPE_INT_RGB);
@@ -317,7 +319,8 @@ public class MapDisplayPanel extends JPanel implements MouseListener,
 				bf.drawImage(box, null, pos.x, pos.y);
 				box.releaseLock();
 			}
-		} else if (vPanel != null) {
+		}
+		if (vPanel != null) {
 			vPanel.setVehicle(selectedVehicle);
 			vPanel.paint();
 		}

@@ -2,6 +2,7 @@ package traffic.console.graphic;
 
 import java.awt.Color;
 
+import javax.swing.BorderFactory;
 import javax.swing.JPanel;
 import javax.swing.UIManager;
 import javax.swing.border.LineBorder;
@@ -15,7 +16,9 @@ public class ControlPanel extends JPanel {
 					.getCrossPlatformLookAndFeelClassName());
 		} catch (Exception e) {
 		}
-		this.setBorder(new LineBorder(Color.BLACK));
-		this.setSize(200, 650);
+		setBorder(BorderFactory.createCompoundBorder(BorderFactory
+				.createTitledBorder(""), BorderFactory
+				.createEmptyBorder(5, 5, 5, 5)));
+		setSize(200, 650);
 	}
 }

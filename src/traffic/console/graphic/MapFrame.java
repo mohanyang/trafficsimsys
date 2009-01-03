@@ -33,6 +33,7 @@ public class MapFrame extends JFrame implements ActionListener, EventListener {
 	JButton openButton, saveButton, setButton;
 	MapDisplayPanel mapDisplay;
 	ControlPanel controlPanel;
+	VehicleDisplayPanel vPanel;
 
 	EventDispatcher eventDispatcher = new EventDispatcher();
 
@@ -73,6 +74,9 @@ public class MapFrame extends JFrame implements ActionListener, EventListener {
 		JPanel MainDisplayPanel = new JPanel();
 		mapDisplay = new MapDisplayPanel();
 		controlPanel = new ControlPanel();
+		vPanel = new VehicleDisplayPanel();
+		
+		mapDisplay.setVehicleDisplayPanel(vPanel);
 
 		GridBagLayout gridbag = new GridBagLayout();
 		GridBagConstraints c = new GridBagConstraints();

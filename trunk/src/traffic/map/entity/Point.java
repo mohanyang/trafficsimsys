@@ -43,6 +43,11 @@ public class Point {
 		return new Point(p2.getXAxis()-d*(p2.getXAxis()-p1.getXAxis())/distance(p1, p2),
 				p2.getYAxis()-d*(p2.getYAxis()-p1.getYAxis())/distance(p1, p2));
 	}
+	
+	public static Point ratioSegment(Point p1, Point p2, double lambda){
+		return new Point((1-lambda)*p1.getXAxis()+lambda*p2.getXAxis(),
+				(1-lambda)*p1.getYAxis()+lambda*p2.getYAxis());
+	}
 
 	public Point(double x, double y) {
 		xAxis = x;

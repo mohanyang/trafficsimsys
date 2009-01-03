@@ -31,6 +31,29 @@ public class Road {
 	private ReentrantLock lock = new ReentrantLock();
 
 	private TreeSet<Double> intersectionList = new TreeSet<Double>();
+	
+	public static Point intersect(Road r1, Road r2){
+		double s1=Point.crossProduct(Point.diff(r2.endPoint, r1.startPoint), 
+				Point.diff(r2.startPoint, r1.startPoint));
+		double s2=Point.crossProduct(Point.diff(r2.endPoint, r2.startPoint),
+				Point.diff(r1.endPoint, r2.startPoint));
+		double s1p=Point.crossProduct(Point.diff(r2.endPoint, r1.startPoint), 
+				Point.diff(r1.endPoint, r1.startPoint));
+		double s2p=Point.crossProduct(Point.diff(r1.endPoint, r1.startPoint),
+				Point.diff(r2.startPoint, r1.startPoint));
+		if (Math.abs(s1+s2)>Math.abs(s1p+s2p)){
+			if (Math.abs(s1+s2)<1e-4 && s1/(s1+s2)>0)
+				return null;
+			else
+				return Point.ratioSegment(r1.startPoint, r1.endPoint, s1/(s1+s2));
+		}
+		else {
+			if (Math.abs(s1p+s2p)<1e-4 && s2p/(s1p+s2p)>0)
+				return null;
+			else
+				return Point.ratioSegment(r2.startPoint, r2.endPoint, s2p/(s1p+s2p));
+		}
+	}
 
 	/**
 	 * acquire the lock used to protect concurrent visit.
@@ -364,8 +387,9 @@ public class Road {
 		double distance = Point.dotProduct(sp, se) / length;
 		double delta = Point.crossProduct(se, sp) / length;
 		delta += Road.laneWidth * laneInfo.length * 0.5;
-		return new RoadInfo(this, (int) Math.floor(delta / Road.laneWidth),
-				distance);
+		int lane=(int) Math.floor(delta / Road.laneWidth);
+		if (laneInfo[lane]==0) distance=length-distance;
+		return new RoadInfo(this, lane, distance);
 	}
 
 	public LinkedList<Road> getRoadBySegment() {

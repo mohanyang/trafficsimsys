@@ -163,4 +163,8 @@ public class Map {
 		// }
 		return pointMap.size();
 	}
+
+	public void clear() {
+		pointMap.clear();
+	}
 }

@@ -80,7 +80,7 @@ public class VehicleDisplayPanel extends JPanel {
 			for (int i = 0; i < items; ++i)
 				fields[i].setText("N/A");
 		} else {
-			fields[position].setText((int) vehicle.getPoint().getXAxis() + " "
+			fields[position].setText((int) vehicle.getPoint().getXAxis() + ", "
 					+ (int) vehicle.getPoint().getYAxis());
 			fields[speed].setText(String.format("%.2f", vehicle.getSpeed()));
 			fields[lane].setText("" + vehicle.getLane());

@@ -49,8 +49,8 @@ public class MapDisplayPanel extends JPanel implements MouseListener,
 		MouseMotionListener, MouseWheelListener {
 	public static final long serialVersionUID = 2L;
 	public static final int MAXWIDTH = 5000, MAXHEIGHT = 5000;
-	private int imgWidth = 674, imgHeight = 684;
-	private int moveThreshold = 15, moveStep = 50;
+	private int imgWidth = 638, imgHeight = 681;
+	private int moveThreshold = 20, moveStep = 50;
 	private Map map = null;
 	BufferedImage[] img = null;
 	BufferedImage bg = null;

@@ -49,6 +49,8 @@ public class NewBasicVehicleController extends BasicVehicleController {
 						RoadEntranceInfo ri=itr.next();
 						if (ri.getRoad()==curr 
 								&& ri.getRoad().getDirection(ri.getLane())!=v.getDirection()){
+							Log.getInstance().writeln("removing target: " + ri.getRoad() + " "
+									+ ri.getLane());
 							itr.remove();
 //							break;
 						}

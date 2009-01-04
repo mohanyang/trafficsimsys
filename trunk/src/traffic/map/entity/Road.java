@@ -377,9 +377,9 @@ public class Road {
 		for (Iterator<Vehicle> itr = vehicleList.iterator(); itr.hasNext(); curr = itr
 				.next()) {
 			if (curr != pv && curr.getLane() == lane
-					&& curr.getPosition() * dir >= position * dir) {
-				if (ret > (dir * (curr.getPosition() - position))) {
-					ret = (dir * (curr.getPosition() - position));
+					&& curr.getPosition()  >= position ) {
+				if (ret > ( (curr.getPosition() - position))) {
+					ret = ((curr.getPosition() - position));
 					retV = curr;
 				}
 			}
@@ -389,10 +389,10 @@ public class Road {
 
 	public double closestIntersection(double position, int lane) {
 		if (laneInfo[lane] == 0) {
-			if (position<0)
+			if (position>length)
 				return 0;
 			else
-				return length-intersectionList.floor(position)-(position);
+				return (length-position)-intersectionList.floor(length-position);
 		} else {
 			if (position>length)
 				return 0;

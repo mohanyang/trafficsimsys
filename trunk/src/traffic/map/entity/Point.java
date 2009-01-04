@@ -146,7 +146,10 @@ public class Point {
 			Road curr=itr.getCurrentRoad();
 			for (int i=0; i<curr.getLane(); ++i){
 				double temp=itr.getCurrentPosition();
-				ret.add(new RoadEntranceInfo(curr, i, itr.getCurrentPosition()));
+				if (curr.getDirection(i)==0)
+					ret.add(new RoadEntranceInfo(curr, i, curr.getLength()-itr.getCurrentPosition()));
+				else
+					ret.add(new RoadEntranceInfo(curr, i, itr.getCurrentPosition()));
 			}
 		}
 		return ret;

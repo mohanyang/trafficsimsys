@@ -21,10 +21,14 @@ public class NewBasicVehicleController extends BasicVehicleController {
 		if (curr.canMove(v.getLane())) {
 			double newSpeed=v.getSpeed();
 			Vehicle closestV=curr.getClosestVehicle(v.getPosition(), v.getLane(), v);
-			if (closestV!=null)
-				newSpeed=closestV.getPosition()-v.getPosition();
+			if (closestV!=null){
+				Log.getInstance().writeln("closest vehicle=" + (closestV.getPosition()-v.getPosition()));
+				if (newSpeed>closestV.getPosition()-v.getPosition())
+					newSpeed=closestV.getPosition()-v.getPosition();
+			}
 			
 			double temp = curr.closestIntersection(v.getPosition(), v.getLane());
+			Log.getInstance().writeln("closest intersection=" + temp);
 			if (temp<newSpeed)
 				newSpeed=temp;
 			v.setSpeed(newSpeed);
@@ -32,11 +36,14 @@ public class NewBasicVehicleController extends BasicVehicleController {
 
 			if (Lib.isEqual(temp, 0)) {
 				LinkedList<RoadEntranceInfo> adj = v.getRoad().getIntersectionList(v.getPosition(), v.getLane());
-				for (Iterator<RoadEntranceInfo> itr=adj.iterator(); itr.hasNext();){
-					RoadEntranceInfo ri=itr.next();
-					if (ri.getRoad()==curr && ri.getLane()==v.getLane())
-						itr.remove();
-				}
+				if (adj.size()>1)
+					for (Iterator<RoadEntranceInfo> itr=adj.iterator(); itr.hasNext();){
+						RoadEntranceInfo ri=itr.next();
+						if (ri.getRoad()==curr && ri.getLane()!=v.getLane()){
+							itr.remove();
+							break;
+						}
+					}
 				if (adj.size() == 0) {
 					Log.getInstance().writeln("+++" + v + " dying");
 					v.removeFromCurrent();
@@ -50,13 +57,13 @@ public class NewBasicVehicleController extends BasicVehicleController {
 					Log.getInstance().writeln(
 							"+++" + v + " changing road to " + target.getRoad()
 									+ " lane " + target.getLane());
-					Lib.assertTrue(target.getRoad() != v.getRoad()
-							|| target.getLane() != v.getLane());
+//					Lib.assertTrue(target.getRoad() != v.getRoad()
+//							|| target.getLane() != v.getLane());
 					dispatchEvent(new Event(this, Event.LEAVE_ROAD, v.getRoad()));
 					dispatchEvent(new Event(this, Event.ENTER_ROAD, target
 							.getRoad()));
 					v.setRoad(target.getRoad(), target.getLane(), target.getPosition());
-					v.setSpeed(Lib.random(15) + 5);
+					v.setSpeed(Lib.random(5) + 15);
 				}
 			}
 		} else {

@@ -19,8 +19,8 @@
     </lanedescr>
   </road>
   <road>
-    <start_point x-axis="50.00" y-axis="0.00" />
-    <end_point x-axis="50.00" y-axis="1000.00" />
+    <start_point x-axis="100.00" y-axis="0.00" />
+    <end_point x-axis="100.00" y-axis="1000.00" />
     <lane>1</lane>
     <lanedescr>
     	<descr>1</descr>
@@ -62,7 +62,7 @@
   </road>
   <road>
     <start_point x-axis="750.00" y-axis="250.00" />
-    <end_point x-axis="50.00" y-axis="250.00" />
+    <end_point x-axis="100.00" y-axis="250.00" />
     <lane>1</lane>
     <lanedescr>
     	<descr>1</descr>

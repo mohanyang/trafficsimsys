@@ -50,6 +50,7 @@ public class MapFrame extends JFrame implements ActionListener, EventListener {
 					.getCrossPlatformLookAndFeelClassName());
 		} catch (Exception e) {
 		}
+		setIconImage(ImageLoader.systemIcon);
 		setTitle("Traffic Simulating System");
 		this.setIconImage(ImageLoader.loadImageByName("icon.png"));
 		setResizable(false);

@@ -29,7 +29,6 @@ public class SplashWindow extends JWindow {
 			UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
 		} catch (Exception e) {
 		}
-
 		bar = new JProgressBar();
 		bar.setMaximum(100);
 		setLayout(new BorderLayout());

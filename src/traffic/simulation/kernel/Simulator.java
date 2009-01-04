@@ -48,7 +48,7 @@ public class Simulator {
 			if (e.getType() == Event.MOUSE_INPUT) {
 				MouseInput mi = (MouseInput) e.getObj();
 
-				if (mi.getMouseEvent().getClickCount() == 2) {
+				if (mi.isClick() && mi.getMouseEvent().getClickCount() == 2) {
 					Road r = map.getRoad(mi.getX(), mi.getY());
 					if (r != null) {
 						RoadInfo info = r.getInfoByPoint(new Point(mi.getX(),

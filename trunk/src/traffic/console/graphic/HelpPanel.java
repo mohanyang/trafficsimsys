@@ -1,43 +1,25 @@
 package traffic.console.graphic;
 
-import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.Graphics;
-import java.awt.Toolkit;
 import java.util.TreeMap;
 import java.util.AbstractMap.SimpleEntry;
 
 import javax.swing.BorderFactory;
-import javax.swing.JDialog;
 import javax.swing.JPanel;
-import javax.swing.UIManager;
 
-public class HelpPanel extends JDialog {
+public class HelpPanel extends TemplatePanel {
 	static public final long serialVersionUID = 21870L;
 
 	public HelpPanel() {
 		super();
-		try {
-			UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-		} catch (Exception e) {
-		}
-		setIconImage(ImageLoader.systemIcon);
+	}
+
+	public void subConstruct() {
 		setTitle("Help");
 		Simple p = new Simple();
 		add(p);
 		setSize(p.getWidth(), p.getHeight());
-		centerize();
-		setVisible(true);
-	}
-
-	private void centerize() {
-		Toolkit kit = Toolkit.getDefaultToolkit();
-		Dimension screenSize = kit.getScreenSize();
-		int screenWidth = screenSize.width / 2;
-		int screenHeight = screenSize.height / 2;
-		int height = getHeight();
-		int width = getWidth();
-		setLocation(screenWidth - width / 2, screenHeight - height / 2);
 	}
 
 	private class Simple extends JPanel {

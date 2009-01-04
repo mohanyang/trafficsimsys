@@ -19,6 +19,7 @@ import java.awt.image.BufferedImage;
 import java.awt.image.BufferedImageOp;
 import java.io.IOException;
 import java.util.Iterator;
+import java.util.LinkedList;
 
 import javax.swing.BorderFactory;
 import javax.swing.JLabel;
@@ -30,12 +31,11 @@ import traffic.event.Event;
 import traffic.event.EventDispatcher;
 import traffic.event.EventListener;
 import traffic.event.MouseInput;
-import traffic.external.generate.MyFactory;
 import traffic.log.Log;
 import traffic.map.entity.Map;
 import traffic.map.entity.Point;
 import traffic.map.entity.Road;
-import traffic.map.entity.RoadInfo;
+import traffic.map.entity.RoadEntranceInfo;
 import traffic.map.entity.Vehicle;
 import traffic.simulation.kernel.Simulator;
 import traffic.simulation.statistics.IStat;
@@ -166,36 +166,56 @@ public class MapDisplayPanel extends JPanel implements MouseListener,
 	private void drawRoad(Graphics2D g, Road rr, Color color) {
 		for (Road r : rr.getRoadBySegment()) {
 			Point p1 = null, p2 = null, t1 = null, t2 = null;
-			if (r.n1 == -1) {
-				int n1 = 0, n2 = 0, n;
-				double lamda0 = r.getLamda(), lamda1 = 0.0;
-				p1 = r.getStartPoint();
-				p2 = r.getEndPoint();
-				n = p1.getDegree();
-				if (n != 1) {
-					for (Iterator<Road> itr = p1.getRoadList(); itr.hasNext();) {
-						Road tmp = itr.next();
-						lamda1 = tmp.getLamda();
-						if (lamda0 != lamda1) {
-							n1 = tmp.getLane();
-							break;
-						}
-					}
-				}
-				n = p2.getDegree();
-				if (n != 1) {
-					for (Iterator<Road> itr = p2.getRoadList(); itr.hasNext();) {
-						Road tmp = itr.next();
-						lamda1 = tmp.getLamda();
-						if (lamda0 != lamda1) {
-							n2 = tmp.getLane();
-							break;
-						}
-					}
-				}
-				r.n1 = n1;
-				r.n2 = n2;
+			int n1 = 0, n2 = 0;
+			double lamda = rr.getLamda();
+			p1 = r.getStartPoint();
+			p2 = r.getEndPoint();
+			if (p1.getXAxis() > p2.getXAxis() || p1.getYAxis() > p2.getYAxis()) {
+				t1 = p1;
+				p1 = p2;
+				p2 = t1;
 			}
+			System.out.println(p1 + " " + p2 + "\n" + rr);
+			LinkedList<RoadEntranceInfo> list = rr.getIntersectionList(Point
+					.distance(p1, rr.getStartPoint()), 0);
+			System.out.println(list.size());
+			for (Iterator<RoadEntranceInfo> itr = list.iterator(); itr
+					.hasNext();) {
+				RoadEntranceInfo tmp = itr.next();
+				System.out.println(tmp.getRoad());
+				System.out
+						.println(tmp.getRoad().getLamda()
+								+ " "
+								+ lamda
+								+ " "
+								+ (Double.compare(tmp.getRoad().getLamda(),
+										lamda) != 0));
+				if (Double.compare(tmp.getRoad().getLamda(), lamda) != 0) {
+					n1 = tmp.getRoad().getLane();
+					break;
+				}
+			}
+
+			list = rr.getIntersectionList(Point
+					.distance(p2, rr.getStartPoint()), 0);
+			System.out.println(list.size());
+			for (Iterator<RoadEntranceInfo> itr = list.iterator(); itr
+					.hasNext();) {
+				RoadEntranceInfo tmp = itr.next();
+				System.out.println(tmp.getRoad());
+				System.out
+						.println(tmp.getRoad().getLamda()
+								+ " "
+								+ lamda
+								+ " "
+								+ (Double.compare(tmp.getRoad().getLamda(),
+										lamda) != 0));
+				if (Double.compare(tmp.getRoad().getLamda(), lamda) != 0) {
+					n2 = tmp.getRoad().getLane();
+					break;
+				}
+			}
+			System.out.println(n1 + " " + n2);
 
 			g.setColor(color);
 			g.setStroke(new BasicStroke(
@@ -210,16 +230,16 @@ public class MapDisplayPanel extends JPanel implements MouseListener,
 					.getYAxis())));
 
 			if (r.getDirection(0) == 0) {
-				p1 = r.getPositionOnRoad(r.n2 * Road.laneWidth / 2, 0, false)
+				p1 = r.getPositionOnRoad(n2 * Road.laneWidth / 2, 0, false)
 						.clone();
 				p2 = r.getPositionOnRoad(
-						r.getLength() - r.n1 * Road.laneWidth / 2, 0, false)
+						r.getLength() - n1 * Road.laneWidth / 2, 0, false)
 						.clone();
 			} else {
-				p1 = r.getPositionOnRoad(r.n1 * Road.laneWidth / 2, 0, false)
+				p1 = r.getPositionOnRoad(n1 * Road.laneWidth / 2, 0, false)
 						.clone();
 				p2 = r.getPositionOnRoad(
-						r.getLength() - r.n2 * Road.laneWidth / 2, 0, false)
+						r.getLength() - n2 * Road.laneWidth / 2, 0, false)
 						.clone();
 			}
 
@@ -460,15 +480,16 @@ public class MapDisplayPanel extends JPanel implements MouseListener,
 
 	@Override
 	public void mouseClicked(MouseEvent arg0) {
-		dispatchEvent(new Event(this, Event.MOUSE_INPUT, new MouseInput(arg0,
-				(int) transMapX(arg0.getX()), (int) transMapY(arg0.getY()))));
-
+		boolean zoomResult = zoomPanel.mouseClicked(arg0);
+		if (!zoomResult) {
+			dispatchEvent(new Event(this, Event.MOUSE_INPUT, new MouseInput(
+					arg0, (int) transMapX(arg0.getX()), (int) transMapY(arg0
+							.getY()))));
+		}
 		if (arg0.getButton() == MouseEvent.BUTTON3) {
 			clicked = false;
 			selectedVehicle = null;
 		}
-
-		zoomPanel.mouseClicked(arg0);
 		mouseX = arg0.getX();
 		mouseY = arg0.getY();
 		double xx = transMapX(mouseX), yy = transMapY(mouseY);

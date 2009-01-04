@@ -59,7 +59,6 @@ public class VehicleDisplayPanel extends JPanel {
 		gridbag.setConstraints(subPanel, c);
 		add(subPanel);
 		validate();
-		// setBorder(new LineBorder(Color.BLACK));
 		setSize(200, 450);
 	}
 

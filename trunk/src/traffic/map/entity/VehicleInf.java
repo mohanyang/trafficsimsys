@@ -18,7 +18,8 @@ public class VehicleInf {
 		this.maxspeed=maxspeed;
 		this.initspeed=initspeed;
 		try {
-			this.length = ImageLoader.loadImage(imageID).getHeight();
+			this.length = (int)Math.floor(ImageLoader.loadImage(imageID).getHeight()
+					/ (1.0*ImageLoader.loadImage(imageID).getWidth()/Road.laneWidth));
 		}
 		catch (Exception e){
 			this.length = 40;

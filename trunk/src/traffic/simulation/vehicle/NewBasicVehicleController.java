@@ -19,7 +19,7 @@ public class NewBasicVehicleController extends BasicVehicleController {
 		Vehicle v = assoc;
 		Road curr = v.getRoad();
 		if (curr.canMove(v.getLane())) {
-			double newSpeed=v.getSpeed()-1+Lib.random(3);
+			double newSpeed=v.getSpeed()-1+Lib.random(5);
 			if (newSpeed<0)
 				newSpeed=0;
 			Vehicle closestV=curr.getClosestVehicle(v.getPosition(), v.getLane(), v);
@@ -63,6 +63,8 @@ public class NewBasicVehicleController extends BasicVehicleController {
 					int count = Lib.random(adj.size());
 					Log.getInstance().writeln("count=" + count);
 					RoadEntranceInfo target = adj.get(count);
+					if (target.getClosestDistance()<v.getLength())
+						return;
 					Log.getInstance().writeln(
 							"+++" + v + " changing road to " + target.getRoad()
 									+ " lane " + target.getLane());

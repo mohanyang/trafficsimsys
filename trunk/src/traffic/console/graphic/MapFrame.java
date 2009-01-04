@@ -41,9 +41,6 @@ public class MapFrame extends JFrame implements ActionListener, EventListener {
 
 	EventDispatcher eventDispatcher = new EventDispatcher();
 
-	VehicleGenPanel vehiclegendialog;
-	BarrierGenPanel barriergendialog;
-
 	public MapFrame() {
 		try {
 			UIManager.setLookAndFeel(UIManager
@@ -175,11 +172,6 @@ public class MapFrame extends JFrame implements ActionListener, EventListener {
 		setSize(defaultWidth, defaultHeight);
 		centerize();
 
-		vehiclegendialog = new VehicleGenPanel();
-		vehiclegendialog.pack();
-		barriergendialog = new BarrierGenPanel();
-		barriergendialog.pack();
-
 		mapDisplay.addEventListener(this);
 	}
 
@@ -195,12 +187,10 @@ public class MapFrame extends JFrame implements ActionListener, EventListener {
 		String cmd = arg0.getActionCommand();
 		Log.getInstance().writeln(cmd.toString());
 		if (cmd.toString().equals("SetVehicle")) {
-			vehiclegendialog.setVisible(true);
-		}
-		if (cmd.toString().equals("SetBarrier")) {
-			barriergendialog.setVisible(true);
-		}
-		if (cmd.toString().equals("exit")) {
+			new VehicleGenPanel();
+		} else if (cmd.toString().equals("SetBarrier")) {
+			new BarrierGenPanel();
+		} else if (cmd.toString().equals("exit")) {
 			statusLabel.setText("system exit");
 			Simulator.getInstance().exit();
 		} else if (cmd.toString().equals("pause")) {

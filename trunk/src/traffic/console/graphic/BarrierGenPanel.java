@@ -11,7 +11,7 @@ import java.awt.event.ActionListener;
 import javax.swing.BorderFactory;
 import javax.swing.BoxLayout;
 import javax.swing.JButton;
-import javax.swing.JFrame;
+import javax.swing.JDialog;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
@@ -19,7 +19,7 @@ import javax.swing.UIManager;
 
 import traffic.external.generate.MyFactory;
 
-public class BarrierGenPanel extends JFrame implements ActionListener,
+public class BarrierGenPanel extends JDialog implements ActionListener,
 		GenerateConsole {
 	static public final long serialVersionUID = 41L;
 	protected static String[] tag;
@@ -99,6 +99,7 @@ public class BarrierGenPanel extends JFrame implements ActionListener,
 		setContentPane(contentPane);
 		pack();
 		centerize();
+		setVisible(true);
 	}
 
 	private void centerize() {

@@ -129,7 +129,7 @@ public class Road {
 			startPoint=e;
 			endPoint=s;
 			for (int i=0; i<l.length; ++i)
-				laneInfo[i]=(byte)(1-laneInfo[i]);
+				laneInfo[i]=l[l.length-i-1];
 		}
 		Log.getInstance().writeln("constructing " + this);
 	}

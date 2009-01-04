@@ -6,9 +6,10 @@ import java.awt.Graphics;
 import java.awt.Toolkit;
 import java.util.HashMap;
 import java.util.Map.Entry;
+import java.util.AbstractMap.SimpleEntry;
+import java.util.TreeMap;
 
 import javax.swing.BorderFactory;
-import javax.swing.ImageIcon;
 import javax.swing.JDialog;
 import javax.swing.JPanel;
 import javax.swing.UIManager;
@@ -43,8 +44,10 @@ public class HelpPanel extends JDialog {
 
 	private class Simple extends JPanel {
 		static public final long serialVersionUID = 11545L;
-		HashMap<String, String> helpKeyContent = new HashMap<String, String>();
-		HashMap<String, String> helpMouseContent = new HashMap<String, String>();
+		TreeMap<Integer, SimpleEntry<String, String>> helpKeyContent = 
+			new TreeMap<Integer, SimpleEntry<String, String>>();
+		TreeMap<Integer, SimpleEntry<String, String>> helpMouseContent = 
+			new TreeMap<Integer, SimpleEntry<String, String>>();
 		final Font descrFont = new Font("Courier New", Font.BOLD, 16);
 		final Font contentFont = new Font("Courier New", 0, 12);
 		final int titleX = 40, titleY = 40;
@@ -58,15 +61,22 @@ public class HelpPanel extends JDialog {
 			setBorder(BorderFactory.createCompoundBorder(BorderFactory
 					.createTitledBorder("Shortcuts"), BorderFactory
 					.createEmptyBorder(5, 5, 5, 5)));
-			helpKeyContent.put("Arrow Keys", "Navigate the map.");
-			helpKeyContent.put("Page up", "Zoom in");
-			helpKeyContent.put("Page down", "Zoom out");
-			helpMouseContent.put("Move Mouse to map border",
-					"Roll the map automatically");
-			helpMouseContent.put("Click mouse", "Select a car");
-			helpMouseContent.put("Double-click mouse",
-					"Add a new vehicle at the specified position");
-			helpMouseContent.put("Mouse drag", "Navigate the map");
+			helpKeyContent.put(1, 
+					new SimpleEntry<String, String>("Arrow Keys", "Navigate the map."));
+			helpKeyContent.put(2, 
+					new SimpleEntry<String, String>("Page up", "Zoom in"));
+			helpKeyContent.put(3, 
+					new SimpleEntry<String, String>("Page down", "Zoom out"));
+			helpMouseContent.put(1, 
+					new SimpleEntry<String, String>("Move Mouse to map border",
+					"Roll the map automatically"));
+			helpMouseContent.put(2, 
+					new SimpleEntry<String, String>("Click mouse", "Select a car"));
+			helpMouseContent.put(3, 
+					new SimpleEntry<String, String>("Double-click mouse",
+					"Add a new vehicle at the specified position"));
+			helpMouseContent.put(4, 
+					new SimpleEntry<String, String>("Mouse drag", "Navigate the map"));
 			setSize(500, titleY + firstDescrLineY
 					+ (descrLineHeight + contentLineHeight)
 					* (helpKeyContent.size() + helpMouseContent.size()));
@@ -76,31 +86,37 @@ public class HelpPanel extends JDialog {
 		public void paint(Graphics g) {
 			super.paint(g);
 			g.setFont(descrFont);
-			int count = 0;
-			for (Entry<String, String> current : helpKeyContent.entrySet()) {
+
+			int count=0;
+			for (Integer c=helpKeyContent.firstKey(); c!=null; 
+					c=helpKeyContent.higherKey(c)){
+				SimpleEntry<String, String> current=helpKeyContent.get(c);
 				g.drawString(current.getKey(), firstDescrLineX, firstDescrLineY
 						+ count * (descrLineHeight + contentLineHeight));
 				++count;
 			}
-			for (Entry<String, String> current : helpMouseContent.entrySet()) {
+			for (Integer c=helpMouseContent.firstKey(); c!=null; 
+					c=helpMouseContent.higherKey(c)){
+				SimpleEntry<String, String> current=helpMouseContent.get(c);
 				g.drawString(current.getKey(), firstDescrLineX, firstDescrLineY
 						+ count * (descrLineHeight + contentLineHeight));
 				++count;
 			}
+			
 			count = 0;
 			g.setFont(contentFont);
-			for (Entry<String, String> current : helpKeyContent.entrySet()) {
-				g.drawString(current.getValue(), firstContentLineX,
-						firstDescrLineY + count
-								* (descrLineHeight + contentLineHeight)
-								+ descrLineHeight);
+			for (Integer c=helpKeyContent.firstKey(); c!=null; 
+					c=helpKeyContent.higherKey(c)){
+				SimpleEntry<String, String> current=helpKeyContent.get(c);
+				g.drawString(current.getValue(), firstContentLineX, firstDescrLineY
+						+ count * (descrLineHeight + contentLineHeight)+descrLineHeight);
 				++count;
 			}
-			for (Entry<String, String> current : helpMouseContent.entrySet()) {
-				g.drawString(current.getValue(), firstContentLineX,
-						firstDescrLineY + count
-								* (descrLineHeight + contentLineHeight)
-								+ descrLineHeight);
+			for (Integer c=helpMouseContent.firstKey(); c!=null; 
+					c=helpMouseContent.higherKey(c)){
+				SimpleEntry<String, String> current=helpMouseContent.get(c);
+				g.drawString(current.getValue(), firstContentLineX, firstDescrLineY
+						+ count * (descrLineHeight + contentLineHeight)+descrLineHeight);
 				++count;
 			}
 		}

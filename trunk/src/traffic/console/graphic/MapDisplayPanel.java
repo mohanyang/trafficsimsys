@@ -175,34 +175,22 @@ public class MapDisplayPanel extends JPanel implements MouseListener,
 				p1 = p2;
 				p2 = t1;
 			}
-			System.out.println(p1 + " " + p2 + "\n" + rr);
-
 			LinkedList<Road> list = p1.getIntersectionRoadList();
-			System.out.println(list.size());
 			for (Iterator<Road> itr = list.iterator(); itr.hasNext();) {
 				Road tmp = itr.next();
-				System.out.println(tmp);
-				System.out.println(tmp.getLamda() + " " + lamda + " "
-						+ (Double.compare(tmp.getLamda(), lamda) != 0));
 				if (Double.compare(tmp.getLamda(), lamda) != 0) {
 					n1 = tmp.getLane();
 					break;
 				}
 			}
-
 			list = p2.getIntersectionRoadList();
-			System.out.println(list.size());
 			for (Iterator<Road> itr = list.iterator(); itr.hasNext();) {
 				Road tmp = itr.next();
-				System.out.println(tmp);
-				System.out.println(tmp.getLamda() + " " + lamda + " "
-						+ (Double.compare(tmp.getLamda(), lamda) != 0));
 				if (Double.compare(tmp.getLamda(), lamda) != 0) {
 					n2 = tmp.getLane();
 					break;
 				}
 			}
-			System.out.println(n1 + " " + n2);
 
 			g.setColor(color);
 			g.setStroke(new BasicStroke(
@@ -216,19 +204,17 @@ public class MapDisplayPanel extends JPanel implements MouseListener,
 					.getYAxis()), transImgX(p2.getXAxis()), transImgY(p2
 					.getYAxis())));
 
-//			if (r.getDirection(0) == 0) {
-//				p1 = r.getPositionOnRoad(n2 * Road.laneWidth / 2, 0, false)
-//						.clone();
-//				p2 = r.getPositionOnRoad(
-//						r.getLength() - n1 * Road.laneWidth / 2, 0, false)
-//						.clone();
-//			} else {
-				p1 = r.getPositionOnRoad(n1 * Road.laneWidth / 2, 0, false)
-						.clone();
-				p2 = r.getPositionOnRoad(
-						r.getLength() - n2 * Road.laneWidth / 2, 0, false)
-						.clone();
-//			}
+			// if (r.getDirection(0) == 0) {
+			// p1 = r.getPositionOnRoad(n2 * Road.laneWidth / 2, 0, false)
+			// .clone();
+			// p2 = r.getPositionOnRoad(
+			// r.getLength() - n1 * Road.laneWidth / 2, 0, false)
+			// .clone();
+			// } else {
+			p1 = r.getPositionOnRoad(n1 * Road.laneWidth / 2, 0, false).clone();
+			p2 = r.getPositionOnRoad(r.getLength() - n2 * Road.laneWidth / 2,
+					0, false).clone();
+			// }
 
 			g.setStroke(borderStroke);
 			g.setColor(borderColor);
@@ -467,26 +453,28 @@ public class MapDisplayPanel extends JPanel implements MouseListener,
 
 	@Override
 	public void mouseClicked(MouseEvent arg0) {
-		boolean zoomResult = zoomPanel.mouseClicked(arg0);
-		if (!zoomResult) {
-			dispatchEvent(new Event(this, Event.MOUSE_INPUT, new MouseInput(
-					arg0, (int) transMapX(arg0.getX()), (int) transMapY(arg0
-							.getY()))));
-		}
-		if (arg0.getButton() == MouseEvent.BUTTON3) {
-			clicked = false;
-			selectedVehicle = null;
-		}
 		mouseX = arg0.getX();
 		mouseY = arg0.getY();
 		double xx = transMapX(mouseX), yy = transMapY(mouseY);
+
+		boolean zoomResult = zoomPanel.mouseClicked(arg0);
+		if (!zoomResult) {
+			dispatchEvent(new Event(this, Event.MOUSE_INPUT, new MouseInput(
+					arg0, (int) xx, (int) yy)));
+		}
+
 		Road r = map.getRoad(xx, yy);
-		if (r == null)
-			return;
-		Vehicle v = map.getVehicle(r, xx, yy);
-		if (v != null) {
-			selectedVehicle = v;
-			clicked = true;
+		if (r != null) {
+			Vehicle v = map.getVehicle(r, xx, yy);
+			if (v != null) {
+				selectedVehicle = v;
+				clicked = true;
+			}
+		}
+
+		if (arg0.getButton() == MouseEvent.BUTTON3) {
+			selectedVehicle = null;
+			clicked = false;
 		}
 	}
 

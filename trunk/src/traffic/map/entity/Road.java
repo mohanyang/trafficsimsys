@@ -125,6 +125,12 @@ public class Road {
 		length = Point.distance(s, e);
 		intersectionList.add(new Double(0));
 		intersectionList.add(new Double(length));
+		if (l[0]==0){
+			startPoint=e;
+			endPoint=s;
+			for (int i=0; i<l.length; ++i)
+				laneInfo[i]=(byte)(1-laneInfo[i]);
+		}
 		Log.getInstance().writeln("constructing " + this);
 	}
 

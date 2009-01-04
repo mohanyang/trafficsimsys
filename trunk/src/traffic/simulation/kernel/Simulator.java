@@ -53,7 +53,8 @@ public class Simulator {
 					if (r != null) {
 						RoadInfo info = r.getInfoByPoint(new Point(mi.getX(),
 								mi.getY()));
-						VehicleGenerator vg=MyFactory.getInstance().getVehicleGenerator();
+						VehicleGenerator vg = MyFactory.getInstance()
+								.getVehicleGenerator();
 						vg.settype(Lib.random(vg.getTypeCount()));
 						MyFactory.getInstance().getVehicleGenerator().setroad(
 								r, info);
@@ -102,8 +103,10 @@ public class Simulator {
 	private IVehicleControl getController(Vehicle v) {
 		IVehicleControl controller = v.getController();
 		if (controller == null) {
-			// TODO use something like factory to create controller.
-			controller = new NewBasicVehicleController();
+			controller = (IVehicleControl) Lib
+					.constructObject(Config
+							.getString("traffic.vehicleController",
+									"traffic.simulation.vehicle.BasicVehicleController"));
 			controller.setVehicle(v);
 			v.setController(controller);
 			controller.addEventListener(stat);

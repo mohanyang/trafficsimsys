@@ -1,5 +1,6 @@
 package traffic.simulation.kernel;
 
+import java.awt.event.MouseEvent;
 import java.util.Iterator;
 
 import traffic.basic.Config;
@@ -48,7 +49,8 @@ public class Simulator {
 			if (e.getType() == Event.MOUSE_INPUT) {
 				MouseInput mi = (MouseInput) e.getObj();
 
-				if (mi.isClick() && mi.getMouseEvent().getClickCount() == 2) {
+				if (mi.isClick() && mi.getMouseEvent().getClickCount() == 2
+						&& mi.getMouseEvent().getButton() == MouseEvent.BUTTON1) {
 					Road r = map.getRoad(mi.getX(), mi.getY());
 					if (r != null) {
 						RoadInfo info = r.getInfoByPoint(new Point(mi.getX(),

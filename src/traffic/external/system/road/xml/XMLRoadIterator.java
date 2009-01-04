@@ -80,6 +80,8 @@ public class XMLRoadIterator extends RoadIterator {
 	private void analysisLane(Node node) {
 		lane = Integer.parseInt(node.getTextContent());
 		laneInfo = new byte[lane];
+		for (int i=0; i<lane; ++i)
+			laneInfo[i]=1;
 		lane = 0;
 	}
 }

@@ -31,7 +31,7 @@ public class VehicleInf {
 	}
 	
 	public int getLength() {
-		System.out.println(length);
+//		System.out.println(length);
 		return length;
 	}
 

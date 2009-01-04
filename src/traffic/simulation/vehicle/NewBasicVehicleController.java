@@ -47,9 +47,10 @@ public class NewBasicVehicleController extends BasicVehicleController {
 				if (adj.size()>1)
 					for (Iterator<RoadEntranceInfo> itr=adj.iterator(); itr.hasNext();){
 						RoadEntranceInfo ri=itr.next();
-						if (ri.getRoad()==curr && ri.getLane()!=v.getLane()){
+						if (ri.getRoad()==curr 
+								&& ri.getRoad().getDirection(ri.getLane())!=v.getDirection()){
 							itr.remove();
-							break;
+//							break;
 						}
 					}
 				if (adj.size() == 0) {

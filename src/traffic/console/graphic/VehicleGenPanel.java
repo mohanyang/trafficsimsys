@@ -11,7 +11,7 @@ import java.awt.event.ActionListener;
 import javax.swing.BorderFactory;
 import javax.swing.BoxLayout;
 import javax.swing.JButton;
-import javax.swing.JFrame;
+import javax.swing.JDialog;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
@@ -19,7 +19,7 @@ import javax.swing.UIManager;
 
 import traffic.external.generate.MyFactory;
 
-public class VehicleGenPanel extends JFrame implements ActionListener,
+public class VehicleGenPanel extends JDialog implements ActionListener,
 		GenerateConsole {
 	static public final long serialVersionUID = 31L;
 	protected static String[] tag;
@@ -36,7 +36,7 @@ public class VehicleGenPanel extends JFrame implements ActionListener,
 		}
 		setIconImage(ImageLoader.systemIcon);
 		setTitle("Vehicle Generation Set");
-		
+
 		tag = new String[paranum];
 		textField = new JTextField[paranum];
 		textFieldLabel = new JLabel[paranum];
@@ -104,6 +104,7 @@ public class VehicleGenPanel extends JFrame implements ActionListener,
 		setContentPane(contentPane);
 		pack();
 		centerize();
+		setVisible(true);
 	}
 
 	private void centerize() {
@@ -126,7 +127,7 @@ public class VehicleGenPanel extends JFrame implements ActionListener,
 					.generate() < 0) {
 				System.out.print("fail in adding vehicle\n");
 			}
-			setVisible(false);
+			dispose();
 		}
 	}
 

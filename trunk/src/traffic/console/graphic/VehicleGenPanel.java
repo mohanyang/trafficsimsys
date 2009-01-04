@@ -102,8 +102,10 @@ public class VehicleGenPanel extends TemplatePanel implements ActionListener,
 	class confirmListener implements ActionListener {
 		public void actionPerformed(ActionEvent e) {
 			for (int i = 0; i < paranum; i++) {
+				if(textField[i].getText().length()!=0){
 				int tmp = Integer.valueOf(textField[i].getText());
 				paraconfig(i, tmp);
+				}
 			}
 			if (MyFactory.getInstance().getVehicleGenerator().getInstance()
 					.generate() < 0) {

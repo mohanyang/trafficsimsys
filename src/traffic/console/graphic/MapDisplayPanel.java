@@ -436,6 +436,8 @@ public class MapDisplayPanel extends JPanel implements MouseListener,
 		mouseX = e.getX();
 		mouseY = e.getY();
 		zoomPanel.mouseMoved(e);
+		dispatchEvent(new Event(this, Event.MOUSE_INPUT, new MouseInput(e,
+				(int) transMapX(e.getX()), (int) transMapY(e.getY()))));
 		statusLabel.setText("current point on the map system of coordinates ("
 				+ (int) transMapX(mouseX) + ", " + (int) transMapY(mouseY)
 				+ ")");
@@ -461,20 +463,20 @@ public class MapDisplayPanel extends JPanel implements MouseListener,
 		if (!zoomResult) {
 			dispatchEvent(new Event(this, Event.MOUSE_INPUT, new MouseInput(
 					arg0, (int) xx, (int) yy)));
-		}
 
-		Road r = map.getRoad(xx, yy);
-		if (r != null) {
-			Vehicle v = map.getVehicle(r, xx, yy);
-			if (v != null) {
-				selectedVehicle = v;
-				clicked = true;
+			Road r = map.getRoad(xx, yy);
+			if (r != null) {
+				Vehicle v = map.getVehicle(r, xx, yy);
+				if (v != null) {
+					selectedVehicle = v;
+					clicked = true;
+				}
 			}
-		}
 
-		if (arg0.getButton() == MouseEvent.BUTTON3) {
-			selectedVehicle = null;
-			clicked = false;
+			if (arg0.getButton() == MouseEvent.BUTTON3) {
+				selectedVehicle = null;
+				clicked = false;
+			}
 		}
 	}
 

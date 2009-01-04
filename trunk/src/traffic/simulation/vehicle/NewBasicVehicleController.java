@@ -20,6 +20,8 @@ public class NewBasicVehicleController extends BasicVehicleController {
 		Road curr = v.getRoad();
 		if (curr.canMove(v.getLane())) {
 			double newSpeed=v.getSpeed()-1+Lib.random(3);
+			if (newSpeed<0)
+				newSpeed=0;
 			Vehicle closestV=curr.getClosestVehicle(v.getPosition(), v.getLane(), v);
 			if (closestV!=null){
 				Log.getInstance().writeln("closest vehicle=" + (closestV.getPosition()-v.getPosition()));

@@ -74,7 +74,7 @@ public class Simulator {
 		sWin.setRatio(0.6);
 		Log.getInstance().writeln("Point list");
 		for (Iterator<Point> p = map.getPointList(); p.hasNext();)
-			System.out.println(p.next().toString());
+			Log.getInstance().writeln(p.next().toString());
 		Log.getInstance().writeln("Vehicle list");
 		sWin.setRatio(0.8);
 		for (Iterator<Point> p = map.getPointList(); p.hasNext();)

@@ -79,7 +79,7 @@ public class ZoomPanel extends BufferedImage {
 		}
 	}
 
-	public void mouseClicked(MouseEvent e) {
+	public boolean mouseClicked(MouseEvent e) {
 		if (inPanel) {
 			Point p = e.getPoint();
 			int idx = getIndex(p.getX() - anchorX, p.getY() - anchorY);
@@ -103,9 +103,11 @@ public class ZoomPanel extends BufferedImage {
 				newCursor(-1);
 				break;
 			default:
-				break;
+				return false;
 			}
+			return true;
 		}
+		return false;
 	}
 
 	public void newCursor(int k) {

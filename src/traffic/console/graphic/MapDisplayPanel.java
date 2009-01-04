@@ -174,11 +174,6 @@ public class MapDisplayPanel extends JPanel implements MouseListener,
 			LinkedList<Road> list = null;
 			p1 = r.getStartPoint();
 			p2 = r.getEndPoint();
-//			if (p1.getXAxis() > p2.getXAxis() || p1.getYAxis() > p2.getYAxis()) {
-//				t1 = p1;
-//				p1 = p2;
-//				p2 = t1;
-//			}
 			list = p1.getIntersectionRoadList();
 			for (Iterator<Road> itr = list.iterator(); itr.hasNext();) {
 				Road tmp = itr.next();
@@ -208,17 +203,9 @@ public class MapDisplayPanel extends JPanel implements MouseListener,
 					.getYAxis()), transImgX(p2.getXAxis()), transImgY(p2
 					.getYAxis())));
 
-			// if (r.getDirection(0) == 0) {
-			// p1 = r.getPositionOnRoad(n2 * Road.laneWidth / 2, 0, false)
-			// .clone();
-			// p2 = r.getPositionOnRoad(
-			// r.getLength() - n1 * Road.laneWidth / 2, 0, false)
-			// .clone();
-			// } else {
 			p1 = r.getPositionOnRoad(n1 * Road.laneWidth / 2, 0, false).clone();
 			p2 = r.getPositionOnRoad(r.getLength() - n2 * Road.laneWidth / 2,
 					0, false).clone();
-			// }
 
 			g.setStroke(borderStroke);
 			g.setColor(borderColor);
@@ -229,31 +216,42 @@ public class MapDisplayPanel extends JPanel implements MouseListener,
 					.getYAxis()), transImgX(t2.getXAxis()), transImgY(t2
 					.getYAxis())));
 
-			for (int i = 0; i < r.getLane(); ++i) {
-				g.setStroke(borderStroke);
-				g.setColor(dotLineColor);
-				t1 = r.getPositionOnRoad(r.getLength() / 2, i);
-				Polygon tri = null;
-				tri = getTriangle(t1, r.getPositionOnRoad(0, i));
-				g.drawPolygon(tri);
-				g.fillPolygon(tri);
+			if (scale > 0.25) {
+				for (int i = 0; i < r.getLane(); ++i) {
+					g.setStroke(borderStroke);
+					g.setColor(dotLineColor);
+					t1 = r.getPositionOnRoad(r.getLength() / 2, i);
+					Polygon tri = null;
+					tri = getTriangle(t1, r.getPositionOnRoad(0, i));
+					g.drawPolygon(tri);
+					g.fillPolygon(tri);
 
-				g.setStroke(dotLineStroke);
-				g.setColor(dotLineColor);
-				t1 = p1.clone();
-				t2 = p2.clone();
-				Road.moveLine(t1, t2, t2, r.getLane() * Road.laneWidth / 2 - i
-						* Road.laneWidth - Road.laneWidth / 2);
-				g.draw(new Line2D.Double(transImgX(t1.getXAxis()), transImgY(t1
-						.getYAxis()), transImgX(t2.getXAxis()), transImgY(t2
-						.getYAxis())));
+					g.setStroke(dotLineStroke);
+					g.setColor(dotLineColor);
+					t1 = p1.clone();
+					t2 = p2.clone();
+					Road.moveLine(t1, t2, t2, r.getLane() * Road.laneWidth / 2
+							- i * Road.laneWidth - Road.laneWidth / 2);
+					g.draw(new Line2D.Double(transImgX(t1.getXAxis()),
+							transImgY(t1.getYAxis()), transImgX(t2.getXAxis()),
+							transImgY(t2.getYAxis())));
 
+					g.setStroke(borderStroke);
+					g.setColor(borderColor);
+					t1 = p1.clone();
+					t2 = p2.clone();
+					Road.moveLine(t1, t2, t2, r.getLane() * Road.laneWidth / 2
+							- i * Road.laneWidth);
+					g.draw(new Line2D.Double(transImgX(t1.getXAxis()),
+							transImgY(t1.getYAxis()), transImgX(t2.getXAxis()),
+							transImgY(t2.getYAxis())));
+				}
+			} else {
 				g.setStroke(borderStroke);
 				g.setColor(borderColor);
 				t1 = p1.clone();
 				t2 = p2.clone();
-				Road.moveLine(t1, t2, t2, r.getLane() * Road.laneWidth / 2 - i
-						* Road.laneWidth);
+				Road.moveLine(t1, t2, t2, r.getLane() * Road.laneWidth / 2);
 				g.draw(new Line2D.Double(transImgX(t1.getXAxis()), transImgY(t1
 						.getYAxis()), transImgX(t2.getXAxis()), transImgY(t2
 						.getYAxis())));

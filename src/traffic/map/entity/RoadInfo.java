@@ -50,7 +50,11 @@ public class RoadInfo {
 	}
 	
 	public void setPosition(double p){
-		if (p>=0 && p<=road.getLength())
+		if (p<0)
+			currentPosition=p;
+		else if (p>road.getLength())
+			currentPosition=road.getLength();
+		else 
 			currentPosition=p;
 	}
 	

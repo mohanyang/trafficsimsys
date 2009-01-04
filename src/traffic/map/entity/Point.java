@@ -130,6 +130,29 @@ public class Point {
 	public LinkedList<RoadEntranceInfo> getIntersectionList() {
 		return getIntersectionList(true);
 	}
+	
+	public LinkedList<Road> getIntersectionRoadList(){
+		return getIntersectionRoadList(true);
+	}
+	
+	public LinkedList<Road> getIntersectionRoadList(boolean direction){
+		LinkedList<Road> ret = new LinkedList<Road>();
+		for (Iterator<Road> itr = getRoadList(); itr.hasNext();) {
+			Road curr = itr.next();
+			for (int i = 0; i < curr.getLane(); ++i)
+				if ((curr.endPoint == this && curr.laneInfo[i] == 0)
+						|| (curr.startPoint == this && curr.laneInfo[i] == 1)
+						|| !direction) {
+					ret.add(curr);
+					break;
+				}
+		}
+		for (RoadInfo itr: passRoadList){
+			Road curr=itr.getCurrentRoad();
+			ret.add(curr);
+		}
+		return ret;
+	}
 
 	public LinkedList<RoadEntranceInfo> getIntersectionList(boolean direction) {
 		LinkedList<RoadEntranceInfo> ret = new LinkedList<RoadEntranceInfo>();

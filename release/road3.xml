@@ -85,7 +85,7 @@
     <end_point x-axis="4000.00" y-axis="250.00" />
     <lane>1</lane>
     <lanedescr>
-    	<descr>0</descr>
+    	<descr>1</descr>
     </lanedescr>
   </road>
   <road>
@@ -122,10 +122,10 @@
     <end_point x-axis="4000.00" y-axis="2500.00" />
     <lane>4</lane>
     <lanedescr>
-    	<descr>0</descr>
-    	<descr>0</descr>
     	<descr>1</descr>
     	<descr>1</descr>
+    	<descr>0</descr>
+    	<descr>0</descr>
     </lanedescr>
   </road>
   <road>
@@ -133,8 +133,8 @@
     <end_point x-axis="4000.00" y-axis="3500.00" />
     <lane>2</lane>
     <lanedescr>
-    	<descr>0</descr>
-    	<descr>0</descr>
+    	<descr>1</descr>
+    	<descr>1</descr>
     </lanedescr>
   </road>
 </map>

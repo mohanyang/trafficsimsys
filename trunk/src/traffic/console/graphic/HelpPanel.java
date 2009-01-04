@@ -61,6 +61,8 @@ public class HelpPanel extends JDialog {
 			setBorder(BorderFactory.createCompoundBorder(BorderFactory
 					.createTitledBorder("Shortcuts"), BorderFactory
 					.createEmptyBorder(5, 5, 5, 5)));
+			helpKeyContent.put(0, 
+					new SimpleEntry<String, String>("Keyboard shortcuts:", "==================="));
 			helpKeyContent.put(1, 
 					new SimpleEntry<String, String>("Arrow Keys", "Navigate the map."));
 			helpKeyContent.put(2, 
@@ -70,6 +72,8 @@ public class HelpPanel extends JDialog {
 			helpMouseContent.put(1, 
 					new SimpleEntry<String, String>("Move Mouse to map border",
 					"Roll the map automatically"));
+			helpMouseContent.put(0, 
+					new SimpleEntry<String, String>("Mouse shortcuts:", "================"));
 			helpMouseContent.put(2, 
 					new SimpleEntry<String, String>("Click mouse", "Select a car"));
 			helpMouseContent.put(3, 

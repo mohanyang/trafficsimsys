@@ -442,13 +442,18 @@ public class Road {
 
 	public LinkedList<Road> getRoadBySegment() {
 		LinkedList<Road> ret = new LinkedList<Road>();
+		Iterator<Double> itr=intersectionList.iterator();
 		Point former = null;
-		for (Double dc : intersectionList) {
+		for (;itr.hasNext();) {
+			Double dc=itr.next();
 			Point current = getPositionOnRoad(dc, 0, false);
 			if (former!=null) {
 				byte[] temp = new byte[laneInfo.length];
 				System.arraycopy(laneInfo, 0, temp, 0, laneInfo.length);
-				ret.add(new Road(former, current, temp));
+				if (laneInfo[0]==1)
+					ret.add(new Road(former, current, temp));
+				else
+					ret.add(new Road(current, former, temp));
 			}
 			former = current;
 		}

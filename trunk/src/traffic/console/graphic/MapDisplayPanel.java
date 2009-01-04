@@ -232,7 +232,8 @@ public class MapDisplayPanel extends JPanel implements MouseListener,
 				g.setStroke(borderStroke);
 				g.setColor(dotLineColor);
 				t1 = r.getPositionOnRoad(r.getLength() / 2, i);
-				Polygon tri = getTriangle(t1, r.getPositionOnRoad(0, i));
+				Polygon tri=null;
+				tri = getTriangle(t1, r.getPositionOnRoad(0, i));
 				g.drawPolygon(tri);
 				g.fillPolygon(tri);
 

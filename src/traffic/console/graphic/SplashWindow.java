@@ -1,6 +1,7 @@
 package traffic.console.graphic;
 
 import java.awt.BorderLayout;
+import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
@@ -76,6 +77,8 @@ public class SplashWindow extends JWindow {
 		@Override
 		public void paint(Graphics g) {
 			super.paint(g);
+			g.setColor(Color.decode("#B8CFE5"));
+			g.fillRect(0, 0, width, height);
 			double scale = 1.2;
 			AffineTransform trans = new AffineTransform();
 			trans.setToScale(scale, scale);

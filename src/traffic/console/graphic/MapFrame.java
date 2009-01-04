@@ -51,6 +51,7 @@ public class MapFrame extends JFrame implements ActionListener, EventListener {
 		} catch (Exception e) {
 		}
 		setTitle("Traffic Simulating System");
+		this.setIconImage(ImageLoader.loadImageByName("icon.png"));
 		setResizable(false);
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 

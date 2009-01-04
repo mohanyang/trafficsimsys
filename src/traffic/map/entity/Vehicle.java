@@ -116,7 +116,12 @@ public class Vehicle {
 	}
 
 	public void setSpeed(double speed) {
-		this.speed = speed;
+		if (speed>maxForwardSpeed)
+			this.speed=maxForwardSpeed;
+		else if (speed<-maxReverseSpeed)
+			this.speed=-maxReverseSpeed;
+		else
+			this.speed = speed;
 	}
 
 	public VehicleInf getVehicleInf() {

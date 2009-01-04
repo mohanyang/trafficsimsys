@@ -40,7 +40,11 @@ public class RoadEntranceInfo {
 	}
 	
 	public double getClosestDistance(){
-		return assoc.closestDistance(0, lane, null);
+		Vehicle ret=assoc.getClosestVehicle(0, lane, null);
+		if (ret==null)
+			return Double.MAX_VALUE;
+		else
+			return ret.getPosition();
 	}
 
 }

@@ -150,7 +150,7 @@ public class Road {
 	}
 
 	protected void addVehicle(Vehicle v, int lane) {
-		Lib.assertTrue(lock.isHeldByCurrentThread());
+//		Lib.assertTrue(lock.isHeldByCurrentThread());
 		// if (v.getRoad() == null && !vehicleList.contains(v)) {
 		// Lib.assertTrue(vehicleList.add(v));
 		// } else if (!v.getRoad().equals(this) && !vehicleList.contains(v)) {
@@ -172,7 +172,7 @@ public class Road {
 	 * @return the number of vehicles remaining on the road
 	 */
 	protected int removeVehicle(Vehicle v) {
-		Lib.assertTrue(lock.isHeldByCurrentThread());
+//		Lib.assertTrue(lock.isHeldByCurrentThread());
 		Log.getInstance().writeln("removing vehicle: " + v);
 		if (v.getRoad().equals(this) && vehicleList.contains(v)) {
 			removeList.add(v);
@@ -187,7 +187,7 @@ public class Road {
 	 * @author huangsx
 	 */
 	public void performRemoval() {
-		Lib.assertTrue(lock.isHeldByCurrentThread());
+//		Lib.assertTrue(lock.isHeldByCurrentThread());
 		if (!removeList.isEmpty())
 			Log.getInstance().writeln("removing the following vehicles:");
 		else
@@ -202,7 +202,7 @@ public class Road {
 	}
 
 	public void performInsertion() {
-		Lib.assertTrue(lock.isHeldByCurrentThread());
+//		Lib.assertTrue(lock.isHeldByCurrentThread());
 		if (!insertList.isEmpty())
 			Log.getInstance().writeln("performing insertion:");
 		else
@@ -347,7 +347,7 @@ public class Road {
 	 *         to the next intersection if it is closer.
 	 */
 	public double closestDistance(double position, int lane, Vehicle pv) {
-		Lib.assertTrue(lock.isHeldByCurrentThread());
+//		Lib.assertTrue(lock.isHeldByCurrentThread());
 		// TODO should calculate the length of the car
 		double ret = length - position;
 		int dir;
@@ -355,6 +355,8 @@ public class Road {
 			dir = -1;
 		else
 			dir = 1;
+		if (vehicleList.isEmpty())
+			return Double.MAX_VALUE;
 		Vehicle curr = vehicleList.iterator().next();
 		for (Iterator<Vehicle> itr = vehicleList.iterator(); itr.hasNext(); curr = itr
 				.next()) {
@@ -369,10 +371,12 @@ public class Road {
 	}
 
 	public Vehicle getClosestVehicle(double position, int lane, Vehicle pv) {
-		Lib.assertTrue(lock.isHeldByCurrentThread());
+//		Lib.assertTrue(lock.isHeldByCurrentThread());
 		double ret = Double.MAX_VALUE;
 		Vehicle retV = null;
 		int dir = (laneInfo[lane] == 0) ? -1 : 1;
+		if (vehicleList.isEmpty())
+			return null;
 		Vehicle curr = vehicleList.iterator().next();
 		for (Iterator<Vehicle> itr = vehicleList.iterator(); itr.hasNext(); curr = itr
 				.next()) {

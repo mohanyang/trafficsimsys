@@ -1,25 +1,21 @@
 package traffic.console.graphic;
 
 import java.awt.Container;
-import java.awt.Dimension;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
-import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 import javax.swing.BorderFactory;
 import javax.swing.BoxLayout;
 import javax.swing.JButton;
-import javax.swing.JDialog;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
-import javax.swing.UIManager;
 
 import traffic.external.generate.MyFactory;
 
-public class VehicleGenPanel extends JDialog implements ActionListener,
+public class VehicleGenPanel extends TemplatePanel implements ActionListener,
 		GenerateConsole {
 	static public final long serialVersionUID = 31L;
 	protected static String[] tag;
@@ -29,12 +25,10 @@ public class VehicleGenPanel extends JDialog implements ActionListener,
 	private static int paranum = 4;
 
 	public VehicleGenPanel() {
-		try {
-			UIManager.setLookAndFeel(UIManager
-					.getCrossPlatformLookAndFeelClassName());
-		} catch (Exception e) {
-		}
-		setIconImage(ImageLoader.systemIcon);
+		super();
+	}
+
+	public void subConstruct() {
 		setTitle("Vehicle Generation Set");
 
 		tag = new String[paranum];
@@ -103,18 +97,6 @@ public class VehicleGenPanel extends JDialog implements ActionListener,
 		contentPane.add(commPane);
 		setContentPane(contentPane);
 		pack();
-		centerize();
-		setVisible(true);
-	}
-
-	private void centerize() {
-		Toolkit kit = Toolkit.getDefaultToolkit();
-		Dimension screenSize = kit.getScreenSize();
-		int screenWidth = screenSize.width / 2;
-		int screenHeight = screenSize.height / 2;
-		int height = getHeight();
-		int width = getWidth();
-		setLocation(screenWidth - width / 2, screenHeight - height / 2);
 	}
 
 	class confirmListener implements ActionListener {

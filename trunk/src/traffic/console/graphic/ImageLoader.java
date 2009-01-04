@@ -12,6 +12,7 @@ public class ImageLoader {
 
 	public static int count = 0;
 	public static double scale = 1.0;
+	public static BufferedImage systemIcon = null;
 	private static ImageLoader instance = null;
 
 	private ImageLoader() {
@@ -22,15 +23,15 @@ public class ImageLoader {
 	public static synchronized ImageLoader getInstance() {
 		if (instance == null) {
 			instance = new ImageLoader();
+			systemIcon = loadImageByName("icon.png");
 		}
 		return instance;
 	}
 
 	public static BufferedImage loadImage(int index) throws IOException {
 		try {
-			if(index==4){
-				return ImageIO
-				.read(new File("./image/bar.png"));
+			if (index == 4) {
+				return ImageIO.read(new File("./image/bar.png"));
 			}
 			if (index >= 0 && index < count) {
 				return ImageIO

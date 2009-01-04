@@ -77,17 +77,21 @@ public class Map {
 					Point ip = Road.intersect(road, curr);
 					if (ip != null) {
 						ip = getPoint(ip);
-						if (!ip.equals(road.startPoint) && !ip.equals(road.endPoint)){
+						if (!ip.equals(road.startPoint)
+								&& !ip.equals(road.endPoint)) {
 							road.insertIntersection(road.getInfoByPoint(ip)
 									.getCurrentPosition());
 							// TODO
-							ip.addPassRoad(road, road.getInfoByPoint(ip).getCurrentPosition());
+							ip.addPassRoad(road, road.getInfoByPoint(ip)
+									.getCurrentPosition());
 						}
-						if (!ip.equals(curr.startPoint) && !ip.equals(curr.endPoint)){
+						if (!ip.equals(curr.startPoint)
+								&& !ip.equals(curr.endPoint)) {
 							curr.insertIntersection(curr.getInfoByPoint(ip)
 									.getCurrentPosition());
 							// TODO
-							ip.addPassRoad(curr, curr.getInfoByPoint(ip).getCurrentPosition());
+							ip.addPassRoad(curr, curr.getInfoByPoint(ip)
+									.getCurrentPosition());
 						}
 					}
 				}
@@ -143,9 +147,9 @@ public class Map {
 		Point p = new Point(x, y);
 		for (Iterator<Vehicle> vIter = r.getVehicleList(); vIter.hasNext();) {
 			Vehicle v = vIter.next();
-			double d = v.getLength() * ImageLoader.scale / 2;
+			double d = v.getLength() / 2;
 			Point tmp = r.getPositionOnRoad(v.getPosition() - d, v.getLane());
-			if (Point.distance(p, tmp) < d * 4)
+			if (Point.distance(p, tmp) < d)
 				return v;
 		}
 		return null;

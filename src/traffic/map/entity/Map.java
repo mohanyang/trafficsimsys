@@ -149,7 +149,7 @@ public class Map {
 			Vehicle v = vIter.next();
 			double d = v.getLength() / 2;
 			Point tmp = r.getPositionOnRoad(v.getPosition() - d, v.getLane());
-			if (Point.distance(p, tmp) < d)
+			if (Point.distance(p, tmp) < d * 2)
 				return v;
 		}
 		return null;

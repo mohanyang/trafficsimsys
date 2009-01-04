@@ -132,7 +132,7 @@ public class Point {
 	}
 	
 	public LinkedList<Road> getIntersectionRoadList(){
-		return getIntersectionRoadList(true);
+		return getIntersectionRoadList(false);
 	}
 	
 	public LinkedList<Road> getIntersectionRoadList(boolean direction){

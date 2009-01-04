@@ -46,6 +46,16 @@ public class Stat implements IStat {
 	}
 
 	@Override
+	public void pause() {
+		paused = true;
+	}
+
+	@Override
+	public void resume() {
+		paused = false;
+	}
+
+	@Override
 	public int accidentsOnRoad(Road r) {
 		// TODO unimplemented
 		return 0;
@@ -63,6 +73,7 @@ public class Stat implements IStat {
 	}
 
 	private boolean running = false;
+	private boolean paused = false;
 	private final Map<Road, StatInfo> infos = new HashMap<Road, StatInfo>();
 
 	private Runnable updater = new Runnable() {
@@ -70,9 +81,11 @@ public class Stat implements IStat {
 		@Override
 		public void run() {
 			if (running) {
-				synchronized (infos) {
-					for (StatInfo info : infos.values()) {
-						info.update();
+				if (!paused) {
+					synchronized (infos) {
+						for (StatInfo info : infos.values()) {
+							info.update();
+						}
 					}
 				}
 				Scheduler.getInstance().schedule(updater, UPDATE_TIME);

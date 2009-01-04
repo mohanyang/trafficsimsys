@@ -8,6 +8,10 @@ public interface IStat extends EventListener {
 	public void start();
 
 	public void stop();
+	
+	public void pause();
+	
+	public void resume();
 
 	public int currentVehiclesOnRoad(Road r);
 

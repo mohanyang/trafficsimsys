@@ -63,6 +63,8 @@ public class Simulator {
 				}
 
 			}
+			if (paused)
+				console.eventOccured(new Event(this, Event.MOVE, map));
 		}
 	};
 
@@ -140,10 +142,12 @@ public class Simulator {
 
 	public void pause() {
 		paused = true;
+		stat.pause();
 	}
 
 	public void resume() {
 		paused = false;
+		stat.resume();
 	}
 
 	public void reset() {

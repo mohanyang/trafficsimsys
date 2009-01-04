@@ -48,7 +48,7 @@ public class MapDisplayPanel extends JPanel implements MouseListener,
 		MouseMotionListener, MouseWheelListener {
 	public static final long serialVersionUID = 2L;
 	public static final int MAXWIDTH = 5000, MAXHEIGHT = 5000;
-	private int imgWidth = 660, imgHeight = 690;
+	private int imgWidth = 1000, imgHeight = 1000;
 	private int moveThreshold = 20, moveStep = 50;
 	private Map map = null;
 	BufferedImage[] img = null;
@@ -134,6 +134,8 @@ public class MapDisplayPanel extends JPanel implements MouseListener,
 	}
 
 	public void paint(Map map) {
+		imgWidth = getWidth();
+		imgHeight = getHeight();
 		Graphics graphics = getGraphics();
 		if (graphics != null) {
 			this.map = map;
@@ -231,7 +233,7 @@ public class MapDisplayPanel extends JPanel implements MouseListener,
 				g.setStroke(borderStroke);
 				g.setColor(dotLineColor);
 				t1 = r.getPositionOnRoad(r.getLength() / 2, i);
-				Polygon tri=null;
+				Polygon tri = null;
 				tri = getTriangle(t1, r.getPositionOnRoad(0, i));
 				g.drawPolygon(tri);
 				g.fillPolygon(tri);
@@ -447,15 +449,15 @@ public class MapDisplayPanel extends JPanel implements MouseListener,
 
 	@Override
 	public void mouseDragged(MouseEvent e) {
-//		if (!isDrag) {
-//			dragX = e.getX();
-//			dragY = e.getY();
-//			isDrag = true;
-//		}
+		// if (!isDrag) {
+		// dragX = e.getX();
+		// dragY = e.getY();
+		// isDrag = true;
+		// }
 		int xx = e.getX() - dragX, yy = e.getY() - dragY;
-//		System.out.println(dragX + " " + xx + " " + dragY + " " + yy);
-		dragX=e.getX();
-		dragY=e.getY();
+		// System.out.println(dragX + " " + xx + " " + dragY + " " + yy);
+		dragX = e.getX();
+		dragY = e.getY();
 		int n = (xx * xx + yy * yy) / 10000;
 		if (xx > 20)
 			moveRight(n);
@@ -472,9 +474,9 @@ public class MapDisplayPanel extends JPanel implements MouseListener,
 		mouseX = e.getX();
 		mouseY = e.getY();
 		zoomPanel.mouseMoved(e);
-//		if (!isDrag)
-			dispatchEvent(new Event(this, Event.MOUSE_INPUT, new MouseInput(e,
-					(int) transMapX(e.getX()), (int) transMapY(e.getY()), false)));
+		// if (!isDrag)
+		dispatchEvent(new Event(this, Event.MOUSE_INPUT, new MouseInput(e,
+				(int) transMapX(e.getX()), (int) transMapY(e.getY()), false)));
 		statusLabel.setText("current point on the map system of coordinates ("
 				+ (int) transMapX(mouseX) + ", " + (int) transMapY(mouseY)
 				+ ")");
@@ -532,25 +534,25 @@ public class MapDisplayPanel extends JPanel implements MouseListener,
 	@Override
 	public void mousePressed(MouseEvent arg0) {
 		// nothing
-		isDrag=true;
+		isDrag = true;
 	}
 
 	@Override
 	public void mouseReleased(MouseEvent e) {
-//		if (isDrag) {
-//			int xx = e.getX() - dragX, yy = e.getY() - dragY;
-//			int n = (xx * xx + yy * yy) / 10000;
-//			if (xx > 20)
-//				moveRight(n);
-//			else
-//				moveLeft(n);
-//			if (yy > 20)
-//				moveDown(n);
-//			else
-//				moveUp(n);
-//			isDrag = false;
-//		}
-		isDrag=false;
+		// if (isDrag) {
+		// int xx = e.getX() - dragX, yy = e.getY() - dragY;
+		// int n = (xx * xx + yy * yy) / 10000;
+		// if (xx > 20)
+		// moveRight(n);
+		// else
+		// moveLeft(n);
+		// if (yy > 20)
+		// moveDown(n);
+		// else
+		// moveUp(n);
+		// isDrag = false;
+		// }
+		isDrag = false;
 	}
 
 	public void addEventListener(EventListener listener) {

@@ -16,12 +16,12 @@ import traffic.map.entity.VehicleInf;
 
 public class VehicleGenerator implements GenerateController {
 	public VehicleGenerator() {
+		typenum = ImageLoader.getInstance().count;
 	}
 
 	public static synchronized VehicleGenerator getInstance() {
 		if (instance == null) {
 			instance = new VehicleGenerator();
-			typenum = ImageLoader.getInstance().count;
 		}
 		return instance;
 	}
@@ -44,6 +44,10 @@ public class VehicleGenerator implements GenerateController {
 		road.releaseLock();
 		road = null;
 		return 0;
+	}
+	
+	public int getTypeCount(){
+		return typenum;
 	}
 
 	private Road SearchBornPoint(int index) {
@@ -188,7 +192,7 @@ public class VehicleGenerator implements GenerateController {
 	private int bornpoint = 0;
 	private RoadInfo info = null;
 	private Road road = null;
-	private static int typenum = 4;
-	private static int pointnum = 40;
-	private static int paranum = 4;
+	private int typenum = 4;
+	private int pointnum = 40;
+	private int paranum = 4;
 }

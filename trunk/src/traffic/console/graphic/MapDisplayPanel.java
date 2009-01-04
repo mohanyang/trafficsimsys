@@ -35,7 +35,6 @@ import traffic.log.Log;
 import traffic.map.entity.Map;
 import traffic.map.entity.Point;
 import traffic.map.entity.Road;
-import traffic.map.entity.RoadEntranceInfo;
 import traffic.map.entity.Vehicle;
 import traffic.simulation.kernel.Simulator;
 import traffic.simulation.statistics.IStat;

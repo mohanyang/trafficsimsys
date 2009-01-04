@@ -70,6 +70,8 @@ public class MapDisplayPanel extends JPanel implements MouseListener,
 	private Road selectedRoad = null;
 	private Vehicle selectedVehicle = null;
 	private boolean clicked = false;
+	private boolean isDrag = false;
+	private int dragX = 0, dragY = 0;
 
 	private EventDispatcher eventDispatcher = new EventDispatcher();
 
@@ -407,19 +409,35 @@ public class MapDisplayPanel extends JPanel implements MouseListener,
 	}
 
 	protected void moveLeft() {
-		startX = Math.max(0, startX - moveStep);
+		moveLeft(1);
 	}
 
 	protected void moveRight() {
-		startX = Math.min(MAXWIDTH - imgWidth, startX + moveStep);
+		moveRight(1);
 	}
 
 	protected void moveUp() {
-		startY = Math.max(0, startY - moveStep);
+		moveUp(1);
 	}
 
 	protected void moveDown() {
-		startY = Math.min(MAXHEIGHT - imgHeight, startY + moveStep);
+		moveDown(1);
+	}
+
+	private void moveLeft(int n) {
+		startX = Math.max(0, startX - moveStep * n);
+	}
+
+	private void moveRight(int n) {
+		startX = Math.min(MAXWIDTH - imgWidth, startX + moveStep * n);
+	}
+
+	private void moveUp(int n) {
+		startY = Math.max(0, startY - moveStep * n);
+	}
+
+	private void moveDown(int n) {
+		startY = Math.min(MAXHEIGHT - imgHeight, startY + moveStep * n);
 	}
 
 	private java.awt.Point getBoxPosition(int width, int height) {
@@ -428,7 +446,11 @@ public class MapDisplayPanel extends JPanel implements MouseListener,
 
 	@Override
 	public void mouseDragged(MouseEvent e) {
-		// do nothing
+		if (!isDrag) {
+			dragX = e.getX();
+			dragY = e.getY();
+			isDrag = true;
+		}
 	}
 
 	@Override
@@ -499,7 +521,19 @@ public class MapDisplayPanel extends JPanel implements MouseListener,
 
 	@Override
 	public void mouseReleased(MouseEvent e) {
-		// nothing
+		if (isDrag) {
+			int xx = e.getX() - dragX, yy = e.getY() - dragY;
+			int n = (xx * xx + yy * yy) / 10000;
+			if (xx > 20)
+				moveRight(n);
+			else
+				moveLeft(n);
+			if (yy > 20)
+				moveDown(n);
+			else
+				moveUp(n);
+			isDrag = false;
+		}
 	}
 
 	public void addEventListener(EventListener listener) {

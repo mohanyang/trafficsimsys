@@ -11,6 +11,7 @@ import traffic.event.Event;
 import traffic.event.MouseInput;
 import traffic.external.generate.MyFactory;
 import traffic.log.Log;
+import traffic.external.generate.*;
 import traffic.map.entity.Map;
 import traffic.map.entity.Point;
 import traffic.map.entity.Road;
@@ -52,6 +53,8 @@ public class Simulator {
 					if (r != null) {
 						RoadInfo info = r.getInfoByPoint(new Point(mi.getX(),
 								mi.getY()));
+						VehicleGenerator vg=MyFactory.getInstance().getVehicleGenerator();
+						vg.settype(Lib.random(vg.getTypeCount()));
 						MyFactory.getInstance().getVehicleGenerator().setroad(
 								r, info);
 						MyFactory.getInstance().getVehicleGenerator()

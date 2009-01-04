@@ -22,6 +22,10 @@ public abstract class Log {
 	
 	public void close() {
 	}
+	
+	public void writeln(Object o){
+		writeln(o.toString());
+	}
 
 	public void writeln(String msg) {
 		write(msg);

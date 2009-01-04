@@ -36,6 +36,9 @@ public class MapKeyListener implements KeyListener {
 		case KeyEvent.VK_PAGE_DOWN:
 			container.zoomPanel.newCursor(-1);
 			break;
+		case KeyEvent.VK_F1:
+			new HelpPanel();
+			break;
 		default:
 			break;
 		}

@@ -19,12 +19,18 @@ public class NewBasicVehicleController extends BasicVehicleController {
 		Vehicle v = assoc;
 		Road curr = v.getRoad();
 		if (curr.canMove(v.getLane())) {
-			double newSpeed=v.getSpeed();
+			double newSpeed=v.getSpeed()-1+Lib.random(3);
 			Vehicle closestV=curr.getClosestVehicle(v.getPosition(), v.getLane(), v);
 			if (closestV!=null){
 				Log.getInstance().writeln("closest vehicle=" + (closestV.getPosition()-v.getPosition()));
-				if (newSpeed>closestV.getPosition()-v.getPosition())
-					newSpeed=closestV.getPosition()-v.getPosition();
+				Log.getInstance().writeln("closestv length=" + closestV.getLength());
+				Log.getInstance().writeln("currentv length=" + v.getLength());
+				if (newSpeed>closestV.getPosition()-v.getPosition()
+						-(closestV.getLength()+v.getLength())/2)
+					newSpeed=closestV.getPosition()-v.getPosition()
+							-(closestV.getLength()+v.getLength())/2;
+				if (newSpeed<0)
+					newSpeed=0;
 			}
 			
 			double temp = curr.closestIntersection(v.getPosition(), v.getLane());

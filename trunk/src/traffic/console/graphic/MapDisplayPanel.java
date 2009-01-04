@@ -170,6 +170,7 @@ public class MapDisplayPanel extends JPanel implements MouseListener,
 			Point p1 = null, p2 = null, t1 = null, t2 = null;
 			int n1 = 0, n2 = 0;
 			double lamda = rr.getLamda();
+			LinkedList<Road> list = null;
 			p1 = r.getStartPoint();
 			p2 = r.getEndPoint();
 			if (p1.getXAxis() > p2.getXAxis() || p1.getYAxis() > p2.getYAxis()) {
@@ -177,7 +178,7 @@ public class MapDisplayPanel extends JPanel implements MouseListener,
 				p1 = p2;
 				p2 = t1;
 			}
-			LinkedList<Road> list = p1.getIntersectionRoadList();
+			list = p1.getIntersectionRoadList();
 			for (Iterator<Road> itr = list.iterator(); itr.hasNext();) {
 				Road tmp = itr.next();
 				if (Double.compare(tmp.getLamda(), lamda) != 0) {

@@ -447,11 +447,24 @@ public class MapDisplayPanel extends JPanel implements MouseListener,
 
 	@Override
 	public void mouseDragged(MouseEvent e) {
-		if (!isDrag) {
-			dragX = e.getX();
-			dragY = e.getY();
-			isDrag = true;
-		}
+//		if (!isDrag) {
+//			dragX = e.getX();
+//			dragY = e.getY();
+//			isDrag = true;
+//		}
+		int xx = e.getX() - dragX, yy = e.getY() - dragY;
+//		System.out.println(dragX + " " + xx + " " + dragY + " " + yy);
+		dragX=e.getX();
+		dragY=e.getY();
+		int n = (xx * xx + yy * yy) / 10000;
+		if (xx > 20)
+			moveRight(n);
+		else
+			moveLeft(n);
+		if (yy > 20)
+			moveDown(n);
+		else
+			moveUp(n);
 	}
 
 	@Override
@@ -459,8 +472,9 @@ public class MapDisplayPanel extends JPanel implements MouseListener,
 		mouseX = e.getX();
 		mouseY = e.getY();
 		zoomPanel.mouseMoved(e);
-		dispatchEvent(new Event(this, Event.MOUSE_INPUT, new MouseInput(e,
-				(int) transMapX(e.getX()), (int) transMapY(e.getY()), false)));
+		if (!isDrag)
+			dispatchEvent(new Event(this, Event.MOUSE_INPUT, new MouseInput(e,
+					(int) transMapX(e.getX()), (int) transMapY(e.getY()))));
 		statusLabel.setText("current point on the map system of coordinates ("
 				+ (int) transMapX(mouseX) + ", " + (int) transMapY(mouseY)
 				+ ")");
@@ -485,7 +499,7 @@ public class MapDisplayPanel extends JPanel implements MouseListener,
 		boolean zoomResult = zoomPanel.mouseClicked(arg0);
 		if (!zoomResult) {
 			dispatchEvent(new Event(this, Event.MOUSE_INPUT, new MouseInput(
-					arg0, (int) xx, (int) yy, true)));
+					arg0, (int) xx, (int) yy)));
 
 			Road r = map.getRoad(xx, yy);
 			if (r != null) {
@@ -518,23 +532,25 @@ public class MapDisplayPanel extends JPanel implements MouseListener,
 	@Override
 	public void mousePressed(MouseEvent arg0) {
 		// nothing
+		isDrag=true;
 	}
 
 	@Override
 	public void mouseReleased(MouseEvent e) {
-		if (isDrag) {
-			int xx = e.getX() - dragX, yy = e.getY() - dragY;
-			int n = (xx * xx + yy * yy) / 10000;
-			if (xx > 20)
-				moveRight(n);
-			else
-				moveLeft(n);
-			if (yy > 20)
-				moveDown(n);
-			else
-				moveUp(n);
-			isDrag = false;
-		}
+//		if (isDrag) {
+//			int xx = e.getX() - dragX, yy = e.getY() - dragY;
+//			int n = (xx * xx + yy * yy) / 10000;
+//			if (xx > 20)
+//				moveRight(n);
+//			else
+//				moveLeft(n);
+//			if (yy > 20)
+//				moveDown(n);
+//			else
+//				moveUp(n);
+//			isDrag = false;
+//		}
+		isDrag=false;
 	}
 
 	public void addEventListener(EventListener listener) {

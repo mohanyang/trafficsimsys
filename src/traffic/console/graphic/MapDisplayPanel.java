@@ -174,11 +174,11 @@ public class MapDisplayPanel extends JPanel implements MouseListener,
 			LinkedList<Road> list = null;
 			p1 = r.getStartPoint();
 			p2 = r.getEndPoint();
-			if (p1.getXAxis() > p2.getXAxis() || p1.getYAxis() > p2.getYAxis()) {
-				t1 = p1;
-				p1 = p2;
-				p2 = t1;
-			}
+//			if (p1.getXAxis() > p2.getXAxis() || p1.getYAxis() > p2.getYAxis()) {
+//				t1 = p1;
+//				p1 = p2;
+//				p2 = t1;
+//			}
 			list = p1.getIntersectionRoadList();
 			for (Iterator<Road> itr = list.iterator(); itr.hasNext();) {
 				Road tmp = itr.next();

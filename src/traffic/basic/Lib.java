@@ -60,7 +60,7 @@ public class Lib {
 	 * @param b
 	 */
 	public static boolean isEqual(double a, double b) {
-		return Double.compare(a, b) != 0;
+		return Double.compare(a, b) == 0;
 	}
 
 	public static int doubleToInt(double a) {

@@ -13,77 +13,64 @@ import traffic.map.entity.Vehicle;
 public class NewBasicVehicleController extends BasicVehicleController {
 	
 	@Override
-	public void react(){
-		if (assoc == null)
-			return;
-		Vehicle v = assoc;
-		Road curr = v.getRoad();
-		if (curr.canMove(v.getLane())) {
-			double newSpeed=v.getSpeed()-1+Lib.random(5);
+	protected double getNewSpeed(){
+		double newSpeed=assoc.getSpeed()-1+Lib.random(5);
+		if (newSpeed<0)
+			newSpeed=0;
+		Vehicle closestV=assoc.getRoad().getClosestVehicle(assoc.getPosition(), assoc.getLane(), assoc);
+		if (closestV!=null){
+			Log.getInstance().writeln("closest vehicle=" + (closestV.getPosition()-assoc.getPosition()));
+			Log.getInstance().writeln("closestv length=" + closestV.getLength());
+			Log.getInstance().writeln("currentv length=" + assoc.getLength());
+			if (newSpeed>closestV.getPosition()-assoc.getPosition()
+					-(closestV.getLength()+assoc.getLength())/2)
+				newSpeed=closestV.getPosition()-assoc.getPosition()
+						-(closestV.getLength()+assoc.getLength())/2;
 			if (newSpeed<0)
 				newSpeed=0;
-			Vehicle closestV=curr.getClosestVehicle(v.getPosition(), v.getLane(), v);
-			if (closestV!=null){
-				Log.getInstance().writeln("closest vehicle=" + (closestV.getPosition()-v.getPosition()));
-				Log.getInstance().writeln("closestv length=" + closestV.getLength());
-				Log.getInstance().writeln("currentv length=" + v.getLength());
-				if (newSpeed>closestV.getPosition()-v.getPosition()
-						-(closestV.getLength()+v.getLength())/2)
-					newSpeed=closestV.getPosition()-v.getPosition()
-							-(closestV.getLength()+v.getLength())/2;
-				if (newSpeed<0)
-					newSpeed=0;
-			}
-			
-			double temp = curr.closestIntersection(v.getPosition(), v.getLane());
-			Log.getInstance().writeln("closest intersection=" + temp);
-			if (temp<newSpeed)
-				newSpeed=temp;
-			v.setSpeed(newSpeed);
-			v.proceed();
-
-			if (Lib.isEqual(temp, 0)) {
-				LinkedList<RoadEntranceInfo> adj = v.getRoad().getIntersectionList(v.getPosition(), v.getLane());
-				if (adj.size()>1)
-					for (Iterator<RoadEntranceInfo> itr=adj.iterator(); itr.hasNext();){
-						RoadEntranceInfo ri=itr.next();
-						if (ri.getRoad()==curr 
-								&& ri.getRoad().getDirection(ri.getLane())!=v.getDirection()){
-							Log.getInstance().writeln("removing target: " + ri.getRoad() + " "
-									+ ri.getLane());
-							itr.remove();
-//							break;
-						}
-					}
-				if (adj.size() == 0) {
-					Log.getInstance().writeln("+++" + v + " dying");
-					v.removeFromCurrent();
-					stop();
-				} else {
-					int abc = adj.size();
-					Log.getInstance().writeln("adj list size=" + adj.size());
-					int count = Lib.random(adj.size());
-					Log.getInstance().writeln("count=" + count);
-					RoadEntranceInfo target = adj.get(count);
-					if (target.getClosestDistance()<v.getLength())
-						return;
-					Log.getInstance().writeln(
-							"+++" + v + " changing road to " + target.getRoad()
-									+ " lane " + target.getLane());
-//					Lib.assertTrue(target.getRoad() != v.getRoad()
-//							|| target.getLane() != v.getLane());
-					dispatchEvent(new Event(this, Event.LEAVE_ROAD, v.getRoad()));
-					dispatchEvent(new Event(this, Event.ENTER_ROAD, target
-							.getRoad()));
-					v.setRoad(target.getRoad(), target.getLane(), target.getPosition());
-					v.setSpeed(Lib.random(5) + 15);
+		}
+		
+		double temp = assoc.getRoad().closestIntersection(assoc.getPosition(), assoc.getLane());
+		Log.getInstance().writeln("closest intersection=" + temp);
+		if (temp<newSpeed)
+			newSpeed=temp;
+		return newSpeed;
+	}
+	
+	@Override
+	protected boolean isAtIntersection() {
+		return Lib.isEqual(
+				assoc.getRoad().closestIntersection(assoc.getPosition(), assoc.getLane()), 0);
+	}
+	
+	@Override
+	protected LinkedList<RoadEntranceInfo> getEntryList() {
+		LinkedList<RoadEntranceInfo> ret
+			=assoc.getRoad().getIntersectionList(assoc.getPosition(), assoc.getLane());
+		if (ret.size()>1)
+			for (Iterator<RoadEntranceInfo> itr=ret.iterator(); itr.hasNext();){
+				RoadEntranceInfo ri=itr.next();
+				if (ri.getRoad()==assoc.getRoad() 
+						&& ri.getRoad().getDirection(ri.getLane())!=assoc.getDirection()){
+					Log.getInstance().writeln("removing target: " + ri.getRoad() + " "
+							+ ri.getLane());
+					itr.remove();
 				}
 			}
-		} else {
-			Log.getInstance().writeln("+++" + v + " dying");
-			v.removeFromCurrent();
-			stop();
-		}		
+		return ret;
 	}
-
+	
+	@Override
+	protected void performChange(RoadEntranceInfo target) {
+		if (target.getClosestDistance()<assoc.getLength())
+			return;
+		Log.getInstance().writeln(
+				"+++" + assoc + " changing road to " + target.getRoad()
+						+ " lane " + target.getLane());
+		dispatchEvent(new Event(this, Event.LEAVE_ROAD, assoc.getRoad()));
+		dispatchEvent(new Event(this, Event.ENTER_ROAD, target
+				.getRoad()));
+		assoc.setRoad(target.getRoad(), target.getLane(), target.getPosition());
+		assoc.setSpeed(Lib.random(5) + 15);
+	}
 }

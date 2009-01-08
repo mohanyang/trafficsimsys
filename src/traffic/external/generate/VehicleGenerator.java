@@ -19,13 +19,6 @@ public class VehicleGenerator implements GenerateController {
 		typenum = ImageLoader.getInstance().count;
 	}
 
-	public static synchronized VehicleGenerator getInstance() {
-		if (instance == null) {
-			instance = new VehicleGenerator();
-		}
-		return instance;
-	}
-
 	public int generate() {
 		if (road == null) {
 			road = SearchBornPoint(bornpoint);
@@ -184,7 +177,7 @@ public class VehicleGenerator implements GenerateController {
 		return (int) (low + (high - low) * Lib.random());
 	}
 
-	private static VehicleGenerator instance = null;
+
 	private static int defaultmaxspeed = Vehicle.maxForwardSpeed;
 	private int maxspeed = 10;
 	private int initspeed = 10;

@@ -13,7 +13,9 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 
+import traffic.external.generate.BarrierGenerator;
 import traffic.external.generate.MyFactory;
+import traffic.external.generate.VehicleGenerator;
 
 public class VehicleGenPanel extends TemplatePanel implements ActionListener,
 		GenerateConsole {
@@ -107,7 +109,7 @@ public class VehicleGenPanel extends TemplatePanel implements ActionListener,
 				paraconfig(i, tmp);
 				}
 			}
-			if (MyFactory.getInstance().getVehicleGenerator().getInstance()
+			if (((VehicleGenerator)MyFactory.getInstance().getGenerator("VehicleGenerator"))
 					.generate() < 0) {
 				System.out.print("fail in adding vehicle\n");
 			}
@@ -123,21 +125,20 @@ public class VehicleGenPanel extends TemplatePanel implements ActionListener,
 		int value = (Integer) o;
 		switch (index) {
 		case 0:
-			MyFactory.getInstance().getVehicleGenerator().getInstance()
-					.setmaxspeed(value);
+			((VehicleGenerator)MyFactory.getInstance().getGenerator("VehicleGenerator")).setmaxspeed(value);
 			break;
 		case 1:
-			MyFactory.getInstance().getVehicleGenerator().getInstance()
+			((VehicleGenerator)MyFactory.getInstance().getGenerator("VehicleGenerator")) 
 					.setinitspeed(value);
 			break;
 		case 2:
-			if (MyFactory.getInstance().getVehicleGenerator().getInstance()
+			if (((VehicleGenerator)MyFactory.getInstance().getGenerator("VehicleGenerator"))
 					.settype(value) < 0) {
 				actionLabel.setText("error type");
 			}
 			break;
 		case 3:
-			if (MyFactory.getInstance().getVehicleGenerator().getInstance()
+			if (((VehicleGenerator)MyFactory.getInstance().getGenerator("VehicleGenerator"))
 					.setbornpoint(value) < 0) {
 				actionLabel.setText("error born point");
 			}

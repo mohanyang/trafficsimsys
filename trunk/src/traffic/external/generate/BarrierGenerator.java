@@ -7,6 +7,7 @@ import traffic.basic.Lib;
 import traffic.map.entity.Map;
 import traffic.map.entity.Point;
 import traffic.map.entity.Road;
+import traffic.map.entity.RoadInfo;
 import traffic.map.entity.Vehicle;
 import traffic.map.entity.VehicleInf;
 import traffic.simulation.vehicle.BarrierObject;
@@ -15,24 +16,18 @@ public class BarrierGenerator implements GenerateController{
 	public BarrierGenerator(){
 	}
 	
-	public static synchronized BarrierGenerator getInstance(){
-		if(instance==null){
-			instance=new BarrierGenerator();
-		}
-		return instance;
-	}
-	
 	public int generate() {
 		if(road==null){
 			road = SearchBornPoint(bornpoint);
+			info=new RoadInfo(road, 0, 0);
 		}
 		if (road == null) {
 			return -1;
 		}
 		Vehicle v = Map.getInstance().newVehicle(
 				new VehicleInf(type, 0, 0));
-		v.setRoad(road, 0);
-		v.setPosition(v.getLength() / 2);
+		v.setRoad(road, info.getCurrentLane());
+		v.setPosition(info.getCurrentPosition());
 		v.setSpeed(0);
 		BarrierObject o=new BarrierObject();
 		o.setVehicle(v);
@@ -130,7 +125,8 @@ public class BarrierGenerator implements GenerateController{
 		return (int) (low + (high - low) * Lib.random());
 	}
 	
-	private static BarrierGenerator instance=null;
+	 
+	private RoadInfo info = null;
 	
 	private static int paranum=1;
 	private static int typenum = 4;

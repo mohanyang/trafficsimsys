@@ -11,6 +11,7 @@ import traffic.console.graphic.SplashWindow;
 import traffic.event.Event;
 import traffic.event.MouseInput;
 import traffic.external.generate.MyFactory;
+import traffic.external.generate.VehicleGenerator;
 import traffic.log.Log;
 import traffic.external.generate.*;
 import traffic.map.entity.Map;
@@ -55,12 +56,12 @@ public class Simulator {
 					if (r != null) {
 						RoadInfo info = r.getInfoByPoint(new Point(mi.getX(),
 								mi.getY()));
-						VehicleGenerator vg = MyFactory.getInstance()
-								.getVehicleGenerator();
+						VehicleGenerator vg = (VehicleGenerator)MyFactory.getInstance().getGenerator("VehicleGenerator");
+			
 						vg.settype(Lib.random(vg.getTypeCount()));
-						MyFactory.getInstance().getVehicleGenerator().setroad(
+						((VehicleGenerator)MyFactory.getInstance().getGenerator("VehicleGenerator")).setroad(
 								r, info);
-						MyFactory.getInstance().getVehicleGenerator()
+						((VehicleGenerator)MyFactory.getInstance().getGenerator("VehicleGenerator"))
 								.generate();
 					}
 				}

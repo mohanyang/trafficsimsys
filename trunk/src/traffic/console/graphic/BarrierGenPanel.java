@@ -13,6 +13,7 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 
+import traffic.external.generate.BarrierGenerator;
 import traffic.external.generate.MyFactory;
 
 public class BarrierGenPanel extends TemplatePanel implements ActionListener,
@@ -102,7 +103,7 @@ public class BarrierGenPanel extends TemplatePanel implements ActionListener,
 				paraconfig(i, tmp);
 				}
 			}
-			if (MyFactory.getInstance().getBarrierGenerator().getInstance()
+			if (MyFactory.getInstance().getGenerator("BarrierGenerator") 
 					.generate() < 0) {
 				System.out.print("fail in adding vehicle\n");
 			}
@@ -118,7 +119,7 @@ public class BarrierGenPanel extends TemplatePanel implements ActionListener,
 		int value = (Integer) o;
 		switch (index) {
 		case 0:
-			MyFactory.getInstance().getBarrierGenerator().getInstance()
+			((BarrierGenerator)MyFactory.getInstance().getGenerator("BarrierGenerator"))
 					.setbornpoint(value);
 			break;
 		default:

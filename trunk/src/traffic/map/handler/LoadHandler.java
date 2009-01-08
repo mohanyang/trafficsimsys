@@ -24,7 +24,7 @@ public class LoadHandler {
 
 		int pointnum = map.getPointNum();
 		MyFactory fact = MyFactory.getInstance();
-		VehicleGenerator vg = fact.getVehicleGenerator().getInstance();
+		VehicleGenerator vg = (VehicleGenerator)fact.getGenerator("VehicleGenerator");
 /*		for (int i = 0; i < pointnum; i++) {
 			vg.setbornpoint(i);
 			for (int j = 0; j < 1; j++) {

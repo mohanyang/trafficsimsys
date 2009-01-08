@@ -1,12 +1,13 @@
 package traffic.external.generate;
 
+import java.util.Hashtable;
+
 import traffic.basic.Lib;
 
 //@author liangda li
 
 public class MyFactory {
-	private VehicleGenerator vehiclegen;
-	private BarrierGenerator barriergen;
+	private Hashtable<String, GenerateController> gentable=new Hashtable<String, GenerateController>();
 
 	private static MyFactory instance = null;
 
@@ -17,27 +18,18 @@ public class MyFactory {
 		return instance;
 	}
 
-	public VehicleGenerator getVehicleGenerator() {
-		if (vehiclegen == null) {
+	public GenerateController getGenerator(String name) {
+		if (gentable.get(name) == null) {
 			try {
-				vehiclegen = (VehicleGenerator) Lib
-						.constructObject("traffic.external.generate.VehicleGenerator");
+				GenerateController tmp = (VehicleGenerator) Lib
+						.constructObject("traffic.external.generate."+name);
+				gentable.put(name, tmp);
+				return tmp;
 			} catch (Exception e) {
 				System.err.print("VehicleGenerator construct error\n");
 			}
 		}
-		return vehiclegen;
+		return gentable.get(name);
 	}
 
-	public BarrierGenerator getBarrierGenerator() {
-		if (barriergen == null) {
-			try {
-				barriergen = (BarrierGenerator) Lib
-						.constructObject("traffic.external.generate.BarrierGenerator");
-			} catch (Exception e) {
-				System.err.print("BarrierGenerator construct error\n");
-			}
-		}
-		return barriergen;
-	}
 }

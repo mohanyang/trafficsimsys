@@ -21,7 +21,7 @@ public class MyFactory {
 	public GenerateController getGenerator(String name) {
 		if (gentable.get(name) == null) {
 			try {
-				GenerateController tmp = (VehicleGenerator) Lib
+				GenerateController tmp = (GenerateController) Lib
 						.constructObject("traffic.external.generate."+name);
 				gentable.put(name, tmp);
 				return tmp;

@@ -19,7 +19,9 @@ public class BarrierGenerator implements GenerateController{
 	public int generate() {
 		if(road==null){
 			road = SearchBornPoint(bornpoint);
+			if(info==null){
 			info=new RoadInfo(road, 0, 0);
+			}
 		}
 		if (road == null) {
 			return -1;
@@ -36,6 +38,7 @@ public class BarrierGenerator implements GenerateController{
 		road.performInsertion();
 		road.releaseLock();
 		road=null;
+		info=null;
 		return 0;
 	}
 
@@ -56,10 +59,11 @@ public class BarrierGenerator implements GenerateController{
 		i = 0;
 		int degree = Map.getInstance().getPoint(p).getDegree();
 		int tmpindex = Randomnum(0, degree);
-		for (Iterator<Road> itrr = p.getRoadList(); itrr.hasNext();) {
-			Road r = itrr.next();
+		for (Iterator<RoadInfo> itrr = p.gettmpRoadList(); itrr.hasNext();) {
+			RoadInfo r = itrr.next();
 			if (i == tmpindex) {
-				return r;
+				this.info=r;
+				return r.getCurrentRoad();
 			}
 			i++;
 		}

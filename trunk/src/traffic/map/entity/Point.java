@@ -123,10 +123,25 @@ public class Point {
 		return roadList.size()+passRoadList.size();
 	}
 
+	public Iterator<RoadInfo> gettmpRoadList() {
+		LinkedList<RoadInfo> tmplist=new LinkedList<RoadInfo>();
+		int size=roadList.size();
+		for(int i=0;i<size;i++){
+			Road r=roadList.get(i);
+			tmplist.add(new RoadInfo(r, 0, 0));
+		}
+		size=passRoadList.size();
+		for(int i=0;i<size;i++){
+			RoadInfo rinf=passRoadList.get(i);
+			tmplist.add(rinf);
+		}
+		return tmplist.iterator();
+	}
+
 	public Iterator<Road> getRoadList() {
 		return roadList.iterator();
 	}
-
+	
 	public LinkedList<RoadEntranceInfo> getIntersectionList() {
 		return getIntersectionList(true);
 	}

@@ -22,7 +22,9 @@ public class VehicleGenerator implements GenerateController {
 	public int generate() {
 		if (road == null) {
 			road = SearchBornPoint(bornpoint);
-			info=new RoadInfo(road, 0, 0);
+			if(info==null){
+				info=new RoadInfo(road, 0, 0);
+			}
 		}
 		if (road == null) {
 			return -1;
@@ -36,6 +38,7 @@ public class VehicleGenerator implements GenerateController {
 		road.performInsertion();
 		road.releaseLock();
 		road = null;
+		info=null;
 		return 0;
 	}
 	
@@ -58,12 +61,25 @@ public class VehicleGenerator implements GenerateController {
 			return null;
 		}
 		i = 0;
+/*		Road r= Map.getInstance().getRoad(p.getXAxis(), p.getYAxis());
+		if (r != null) {
+			RoadInfo info = r.getInfoByPoint(new Point(p.getXAxis(), p.getYAxis()));
+			VehicleGenerator vg = (VehicleGenerator)MyFactory.getInstance().getGenerator("VehicleGenerator");
+
+			vg.settype(Lib.random(vg.getTypeCount()));
+			((VehicleGenerator)MyFactory.getInstance().getGenerator("VehicleGenerator")).setroad(
+					r, info);
+			((VehicleGenerator)MyFactory.getInstance().getGenerator("VehicleGenerator"))
+					.generate();
+		}
+		return null;*/
 		int degree = Map.getInstance().getPoint(p).getDegree();
 		int tmpindex = Randomnum(0, degree);
-		for (Iterator<Road> itrr = p.getRoadList(); itrr.hasNext();) {
-			Road r = itrr.next();
+		for (Iterator<RoadInfo> itrr = p.gettmpRoadList(); itrr.hasNext();) {
+			RoadInfo r = itrr.next();
 			if (i == tmpindex) {
-				return r;
+				this.info=r;
+				return r.getCurrentRoad();
 			}
 			i++;
 		}
